@@ -7,9 +7,9 @@ Version: 3.0
 Update: 2015-09-09
 
 Description:
-    Enable user to show their customized HTML-element in the center of screen.
-    - Background cover, block mouse event out of the information box. Support transparency.
-    - Provide a function of closing information box on clicking outside the information box. It can be disabled.
+    Enable user to show their customized HTML elements in the center of screen.
+        - A screen cover will be created to block mouse event to the original page.
+        - Clicking outside the body of the info-box will close the info-box. This feature can be disabled manually.
     
 Compatibility:
     Chrome; Fire Fox; Safari; Edge; IE 9-11; IE 7,8;

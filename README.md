@@ -63,7 +63,10 @@ API is as same as **$$.info.alert(...)**.
      
 ######  &nbsp;
 
-# Compatibility:
+# Preset API
+Please see the note in **InfoBox.js** for more details.
+
+# Compatibility
 - Chrome
 - Fire Fox
 - Safari
