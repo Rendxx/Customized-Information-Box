@@ -12,7 +12,7 @@ Enable user to show their customized HTML elements in the center of screen.
 
 - Short cut of **$$.info.show(...)**  
 
----
+######  &nbsp;
 
     $$.info.show(ele, hideOnClick, bgColor, opts, onHide)
 
@@ -23,8 +23,8 @@ Enable user to show their customized HTML elements in the center of screen.
     + width: width value, need to be set to "100%" if you want the info-window expand as window re-sizes  
     + height: same as width
 - **onHide**: callback function when info-window hides
-       
----
+      
+######  &nbsp;
      
     $$.info.alert(content, title, hideOnClick, bgColor, callback)
  
@@ -34,7 +34,7 @@ Enable user to show their customized HTML elements in the center of screen.
 - bgColor: *[same as above]*  
 - **callback**: function be called after clicking OK
 
----
+######  &nbsp;
 
     $$.info.check(content, title, hideOnClick, bgColor, callbackYes, callbackNo) 
 
@@ -45,18 +45,20 @@ Enable user to show their customized HTML elements in the center of screen.
 - **callbackYes**: function be called after clicking YES
 - **callbackNo**: function be called after clicking NO
      
----
+######  &nbsp;
 
     $$.info.alert2(content, title, hideOnClick, bgColor, callbackYes, callbackNo) 
 
 - API is as same as **$$.info.alert(...)**. This is a Brief-line-style version of it.
      
----
+######  &nbsp;
 
     $$.info.check2(content, title, hideOnClick, bgColor, callbackYes, callbackNo) 
 
 - API is as same as **$$.info.check(...)**. This is a Brief-line-style version of it.
      
+######  &nbsp;
+
 # Compatibility:
 - Chrome
 - Fire Fox
