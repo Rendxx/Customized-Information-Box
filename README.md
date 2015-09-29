@@ -10,11 +10,13 @@ Enable user to show their customized HTML elements in the center of screen.
 #API
     $$.info(ele, hideOnClick, bgColor, opts, onHide)      
 
-- Short cut of **$$.info.show(...)**  
+Create and show a customized infomation box in the center of screen.  
+ Short cut of **$$.info.show(...)**  
 
 ######  &nbsp;
 
     $$.info.show(ele, hideOnClick, bgColor, opts, onHide)
+Create and show a customized infomation box in the center of screen. 
 
 - **ele**: info-window jQuery element  
 - **hideOnClick**: close when click on the background if true  
@@ -27,7 +29,8 @@ Enable user to show their customized HTML elements in the center of screen.
 ######  &nbsp;
      
     $$.info.alert(content, title, hideOnClick, bgColor, callback)
- 
+Create and show a preset alert-box in the center of screen.
+
 - **content**: alert content
 - **title**: alert title
 - hideOnClick: *[same as above]*  
@@ -37,6 +40,7 @@ Enable user to show their customized HTML elements in the center of screen.
 ######  &nbsp;
 
     $$.info.check(content, title, hideOnClick, bgColor, callbackYes, callbackNo) 
+Create and show a preset check-box in the center of screen.
 
 - content: *[same as above]*  
 - title: *[same as above]*  
@@ -48,14 +52,14 @@ Enable user to show their customized HTML elements in the center of screen.
 ######  &nbsp;
 
     $$.info.alert2(content, title, hideOnClick, bgColor, callbackYes, callbackNo) 
-
-- API is as same as **$$.info.alert(...)**. This is a Brief-line-style version of it.
+Create and show a preset alert-box (Brief-line-style) in the center of screen.  
+API is as same as **$$.info.alert(...)**.
      
 ######  &nbsp;
 
     $$.info.check2(content, title, hideOnClick, bgColor, callbackYes, callbackNo) 
-
-- API is as same as **$$.info.check(...)**. This is a Brief-line-style version of it.
+Create and show a preset check-box (Brief-line-style) in the center of screen.  
+API is as same as **$$.info.alert(...)**.
      
 ######  &nbsp;
 
