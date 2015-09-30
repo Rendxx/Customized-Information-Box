@@ -15,7 +15,7 @@ Enable user to show their customized HTML elements in the center of screen.
 #API
     $$.info(ele, hideOnClick, bgColor, opts, onHide)      
 
-Create and show a customized infomation box in the center of screen.  
+Create and show a customized information box in the center of screen.  
  Short cut of **$$.info.show(...)**  
 
 ######  &nbsp;
