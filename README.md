@@ -4,7 +4,7 @@ Enable user to show their customized HTML elements in the center of screen.
 - A screen cover will be created to block mouse event to the original page.
 - Clicking outside the body of the info-box will close the info-box. This feature can be disabled manually.
 
-![preview](https://github.com/Rendxx/InfoBox/blob/master/InfoBox/preview.png?raw=true "Preview")
+![preview](https://raw.githubusercontent.com/Rendxx/InfoBox/master/preview.png "Preview")
 
 *Sample: [Sample](http://www.rendxx.com/Lib/Sample/6 "Sample")*  
 *Download: [InfoBox v3.0](https://github.com/Rendxx/InfoBox/releases/tag/3.0 "Download")*
