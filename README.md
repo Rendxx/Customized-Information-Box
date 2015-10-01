@@ -4,7 +4,7 @@ Enable user to show their customized HTML elements in the center of screen.
 - A screen cover will be created to block mouse event to the original page.
 - Clicking outside the body of the info-box will close the info-box. This feature can be disabled manually.
 
-![preview](https://raw.githubusercontent.com/Rendxx/InfoBox/master/preview.png "Preview")
+![preview](https://raw.githubusercontent.com/Rendxx/InfoBox/master/preview.png "Preview")  
 
 *Sample: [http://www.rendxx.com/Lib/Sample/6](http://www.rendxx.com/Lib/Sample/6 "Sample")*  
 *Download: [InfoBox v3.0](https://github.com/Rendxx/InfoBox/releases/tag/3.0 "Download")*
@@ -18,7 +18,7 @@ Enable user to show their customized HTML elements in the center of screen.
 Create and show a customized information box in the center of screen.  
  Short cut of **$$.info.show(...)**  
 
-######  &nbsp;
+<div><br></div>
 
     $$.info.show(ele, hideOnClick, bgColor, opts, onHide)
 Create and show a customized infomation box in the center of screen. 
@@ -31,7 +31,7 @@ Create and show a customized infomation box in the center of screen.
     + height: same as width
 - **onHide**: callback function when info-window hides
       
-######  &nbsp;
+<div><br></div>
      
     $$.info.alert(content, title, hideOnClick, bgColor, callback)
 Create and show a preset alert-box in the center of screen.
@@ -42,7 +42,7 @@ Create and show a preset alert-box in the center of screen.
 - bgColor: *[same as above]*  
 - **callback**: function be called after clicking OK
 
-######  &nbsp;
+<div><br></div>
 
     $$.info.check(content, title, hideOnClick, bgColor, callbackYes, callbackNo) 
 Create and show a preset check-box in the center of screen.
@@ -54,22 +54,28 @@ Create and show a preset check-box in the center of screen.
 - **callbackYes**: function be called after clicking YES
 - **callbackNo**: function be called after clicking NO
      
-######  &nbsp;
+<div><br></div>
 
     $$.info.alert2(content, title, hideOnClick, bgColor, callbackYes, callbackNo) 
 Create and show a preset alert-box (Brief-line-style) in the center of screen.  
 API is as same as **$$.info.alert(...)**.
      
-######  &nbsp;
+<div><br></div>
 
     $$.info.check2(content, title, hideOnClick, bgColor, callbackYes, callbackNo) 
 Create and show a preset check-box (Brief-line-style) in the center of screen.  
 API is as same as **$$.info.alert(...)**.
      
-######  &nbsp;
+<div><br></div>
 
 # Preset API
 Please see the note in **InfoBox.js** for more details.
+
+# Code Sample
+JavaScript:
+
+    $$.info.alert2("Alert Sample. <br />Click <b>OK</b> to close.", "ALERT", false, "rgba(0,0,0,0.6)", null);
+    // Create an alert window.
 
 # Compatibility
 - Chrome
