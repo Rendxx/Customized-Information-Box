@@ -21,8 +21,10 @@ Please see the note in **InfoBox.js** for more details.
 # Code Sample
 JavaScript:
 
-    $$.info.alert2("Alert Sample. <br />Click <b>OK</b> to close.", "ALERT", false, "rgba(0,0,0,0.6)", null);
-    // Create an alert window.
+```javascript
+$$.info.alert2("Alert Sample. <br />Click <b>OK</b> to close.", "ALERT", false, "rgba(0,0,0,0.6)", null);
+// Create an alert window.
+```
 
 # Compatibility
 - Chrome
