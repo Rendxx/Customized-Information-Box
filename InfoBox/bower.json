@@ -1,8 +1,33 @@
 {
-	"name": "bower",
-	"license": "Apache-2.0",
-	"private": true,
-	"dependencies": {
-    "jquery": "1.11.2"
-	}
+  "name": "bower-package-name",
+  "description": "",
+  "main": [
+    "package path"
+  ],
+  "dependencies": {
+    "jQuery": "^2.1.4"
+  },
+  "devDependencies": {
+  },
+  "moduleType": [
+    "globals"
+  ],
+  "keywords": [
+  ],
+  "authors": [
+    "Your Name"
+  ],
+  "license": "MIT",
+  "ignore": [
+    "**/.*",
+    "node_modules",
+    "bower_components",
+    "test",
+    "tests"
+  ],
+  "repository": {
+    "type": "git",
+    "url": ""
+  },
+  "private": false
 }

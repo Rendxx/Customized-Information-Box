@@ -12,7 +12,7 @@ var gulp = require('gulp'),
 
 // configuration --------------------------------------------------
 var project = {
-    webroot: '.'
+    webroot: 'wwwroot'
 };
 
 var paths = {
@@ -28,12 +28,6 @@ var paths = {
         dest: project.webroot + '/js/',
     },
 
-    // test
-    test: {
-        src: 'test',
-        dest: project.webroot + '/js/',
-    },
-
     // bower
     bower: {
         src: 'bower_components',
@@ -42,7 +36,6 @@ var paths = {
 };
 
 eval("var filePaths = " + String(fs.readFileSync("./bundle.json"))
-    .replace(/#bower#/g, paths.bower.src)
     .replace(/#less#/g, paths.less.src)
     .replace(/#js#/g, paths.js.src));
 
@@ -50,9 +43,11 @@ eval("var filePaths = " + String(fs.readFileSync("./bundle.json"))
 // copy lib from bower to www-root
 gulp.task("_copyBower", ['_cleanLib'], function (cb) { 
     // bower
-    var filePath = filePaths.bower;
-    for (var destinationDir in filePath) {
-        gulp.src(filePath[destinationDir])
+    var bower = {
+        "jquery": "/jquery/dist/jquery*.{js,map}"
+    }
+    for (var destinationDir in bower) {
+        gulp.src(paths.bower.src + bower[destinationDir])
           .pipe(gulp.dest(paths.bower.dest));
     }
 });
@@ -65,12 +60,6 @@ gulp.task('_watch', function () {
     watch(paths.js.src + "/**/*.js", function () {
         gulp.start('js');
     });
-    watch(paths.test.src + "/**/*.less", function () {
-        gulp.start('test-less');
-    });
-    watch(paths.test.src + "/**/*.js", function () {
-        gulp.start('test-js');
-    });
 });
 
 // Clean task
@@ -79,8 +68,24 @@ gulp.task('_cleanLib', function (cb) {
     cb(null);
 });
 
+// .............................. Handle style file
+// transfrom less to css file
+// combine multiple files
+gulp.task('less', function () {
+    var filePath = filePaths.less;
+    for (var destFile in filePath) {
+        gulp.src(filePath[destFile])
+            .pipe(plumber())
+            .pipe(less())
+            .pipe(concat(destFile + '.css'))
+            .pipe(gulp.dest(paths.less.dest));
+    }
+});
 
-var processJs = function (filePath) {
+// .............................. Handle js file
+// combine & minimize js file
+gulp.task('js', function () {
+    var filePath = filePaths.js;
     for (var destFile in filePath) {
         gulp.src(filePath[destFile])
             .pipe(plumber())
@@ -95,40 +100,4 @@ var processJs = function (filePath) {
             .pipe(lzmajs())
             .pipe(gulp.dest(paths.js.dest));
     }
-};
-
-var processLess = function (filePath) {
-    for (var destFile in filePath) {
-        gulp.src(filePath[destFile])
-            .pipe(plumber())
-            .pipe(less())
-            .pipe(concat(destFile + '.css'))
-            .pipe(gulp.dest(paths.less.dest));
-    }
-};
-
-// .............................. Handle style file
-// transfrom less to css file
-// combine multiple files
-gulp.task('less', function () {
-    processLess(filePaths.less);
-});
-// .............................. Handle js file
-// combine & minimize js file
-gulp.task('js', function () {
-    processJs(filePaths.js);
-});
-
-// test
-// .............................. Handle style file
-// transfrom less to css file
-// combine multiple files
-gulp.task('test_less', function () {
-    processLess(filePaths["test-less"]);
-});
-
-// .............................. Handle js file
-// combine & minimize js file
-gulp.task('test-js', function () {
-    processJs(filePaths["test-js"]);
 });
