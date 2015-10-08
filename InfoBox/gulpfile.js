@@ -1,13 +1,13 @@
 ﻿/// <binding BeforeBuild='_build' ProjectOpened='_watch' />
 var gulp = require('gulp'),
     fs = require("fs"),
-    path = require('path'),
     del = require("del"),
     less = require('gulp-less'),
     plumber = require('gulp-plumber'),
     concat = require('gulp-concat'),
     watch = require('gulp-watch'),
     uglify = require('gulp-uglify'),
+    sourcemaps = require('gulp-sourcemaps'),
     lzmajs = require('gulp-lzmajs');
 
 // configuration --------------------------------------------------
@@ -15,49 +15,75 @@ var project = {
     webroot: '.'
 };
 
-eval("var pathData = " + String(fs.readFileSync("./bundle.json")));
+var initPath = function () {
+    eval("var pathData = " + String(fs.readFileSync("./bundle.json")));
 
-var filePath = {};
-var paths = {};
-var reg = {};
-for (var pathName in pathData.path) {
-    reg[pathName] = new RegExp('#' + pathName + '#', 'g');
-}
-var replacePath = function (data) {
-    for (var pathName in reg) {
-        data = data.replace(reg[pathName], pathData.path[pathName]);
-    }
-    return data;
-};
+    var filePath = {};
+    var paths = {};
 
-for (var bundleGroup in pathData.bundle) {
-    filePath[bundleGroup] = {};
-    paths[bundleGroup] = {};
-    for (var bundleName in pathData.bundle[bundleGroup]) {
-        if (typeof pathData.bundle[bundleGroup][bundleName] == 'string') {
-            pathData.bundle[bundleGroup][bundleName] = project.webroot + replacePath(pathData.bundle[bundleGroup][bundleName]);
-        } else {
-            for (var i = 0, l = pathData.bundle[bundleGroup][bundleName].length; i < l; i++) {
-                pathData.bundle[bundleGroup][bundleName][i] = project.webroot + replacePath(pathData.bundle[bundleGroup][bundleName][i]);
+    var p = {
+        file: {},
+        watch: {}
+    };
+
+    // init regex for replacing path patterns
+    var createRegs = function (patterns) {
+        var regs = {};
+        for (var pathName in patterns)
+            regs[pathName] = new RegExp('#' + pathName + '#', 'gi');
+        return regs;
+    };
+
+    // replace all path pattern
+    var replacePath = function (data, regs, patterns) {
+        for (var pathName in regs) {
+            data = data.replace(regs[pathName], patterns[pathName]);
+        }
+        return data;
+    };
+
+    for (var group in pathData.bundle) {
+        p.file[group] = {};
+        p.watch[group] = [];
+        var patterns = pathData.path[group],
+            bundles = pathData.bundle[group],
+            regs = createRegs(patterns);
+        for (var bundleName in bundles) {
+            // replace patterns in bundle value
+            if (typeof bundles[bundleName] == 'string') {
+                bundles[bundleName] = project.webroot + replacePath(bundles[bundleName], regs, patterns);
+                p.watch[group].push(bundles[bundleName]);
+            } else {
+                for (var i = 0, l = bundles[bundleName].length; i < l; i++) {
+                    bundles[bundleName][i] = project.webroot + replacePath(bundles[bundleName][i], regs, patterns);
+                    p.watch[group].push(bundles[bundleName][i]);
+                }
             }
-        }
 
-        var idx = bundleName.lastIndexOf('/');
-        var bundleName_dest = '/';
-        var bundleName_file = bundleName;
-        if (idx < 0) {
-            bundleName_dest = '/';
-            bundleName_file = bundleName;
-        } else {
-            bundleName_dest = bundleName.substring(0, idx + 1);
-            bundleName_file = bundleName.substring(idx + 1);
-        }
+            // replace patterns in bundle name
+            var idx = bundleName.lastIndexOf('/');
+            var bundleName_dest = '/';
+            var bundleName_file = bundleName;
+            if (idx < 0) {
+                bundleName_dest = '/';
+                bundleName_file = bundleName;
+            } else {
+                bundleName_dest = bundleName.substring(0, idx + 1);
+                bundleName_file = bundleName.substring(idx + 1);
+            }
 
-        bundleName_dest = project.webroot + replacePath(bundleName_dest);
-        if (!(bundleName_dest in filePath[bundleGroup])) filePath[bundleGroup][bundleName_dest] = {};
-        filePath[bundleGroup][bundleName_dest][bundleName_file] = pathData.bundle[bundleGroup][bundleName];
+            bundleName_dest = project.webroot + replacePath(bundleName_dest, regs, patterns);
+            if (!(bundleName_dest in p.file[group])) p.file[group][bundleName_dest] = {};
+            p.file[group][bundleName_dest][bundleName_file] = pathData.bundle[group][bundleName];
+        }
     }
-}
+
+    return p;
+};
+var p = initPath();
+
+var filePath = p.file;
+var watchPath = p.watch;
 
 
 // task --------------------------------------------------
@@ -71,63 +97,84 @@ gulp.task("_copyBower", ['_cleanLib'], function (cb) {
               .pipe(gulp.dest(dest));
         }
     }
+    cb(null);
 });
 
 // watch modifying of less files
 gulp.task('_watch', function () {
-    watch(paths.less.src + "/**/*.less", function () {
+    var lessWatcher = watch(watchPath.less, function () {
         gulp.start('less');
     });
-    watch(paths.js.src + "/**/*.js", function () {
+    var jsWatcher = watch(watchPath.js, function () {
         gulp.start('js');
+    });
+    watch("bundle.json", function () {
+        var p = initPath();
+
+        filePath = p.file;
+        watchPath = p.watch;
+        gulp.start('less');
+        gulp.start('js');
+
+        lessWatcher.close();
+        jsWatcher.close();
+
+        lessWatcher = watch(watchPath.less, function () {
+            gulp.start('less');
+        });
+        jsWatcher = watch(watchPath.js, function () {
+            gulp.start('js');
+        });
     });
 });
 
 // Clean task
 gulp.task('_cleanLib', function (cb) {
-    del([paths.bower.dest], cb);
+    var f = filePath.bower;
+    var clearDest = [];
+    for (var dest in f) clearDest.push(dest);
+    del(clearDest, cb);
     cb(null);
 });
-
-
-var processJs = function (f) {
-    for (var dest in f) {
-        for (var bundle in f[dest]) {
-            gulp.src(f[dest][bundle])
-                .pipe(plumber())
-                .pipe(concat(bundle + '.js'))
-                .pipe(gulp.dest(dest))
-
-                .pipe(concat(bundle + '.min.js'))
-                .pipe(uglify())
-                .pipe(lzmajs())
-                .pipe(gulp.dest(dest));
-        }
-    }
-};
-
-var processLess = function (f, dest) {
-    for (var dest in f) {
-        for (var bundle in f[dest]) {
-            gulp.src(f[dest][bundle])
-                .pipe(plumber())
-                .pipe(less())
-                .pipe(concat(bundle + '.css'))
-                .pipe(gulp.dest(dest));
-        }
-    }
-};
 
 // .............................. Handle style file
 // transfrom less to css file
 // combine multiple files
 gulp.task('less', function () {
-    processLess(filePath.less, paths.less.dest);
-    processLess(filePath["test-less"], paths.test.dest);
+    var f = filePath.less;
+    for (var dest in f) {
+        for (var bundle in f[dest]) {
+            gulp.src(f[dest][bundle])
+                .pipe(plumber())
+                .pipe(sourcemaps.init())
+                .pipe(less())
+                .pipe(concat(bundle + '.css'))
+                .pipe(sourcemaps.write('.'))
+                .pipe(gulp.dest(dest));
+        }
+    }
 });
 // .............................. Handle js file
 // combine & minimize js file
 gulp.task('js', function () {
-    processJs(filePath.js, paths.js.dest);
-    processJs(filePath["test-js"], paths.test.dest);
+    var f = filePath.js;
+    for (var dest in f) {
+        for (var bundle in f[dest]) {
+            gulp.src(f[dest][bundle])
+                .pipe(plumber())
+                .pipe(sourcemaps.init())
+                .pipe(concat(bundle + '.js'))
+                .pipe(sourcemaps.write('.'))
+                .pipe(gulp.dest(dest));
+
+            gulp.src(f[dest][bundle])
+                .pipe(plumber())
+                .pipe(sourcemaps.init())
+                .pipe(concat(bundle + '.min.js'))
+                .pipe(uglify())
+                .pipe(lzmajs())
+                .pipe(sourcemaps.write('.'))
+                .pipe(gulp.dest(dest));
+        }
+    }
 });

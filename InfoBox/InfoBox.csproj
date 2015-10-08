@@ -16,6 +16,7 @@
   <ItemGroup>
     <Content Include="gulpfile.js" />
     <Content Include="src\js\InfoBox.js" />
+    <Content Include="test\t21.js" />
     <Content Include="test\test.html" />
     <Content Include="test\test.js" />
   </ItemGroup>

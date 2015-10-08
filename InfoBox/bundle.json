@@ -1,30 +1,36 @@
 ﻿{
   // [path] section
-  // used in [bundle] section below with '#' surround (e.g. #path name#)
+  // Define path patterns which will replace the corresponding "#pattern name#" in Gulp task.
   "path": {
-    "bower_src": "/bower_components",
-    "bower_dest": "/lib",
-
-    "js_src": "/src/js",
-    "js_dest": "/js",
-
-    "less": "/src/less",
-    "css": "/css",
-
-    "test": "/test"
+    "bower": {
+      "src": "/bower_components",
+      "dest": "/lib"
+    },
+    "js": {
+      "src": "/src/js",
+      "dest": "/js",
+      "test": "/test"
+    },
+    "less": {
+      "src": "/src/less",
+      "dest": "/css",
+      "test": "/test"
+    }
   },
 
   // [bundle] section
   // used to define files need to be processed by gulp task
+  // Note: path pattern will only match the pattern with same name(case insensitive) in the exacting same group
+  // e.g. "#dest#" in [bundle.bower] will only match the "dest" string in [path.bower]
   "bundle": {
     "bower": {
-      "#bower_dest#/jquery": "#bower_src#/jquery/dist/jquery*.{js,map}"
+      "#dest#/jquery": "#src#/jquery/dist/jquery*.{js,map}"
     },
     "less": {
       "#test#/test": [ "#test#/test.less" ]
     },
     "js": {
-      "#js_dest#/InfoBox": [ "#js_src#/InfoBox.js" ]
+      "#dest#/InfoBox": [ "#src#/InfoBox.js" ]
     }
   }
 }
