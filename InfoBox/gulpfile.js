@@ -15,45 +15,61 @@ var project = {
     webroot: '.'
 };
 
-var paths = {
-    // less
-    less: {
-        src: 'src/less',
-        dest: project.webroot + '/css/'
-    },
+eval("var pathData = " + String(fs.readFileSync("./bundle.json")));
 
-    // js
-    js: {
-        src: 'src/js',
-        dest: project.webroot + '/js/',
-    },
-
-    // test
-    test: {
-        src: 'test',
-        dest: project.webroot + '/js/',
-    },
-
-    // bower
-    bower: {
-        src: 'bower_components',
-        dest: project.webroot + '/lib/'
+var filePath = {};
+var paths = {};
+var reg = {};
+for (var pathName in pathData.path) {
+    reg[pathName] = new RegExp('#' + pathName + '#', 'g');
+}
+var replacePath = function (data) {
+    for (var pathName in reg) {
+        data = data.replace(reg[pathName], pathData.path[pathName]);
     }
+    return data;
 };
 
-eval("var filePaths = " + String(fs.readFileSync("./bundle.json"))
-    .replace(/#bower#/g, paths.bower.src)
-    .replace(/#less#/g, paths.less.src)
-    .replace(/#js#/g, paths.js.src));
+for (var bundleGroup in pathData.bundle) {
+    filePath[bundleGroup] = {};
+    paths[bundleGroup] = {};
+    for (var bundleName in pathData.bundle[bundleGroup]) {
+        if (typeof pathData.bundle[bundleGroup][bundleName] == 'string') {
+            pathData.bundle[bundleGroup][bundleName] = project.webroot + replacePath(pathData.bundle[bundleGroup][bundleName]);
+        } else {
+            for (var i = 0, l = pathData.bundle[bundleGroup][bundleName].length; i < l; i++) {
+                pathData.bundle[bundleGroup][bundleName][i] = project.webroot + replacePath(pathData.bundle[bundleGroup][bundleName][i]);
+            }
+        }
+
+        var idx = bundleName.lastIndexOf('/');
+        var bundleName_dest = '/';
+        var bundleName_file = bundleName;
+        if (idx < 0) {
+            bundleName_dest = '/';
+            bundleName_file = bundleName;
+        } else {
+            bundleName_dest = bundleName.substring(0, idx + 1);
+            bundleName_file = bundleName.substring(idx + 1);
+        }
+
+        bundleName_dest = project.webroot + replacePath(bundleName_dest);
+        if (!(bundleName_dest in filePath[bundleGroup])) filePath[bundleGroup][bundleName_dest] = {};
+        filePath[bundleGroup][bundleName_dest][bundleName_file] = pathData.bundle[bundleGroup][bundleName];
+    }
+}
+
 
 // task --------------------------------------------------
 // copy lib from bower to www-root
 gulp.task("_copyBower", ['_cleanLib'], function (cb) { 
     // bower
-    var filePath = filePaths.bower;
-    for (var destinationDir in filePath) {
-        gulp.src(filePath[destinationDir])
-          .pipe(gulp.dest(paths.bower.dest));
+    var f = filePath.bower;
+    for (var dest in f) {
+        for (var pkg in f[dest]) {
+            gulp.src(f[dest][pkg])
+              .pipe(gulp.dest(dest));
+        }
     }
 });
 
@@ -65,12 +81,6 @@ gulp.task('_watch', function () {
     watch(paths.js.src + "/**/*.js", function () {
         gulp.start('js');
     });
-    watch(paths.test.src + "/**/*.less", function () {
-        gulp.start('test-less');
-    });
-    watch(paths.test.src + "/**/*.js", function () {
-        gulp.start('test-js');
-    });
 });
 
 // Clean task
@@ -80,30 +90,31 @@ gulp.task('_cleanLib', function (cb) {
 });
 
 
-var processJs = function (filePath) {
-    for (var destFile in filePath) {
-        gulp.src(filePath[destFile])
-            .pipe(plumber())
-            .pipe(concat(destFile + '.js'))
-            .pipe(gulp.dest(paths.js.dest))
-    }
-    for (var destFile in filePath) {
-        gulp.src(filePath[destFile])
-            .pipe(plumber())
-            .pipe(concat(destFile + '.min.js'))
-            .pipe(uglify())
-            .pipe(lzmajs())
-            .pipe(gulp.dest(paths.js.dest));
+var processJs = function (f) {
+    for (var dest in f) {
+        for (var bundle in f[dest]) {
+            gulp.src(f[dest][bundle])
+                .pipe(plumber())
+                .pipe(concat(bundle + '.js'))
+                .pipe(gulp.dest(dest))
+
+                .pipe(concat(bundle + '.min.js'))
+                .pipe(uglify())
+                .pipe(lzmajs())
+                .pipe(gulp.dest(dest));
+        }
     }
 };
 
-var processLess = function (filePath) {
-    for (var destFile in filePath) {
-        gulp.src(filePath[destFile])
-            .pipe(plumber())
-            .pipe(less())
-            .pipe(concat(destFile + '.css'))
-            .pipe(gulp.dest(paths.less.dest));
+var processLess = function (f, dest) {
+    for (var dest in f) {
+        for (var bundle in f[dest]) {
+            gulp.src(f[dest][bundle])
+                .pipe(plumber())
+                .pipe(less())
+                .pipe(concat(bundle + '.css'))
+                .pipe(gulp.dest(dest));
+        }
     }
 };
 
@@ -111,24 +122,12 @@ var processLess = function (filePath) {
 // transfrom less to css file
 // combine multiple files
 gulp.task('less', function () {
-    processLess(filePaths.less);
+    processLess(filePath.less, paths.less.dest);
+    processLess(filePath["test-less"], paths.test.dest);
 });
 // .............................. Handle js file
 // combine & minimize js file
 gulp.task('js', function () {
-    processJs(filePaths.js);
-});
-
-// test
-// .............................. Handle style file
-// transfrom less to css file
-// combine multiple files
-gulp.task('test_less', function () {
-    processLess(filePaths["test-less"]);
-});
-
-// .............................. Handle js file
-// combine & minimize js file
-gulp.task('test-js', function () {
-    processJs(filePaths["test-js"]);
+    processJs(filePath.js, paths.js.dest);
+    processJs(filePath["test-js"], paths.test.dest);
 });

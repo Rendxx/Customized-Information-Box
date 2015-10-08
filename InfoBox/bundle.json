@@ -1,23 +1,30 @@
-﻿/*
- * Path Variable:
- *    #bower# : bower source derectory
- *    #less# : less source derectory
- *    #js# : javascript source derectory
- *
- * Directory paths can be changed in gulpfile.js
- */
-{
-  "bower": {
-    "jquery": "#bower#/jquery/dist/jquery*.{js,map}"
+﻿{
+  // [path] section
+  // used in [bundle] section below with '#' surround (e.g. #path name#)
+  "path": {
+    "bower_src": "/bower_components",
+    "bower_dest": "/lib",
+
+    "js_src": "/src/js",
+    "js_dest": "/js",
+
+    "less": "/src/less",
+    "css": "/css",
+
+    "test": "/test"
   },
-  "less": {
-  },
-  "js": {
-    "InfoBox": [ "InfoBox.js" ]
-  },
-  "test-less": {
-    "test": [ "test.less" ]
-  },
-  "test-js": {
+
+  // [bundle] section
+  // used to define files need to be processed by gulp task
+  "bundle": {
+    "bower": {
+      "#bower_dest#/jquery": "#bower_src#/jquery/dist/jquery*.{js,map}"
+    },
+    "less": {
+      "#test#/test": [ "#test#/test.less" ]
+    },
+    "js": {
+      "#js_dest#/InfoBox": [ "#js_src#/InfoBox.js" ]
+    }
   }
 }
