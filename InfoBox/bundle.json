@@ -3,18 +3,18 @@
   // Define path patterns which will replace the corresponding "#pattern name#" in Gulp task.
   "path": {
     "bower": {
-      "src": "/bower_components",
-      "dest": "/lib"
+      "src": "bower_components",
+      "dest": "lib"
     },
     "js": {
-      "src": "/src/js",
-      "dest": "/js",
-      "test": "/test"
+      "src": "src/js",
+      "dest": "js",
+      "test": "test"
     },
     "less": {
-      "src": "/src/less",
-      "dest": "/css",
-      "test": "/test"
+      "src": "src/less",
+      "dest": "css",
+      "test": "test"
     }
   },
 

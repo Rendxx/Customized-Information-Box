@@ -1,4 +1,4 @@
-﻿/// <binding BeforeBuild='_build' ProjectOpened='_watch' />
+﻿/// <binding ProjectOpened='_watch, _copyBower' />
 var gulp = require('gulp'),
     fs = require("fs"),
     del = require("del"),
@@ -6,15 +6,11 @@ var gulp = require('gulp'),
     plumber = require('gulp-plumber'),
     concat = require('gulp-concat'),
     watch = require('gulp-watch'),
-    uglify = require('gulp-uglify'),
     sourcemaps = require('gulp-sourcemaps'),
+    uglify = require('gulp-uglify'),
     lzmajs = require('gulp-lzmajs');
 
 // configuration --------------------------------------------------
-var project = {
-    webroot: '.'
-};
-
 var initPath = function () {
     eval("var pathData = " + String(fs.readFileSync("./bundle.json")));
 
@@ -51,11 +47,11 @@ var initPath = function () {
         for (var bundleName in bundles) {
             // replace patterns in bundle value
             if (typeof bundles[bundleName] == 'string') {
-                bundles[bundleName] = project.webroot + replacePath(bundles[bundleName], regs, patterns);
+                bundles[bundleName] = replacePath(bundles[bundleName], regs, patterns);
                 p.watch[group].push(bundles[bundleName]);
             } else {
                 for (var i = 0, l = bundles[bundleName].length; i < l; i++) {
-                    bundles[bundleName][i] = project.webroot + replacePath(bundles[bundleName][i], regs, patterns);
+                    bundles[bundleName][i] = replacePath(bundles[bundleName][i], regs, patterns);
                     p.watch[group].push(bundles[bundleName][i]);
                 }
             }
@@ -72,7 +68,7 @@ var initPath = function () {
                 bundleName_file = bundleName.substring(idx + 1);
             }
 
-            bundleName_dest = project.webroot + replacePath(bundleName_dest, regs, patterns);
+            bundleName_dest = replacePath(bundleName_dest, regs, patterns);
             if (!(bundleName_dest in p.file[group])) p.file[group][bundleName_dest] = {};
             p.file[group][bundleName_dest][bundleName_file] = pathData.bundle[group][bundleName];
         }
@@ -88,7 +84,7 @@ var watchPath = p.watch;
 
 // task --------------------------------------------------
 // copy lib from bower to www-root
-gulp.task("_copyBower", ['_cleanLib'], function (cb) { 
+gulp.task("_bowerCopy", ['_bowerClear'], function (cb) {
     // bower
     var f = filePath.bower;
     for (var dest in f) {
@@ -100,8 +96,19 @@ gulp.task("_copyBower", ['_cleanLib'], function (cb) {
     cb(null);
 });
 
+// Clean task
+gulp.task('_bowerClear', function (cb) {
+    var f = filePath.bower;
+    var clearDest = [];
+    for (var dest in f) clearDest.push(dest + "*");
+    del(clearDest);
+    cb(null);
+});
+
 // watch modifying of less files
 gulp.task('_watch', function () {
+    gulp.start('less');
+    gulp.start('js');
     var lessWatcher = watch(watchPath.less, function () {
         gulp.start('less');
     });
@@ -128,14 +135,6 @@ gulp.task('_watch', function () {
     });
 });
 
-// Clean task
-gulp.task('_cleanLib', function (cb) {
-    var f = filePath.bower;
-    var clearDest = [];
-    for (var dest in f) clearDest.push(dest);
-    del(clearDest, cb);
-    cb(null);
-});
 
 // .............................. Handle style file
 // transfrom less to css file

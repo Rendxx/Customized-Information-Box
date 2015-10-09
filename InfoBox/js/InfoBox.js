@@ -1,4 +1,4 @@
-﻿/************************************************ 
+/************************************************ 
 Customized Information Box
 Copyright (c) 2014-2015 Dongxu Ren  http://www.rendxx.com/
 
@@ -610,3 +610,4 @@ $(function () {
     };
     InfoBox();
 });
+//# sourceMappingURL=InfoBox.js.map

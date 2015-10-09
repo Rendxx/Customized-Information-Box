@@ -1,0 +1,35 @@
+{
+  "name": "InfoBox",
+  "description": "Show customized HTML elements in the center of screen.",
+  "main": [
+  ],
+  "dependencies": {
+    "jquery": "1.11.2"
+  },
+  "moduleType": [
+    "globals"
+  ],
+  "keywords": [
+    "Alert",
+    "Message",
+    "HTML",
+    "jQuery"
+  ],
+  "authors": [
+    "Dongxu Ren <rendxx@gmail.com> http://www.rendxx.com"
+  ],
+  "license": "MIT",
+  "ignore": [
+    "**/.*",
+    "**/*.map",
+    "lib",
+    "src",
+		"bundle.json",
+		"gulpfile.js",
+		"package.json"
+  ],
+  "repository": {
+    "type": "git",
+    "url": "https://github.com/Rendxx/InfoBox.git"
+  }
+}
