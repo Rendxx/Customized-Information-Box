@@ -1,46 +1,70 @@
 
 # API Document
 
-## Create TipBox with Options
-    $$.info.show(ele, hideOnClick, bgColor, opts, onHide)
-    $$.info(ele, hideOnClick, bgColor, opts, onHide)  
+#### $$.info (content, hideOnClick, bgColor [, opts [, onHide]])  
+#### $$.info.show (content, hideOnClick, bgColor [, opts [, onHide]])
 Create and show a customized infomation box in the center of screen. 
 
-- **ele**: info-window jQuery element  
-- **hideOnClick**: close when click on the background if true  
-- **bgColor**: background color in (rr,gg,bb,aa)  
-- **opts**:  extral options:  
-    + width: width value, need to be set to "100%" if you want the info-window expand as window re-sizes  
-    + height: same as width
-- **onHide**: callback function when info-window hides
+- **content** ```jQuery Object```  
+Custom content, HTML format.
+
+- **hideOnClick** ```boolean```  
+Hide the information box when click outside the box if true.
+
+- **bgColor** ```string```  
+Background color cover the reset of the page.  
+String format is as same as CSS color format:
+  1. ```#rgb``` 
+  2. ```rgba(r,g,b,a)```
+
+- **onHide** ```function```  
+Callback function. Triggered when info-window hides.
 
 <div><br></div>
 
+#### $$.info.alert (content, title, hideOnClick, bgColor [, callback])
+#### $$.info.alert2 (content, title, hideOnClick, bgColor [, callback])
 
-## Show Alert
-    $$.info.alert(content, title, hideOnClick, bgColor, callback)
-    $$.info.alert2(content, title, hideOnClick, bgColor, callback)
-Create and show a preset alert-box in the center of screen.
+Show alert with customized HTML in the center of screen.
 
-- **content**: alert content
-- **title**: alert title
-- hideOnClick: *[same as above]*  
-- bgColor: *[same as above]*  
-- **callback**: function be called after clicking OK
+- **content** ```string```  
+Custom content, HTML format string.
+
+- **title** ```string```  
+Title of the alert box.
+
+- **hideOnClick** ```string```  
+*[same as above]*
+
+- **bgColor** ```string```  
+*[same as above]*
+
+- **callback** ```function```  
+Callback function. Triggered when info-window hides.
 
 <div><br></div>
 
+#### $$.info.check (content, title, hideOnClick, bgColor [, callbackYes, callbackNo]) 
+#### $$.info.check2 (content, title, hideOnClick, bgColor [, callbackYes, callbackNo]) 
 
-## Show CheckBox
-    $$.info.check(content, title, hideOnClick, bgColor, callbackYes, callbackNo) 
-    $$.info.check2(content, title, hideOnClick, bgColor, callbackYes, callbackNo) 
-Create and show a preset check-box in the center of screen.
+Show check-box with customized HTML in the center of screen.
 
-- content: *[same as above]*  
-- title: *[same as above]*  
-- hideOnClick: *[same as above]*  
-- bgColor: *[same as above]*  
-- **callbackYes**: function be called after clicking YES
-- **callbackNo**: function be called after clicking NO
+- **content** ```string```  
+ *[same as above]*  
+
+- **title** ```string```  
+ *[same as above]* 
+
+- **hideOnClick** ```string```  
+*[same as above]*
+
+- **bgColor** ```string```  
+*[same as above]* 
+
+- **callbackYes** ```function```  
+Callback function. Triggered after "Yes" being clicked.
+
+- **callbackNo** ```function```  
+Callback function. Triggered after "No" being clicked.
      
 <div><br></div>
