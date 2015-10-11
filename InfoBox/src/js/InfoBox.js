@@ -94,6 +94,7 @@ $(function () {
 
         // Turn rgba(rr,gg,bb,aa) into AARRGGBB format for filter in ie 7/8
         var ieRgba = function (rgba) {
+            if (rgba.indexOf("(") == -1) return null;
             var para = rgba.split("(")[1].split(")")[0].split(",");
             // Get Hex from Dec
             var getHex = function (num) {
@@ -116,8 +117,12 @@ $(function () {
             } else {
                 if (isOldIe) {
                     var ieColor = ieRgba(bgColor);
-                    _html["bg"].css("filter", "progid:DXImageTransform.Microsoft.gradient(startColorstr=#" + ieColor + ",endColorstr=#" + ieColor + ")");
-                    _html["bg"].css("background", "url(about:blank)");
+                    if (ieColor != null) {
+                        _html["bg"].css("filter", "progid:DXImageTransform.Microsoft.gradient(startColorstr=#" + ieColor + ",endColorstr=#" + ieColor + ")");
+                        _html["bg"].css("background", "url(about:blank)");
+                    } else {
+                        _html["bg"].css("background-color", bgColor);
+                    }
                 } else {
                     _html["bg"].css("background-color", bgColor);
                 }
