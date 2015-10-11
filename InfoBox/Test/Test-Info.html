@@ -1,0 +1,55 @@
+﻿<!DOCTYPE html>
+
+<html lang="en" xmlns="http://www.w3.org/1999/xhtml">
+<head>
+    <meta charset="utf-8" />
+    <script type="text/javascript" src="../lib/jquery.js"></script>
+    <script type="text/javascript" src="../js/InfoBox.js"></script>
+    <title>Info [Info Box]</title>
+    <style type="text/css">
+        body{
+            background-image: url("data:image/png;base64,iVBORw0KGgoAAAANSUhEUgAAADAAAAAwCAYAAABXAvmHAAABEklEQVRoge2ZwQ6DIAyGgSz6AkuM953YxbfY42N26Gl3s2QvgEGzK4cJxs46un43mkr5Q/glVKkMANDmclL0fX/DfJ+rbzCT/wK8BQBA671vqBazpT7vHSiBpABr7VDX9ZNqMVvqn+JBbFnW2uEb8XEcUfN77xsAWMzX8SA+MLFyTFxr3VRVdd9r/iQA0DrnulXJC2B+ZGvq8z7EJVC8C/HegRKQu9DR8BYgLkQAbwHiQgQUL0Bj321yGGMu8zw/9qyRRB62dkZc6Gh4C5C7EAG8BYgLEcBbgLgQAcULSPYH4vf5OL6U/ymO6Q8457oQwnlzf+CThVH2B0IIV6WUmqbp9Z/9AXEhAngLkLsQAcULeANxPile0TMhiAAAAABJRU5ErkJggg==");
+        }
+        .btn {
+            margin: 10px;
+            background-color: #eee;
+            color: #333;
+            padding: 10px;
+            line-height: 20px;
+            font-size:14px;
+            width:400px;
+            cursor:pointer;
+        }
+
+        .infoBox {
+            width: 200px;
+            background-color: #333;
+            text-align: center;
+            line-height: 24px;
+            border-top: 1px solid #fff;
+            border-bottom: 1px solid #fff;
+            color: #eee;
+            font-size: 18px;
+            padding:50px;
+        }
+    </style>
+    <script>
+        $(function () {
+            $('.btn-1').click(function () {
+                var $this = $(this);
+                var content = $('<div class="infoBox">' + $this.text() + '</div>');
+                $$.info(content, true, "rgba(255, 255, 255, 0.3)");
+            });
+            $('.btn-2').click(function () {
+                var $this = $(this);
+                var content = $('<div class="infoBox" style="width:100%">' + $this.text() + '</div>');
+                $$.info(content, true, "rgba(255, 255, 255, 0.3)", function () { $this.css('background-color', '#68A1CA') });
+            });
+        });
+    </script>
+</head>
+<body>
+    <div class="btn btn-1"> $$.info.show(ele, hideOnClick, bgColor)</div>
+    <div class="btn btn-2"> $$.info.show(ele, hideOnClick, bgColor, onHide)</div>
+</body>
+</html>

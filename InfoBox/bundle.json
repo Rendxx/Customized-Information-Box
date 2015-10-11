@@ -27,7 +27,7 @@
       "#dest#/jquery": "#src#/jquery/dist/jquery*.{js,map}"
     },
     "less": {
-      "#test#/test": [ "#test#/test.less" ]
+      "#test#/sample": [ "#test#/sample.less" ]
     },
     "js": {
       "#dest#/InfoBox": [ "#src#/InfoBox.js" ]

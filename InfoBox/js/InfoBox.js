@@ -3,8 +3,8 @@ Customized Information Box
 Copyright (c) 2014-2015 Dongxu Ren  http://www.rendxx.com/
 
 License: MIT (http://www.opensource.org/licenses/mit-license.php)
-Version: 3.0
-Update: 2015-09-09
+Version: 0.4.0
+Update: 2015-10-11
 
 Description:
     Enable user to show their customized HTML elements in the center of screen.
@@ -18,14 +18,11 @@ Dependency:
     jQuery
 
 API:
-    $$.info(ele, hideOnClick, bgColor, opts, onHide)
-    $$.info.show(ele, hideOnClick, bgColor, opts, onHide)
+    $$.info(ele, hideOnClick, bgColor, onHide)
+    $$.info.show(ele, hideOnClick, bgColor, onHide)
         - ele: info-window jQuery element
         - hideOnClick: close when click on the background if true
         - bgColor: background color in (rr,gg,bb,aa)
-        - opts: extral options:
-            width: width value, need to be set as "100%" if you want the info-window expand as window resize
-            height: same as width
         - onHide: callback function when info-window hide
             
     $$.info.hide()
@@ -68,7 +65,7 @@ Preset API:
         - the parameter [htmlStr] should contain all content needed
         - It is highly suggested to create the $ element with it. Otherwise you have to deal with all the pre-work by yourself.
 
-    this.show (ele, hideOnClick, bgColor, opts, onHide)
+    this.show (ele, hideOnClick, bgColor, onHide)
         - as same as the $$.info.show function
     this.hide (e)
         - hide the info box 
@@ -128,46 +125,30 @@ $(function () {
         };
         // -------------------------------------------------------------------------------------------------------------
 
-
-        // resize element when window resize
-        var _resize = function () {
-            var ele = _html["ele"];
-            if (!_isShown || !ele) return;
-            _html["wrap"].width($(window).width());
-            _html["wrap"].height($(window).height());
-            ele.css("margin-left", "-" + ele.width() / 2 + "px");
-            ele.css("margin-top", "-" + (ele.height() / 2 + 10) + "px");
-        };
-
         // Show information-box
-        var show = function (ele, hideOnClick, bgColor, opts, onHide) {
-            _focusEle = $(document.activeElement);   // Store the focus element
+        var show = function (content, hideOnClick, bgColor, onHide) {
+            _focusEle = $(document.activeElement);   // Store the focus contentment
             _onHide = onHide;
-            // Reset basic elements
+            // Reset basic contentments
             _html["container"].html("");
             _html["wrap"].css("visibility", "hidden").css("display", "block");
             // Set background
             setBg(bgColor);
 
-            _html["ele"] = ele;
-            // Append HTML element needed to be shown
-            ele.appendTo(_html["container"]);
-            ele.css("z-index", "99998");
-            ele.css("visibility", "hidden");
-            ele.css("position", "fixed");
-            ele.css("left", "50%");
-            ele.css("top", "50%");
-            ele.css("margin-left", "-" + ele.width() / 2 + "px");
-            ele.css("margin-top", "-" + (ele.height() / 2 + 10) + "px");
-            ele.click(function (e) {
+            _html["content"] = content;
+            // Append HTML contentment needed to be shown
+            _html["container"].css('height', '100%');
+            content.appendTo(_html["container"]);
+            content.css('margin', '0 auto');
+            _html["container"].css('height', 'auto');
+            _html["container"].height(_html["container"].height());
+            _html["container"].css("margin-top", "-" + (_html["container"].height() / 2) + "px");
+            _html["container"].click(function (e) {
                 e.preventDefault();
                 e.stopPropagation();
             });
 
             _html["wrap"].css("display", "none").css("visibility", "visible");
-            ele.css("display", "block").css("visibility", "visible");
-            _html["wrap"].width($(window).width());
-            _html["wrap"].height($(window).height());
             _isShown = true;
 
             _html["wrap"].stop(true, false).fadeIn("fast");
@@ -193,8 +174,8 @@ $(function () {
             // Basic function
 
             window.$$ = window.$$ || {};
-            window.$$.info = function (ele, hideOnClick, bgColor, opts) {
-                show(ele, hideOnClick, bgColor, opts);
+            window.$$.info = function (content, hideOnClick, bgColor, onHide) {
+                show(content, hideOnClick, bgColor, onHide);
             };
             window.$$.info.hide = hide;
             window.$$.info.show = show;
@@ -264,12 +245,9 @@ $(function () {
         // Add HTML element into dom-tree
         var htmlSetup = function () {
             // Setup elements of information box
-            _html["wrap"] = $('<div tabindex="-1" class="r-info" style="display:none; position:fixed; left:0px; top:0px; z-index:99990; margin:0px; padding:0px; border:0px;"></div>').appendTo($("body"));
-            _html["container"] = $('<div style="position:fixed; left:0px; top:0px; z-index:1; width:100%; height:100%;"></div>').appendTo(_html["wrap"]);
-            _html["bg"] = $('<div style="position:absolute; left:0px; top:0px; z-index:0; width:100%; height:100%;"></div>').appendTo(_html["wrap"]);
-
-            // Setup resize function
-            $(window).bind('resize', _resize);
+            _html["wrap"] = $('<div tabindex="-1" class="r-info" style="width:100%; height:100%; display:none; position:fixed; left:0px; top:0px; z-index:99990; margin:0px; padding:0px; border:0px; outline: none!important; outline-width: 0!important;"></div>').appendTo($("body"));
+            _html["container"] = $('<div style="position:fixed; left:0px; top:50%; z-index:2; width:100%; height:100%;"></div>').appendTo(_html["wrap"]);
+            _html["bg"] = $('<div style="position:fixed; left:0px; top:0px; z-index:1; width:100%; height:100%;"></div>').appendTo(_html["wrap"]);
         };
 
         // Initialize the whole function
@@ -295,7 +273,10 @@ $(function () {
                     'font-size': '13px',
                     'font-weight': 500,
                     'border': '1px solid #fff',
-                    'font-family': 'Arial, Helvetica, sans-serif'
+                    'font-family': 'Arial, Helvetica, sans-serif',
+                    'position': 'relative',
+                    'top': '0',
+                    'left': '0'
                 },
                 'r-info-innerWrap': {
                     'width': '380px',
@@ -343,7 +324,7 @@ $(function () {
                     that.hide(e);
                 });
 
-                that.show(ele, hideOnClick, bgColor, null, callback);
+                that.show(ele, hideOnClick, bgColor, callback);
             }
         },
         alert2: {
@@ -358,7 +339,10 @@ $(function () {
                     'font-size': '13px',
                     'font-weight': '500',
                     'border': '1px solid #fff',
-                    'font-family': ' Calibri, Helvetica, sans-serif'
+                    'font-family': ' Calibri, Helvetica, sans-serif',
+                    'position': 'relative',
+                    'top': '0',
+                    'left': '0'
                 },
                 'r-info-innerWrap': {
                     'width': '440px',
@@ -418,7 +402,7 @@ $(function () {
                     that.hide(e);
                 });
 
-                that.show(ele, hideOnClick, bgColor, null, callback);
+                that.show(ele, hideOnClick, bgColor, callback);
             }
         },
         check: {
@@ -433,7 +417,10 @@ $(function () {
                     'font-size': '13px',
                     'font-weight': '500',
                     'border': '1px solid #fff',
-                    'font-family': ' Arial, Helvetica, sans-serif'
+                    'font-family': ' Arial, Helvetica, sans-serif',
+                    'position': 'relative',
+                    'top': '0',
+                    'left': '0'
                 },
                 'r-info-innerWrap': {
                     'width': '380px',
@@ -508,7 +495,7 @@ $(function () {
                     if (callbackNo != null) callbackNo();
                 });
 
-                that.show(ele, hideOnClick, bgColor, null, function () {
+                that.show(ele, hideOnClick, bgColor, function () {
                     if (preventCallback) return;
                     if (callbackNo != null) callbackNo();
                 });
@@ -526,7 +513,10 @@ $(function () {
                     'font-size': '13px',
                     'font-weight': '500',
                     'border': '1px solid #fff',
-                    'font-family': ' Calibri, Helvetica, sans-serif'
+                    'font-family': ' Calibri, Helvetica, sans-serif',
+                    'position': 'relative',
+                    'top': '0',
+                    'left': '0'
                 },
                 'r-info-innerWrap': {
                     'width': '440px',
@@ -601,7 +591,7 @@ $(function () {
                     if (callbackNo != null) callbackNo();
                 });
 
-                that.show(ele, hideOnClick, bgColor, null, function () {
+                that.show(ele, hideOnClick, bgColor, function () {
                     if (preventCallback) return;
                     if (callbackNo != null) callbackNo();
                 });

@@ -15,9 +15,13 @@
   </PropertyGroup>
   <ItemGroup>
     <Content Include="gulpfile.js" />
+    <Content Include="images\rendxx-icon-tmp.png" />
     <Content Include="src\js\InfoBox.js" />
-    <Content Include="Test\Test.html" />
-    <Content Include="Test\test.js" />
+    <Content Include="Test\Test-Check.html" />
+    <Content Include="Test\Test-Alert.html" />
+    <Content Include="Test\Test-Info.html" />
+    <Content Include="Test\Sample.html" />
+    <Content Include="Test\sample.js" />
   </ItemGroup>
   <ItemGroup>
     <Folder Include="js\" />
@@ -26,7 +30,7 @@
   <ItemGroup>
     <None Include="bower.json" />
     <None Include="bundle.json" />
-    <None Include="Test\test.less" />
+    <None Include="Test\sample.less" />
     <None Include="package.json" />
   </ItemGroup>
   <PropertyGroup>
