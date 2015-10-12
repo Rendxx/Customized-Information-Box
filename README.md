@@ -7,7 +7,7 @@ Enable user to show their customized HTML elements in the center of screen.
 ![preview](https://raw.githubusercontent.com/Rendxx/InfoBox/master/preview.png "Preview")  
 
 *Sample: [http://www.rendxx.com/Lib/Sample/6](http://www.rendxx.com/Lib/Sample/6 "Sample")*  
-*Download: [InfoBox v0.5.1](https://github.com/Rendxx/InfoBox/releases/tag/0.5.1 "Download")*
+*Download: [InfoBox v0.5.2](https://github.com/Rendxx/InfoBox/releases/tag/0.5.2 "Download")*
 
 # API
 [API Document](https://github.com/Rendxx/InfoBox/blob/master/API%20Document.md)
