@@ -19,6 +19,6 @@ $(function () {
 
     btn3.click(function () {
         var ele = $("<div class='cusInfo'>Customize Information Box Sample</div>");
-        $$.info(ele, true, "rgba(255, 255, 255, 0.3)", { width: "100%" });
+        $$.info(ele, true, "rgba(255, 255, 255, 0.3)");
     });
 });
