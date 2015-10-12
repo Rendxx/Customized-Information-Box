@@ -19,11 +19,11 @@
     <Content Include="js\InfoBox.js" />
     <Content Include="js\InfoBox.min.js" />
     <Content Include="src\js\InfoBox.js" />
-    <Content Include="test1\Test-Check.html" />
-    <Content Include="test1\Test-Alert.html" />
-    <Content Include="test1\Test-Info.html" />
-    <Content Include="test1\Sample.html" />
-    <Content Include="test1\sample.js" />
+    <Content Include="test\Test-Check.html" />
+    <Content Include="test\Test-Alert.html" />
+    <Content Include="test\Test-Info.html" />
+    <Content Include="test\Sample.html" />
+    <Content Include="test\sample.js" />
   </ItemGroup>
   <ItemGroup>
     <Folder Include="lib\" />
@@ -34,7 +34,7 @@
     <None Include="bundle.json" />
     <Content Include="js\InfoBox.min.js.map" />
     <Content Include="README.md" />
-    <None Include="test1\sample.less" />
+    <None Include="test\sample.less" />
     <None Include="package.json" />
   </ItemGroup>
   <PropertyGroup>
