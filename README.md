@@ -9,6 +9,19 @@ Enable user to show their customized HTML elements in the center of screen.
 *Sample: [http://www.rendxx.com/Lib/Sample/6](http://www.rendxx.com/Lib/Sample/6 "Sample")*  
 *Download: [InfoBox v0.5.2](https://github.com/Rendxx/InfoBox/releases/tag/0.5.2 "Download")*
 
+# Install
+Download the package from bower
+```
+    bower install angular-material --save
+```
+
+Including the file in your webpage
+```HTML
+<script type="text/javascript" src="/node_modules/InfoBox/js/InfoBox.js"></script>
+```
+
+You can use InfoBox now. See **Sample** below.
+
 # API
 [API Document](https://github.com/Rendxx/InfoBox/blob/master/API%20Document.md)
 
