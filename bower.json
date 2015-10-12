@@ -22,11 +22,15 @@
   "ignore": [
     "**/.*",
     "**/*.map",
+    "images",
     "lib",
     "src",
 		"bundle.json",
 		"gulpfile.js",
-		"package.json"
+		"package.json",
+		"preview.png",
+		"README.md",
+		"API Document.md"
   ],
   "repository": {
     "type": "git",

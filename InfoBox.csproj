@@ -16,6 +16,8 @@
   <ItemGroup>
     <Content Include="gulpfile.js" />
     <Content Include="images\rendxx-icon-tmp.png" />
+    <Content Include="js\InfoBox.js" />
+    <Content Include="js\InfoBox.min.js" />
     <Content Include="src\js\InfoBox.js" />
     <Content Include="Test\Test-Check.html" />
     <Content Include="Test\Test-Alert.html" />
@@ -24,12 +26,14 @@
     <Content Include="Test\sample.js" />
   </ItemGroup>
   <ItemGroup>
-    <Folder Include="js\" />
     <Folder Include="lib\" />
   </ItemGroup>
   <ItemGroup>
+    <Content Include="API Document.md" />
     <None Include="bower.json" />
     <None Include="bundle.json" />
+    <Content Include="js\InfoBox.min.js.map" />
+    <Content Include="README.md" />
     <None Include="Test\sample.less" />
     <None Include="package.json" />
   </ItemGroup>
