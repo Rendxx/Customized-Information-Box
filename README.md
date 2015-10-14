@@ -20,7 +20,7 @@ Including the file in your webpage
 <script type="text/javascript" src="/node_modules/InfoBox/js/InfoBox.js"></script>
 ```
 
-You can use InfoBox now. See **Sample** below.
+See **Code Sample** below for more details.
 
 # API
 [API Document](https://github.com/Rendxx/InfoBox/blob/master/API%20Document.md)
