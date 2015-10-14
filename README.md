@@ -12,7 +12,7 @@ Enable user to show their customized HTML elements in the center of screen.
 # Install
 Download the package from bower
 ```
-bower install angular-material --save
+bower install InfoBox --save
 ```
 
 Including the file in your webpage
