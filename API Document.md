@@ -20,7 +20,7 @@ String format is as same as CSS color format:
 - **onHide** ```function```  
 Callback function. Triggered when info-window hides.
 
-<div><br></div>
+<h1></h1>
 
 #### $$.info.alert (content, title, hideOnClick, bgColor [, callback])
 #### $$.info.alert2 (content, title, hideOnClick, bgColor [, callback])
@@ -42,7 +42,7 @@ Title of the alert box.
 - **callback** ```function```  
 Callback function. Triggered when info-window hides.
 
-<div><br></div>
+<h1></h1>
 
 #### $$.info.check (content, title, hideOnClick, bgColor [, callbackYes, callbackNo]) 
 #### $$.info.check2 (content, title, hideOnClick, bgColor [, callbackYes, callbackNo]) 
@@ -67,4 +67,3 @@ Callback function. Triggered after "Yes" being clicked.
 - **callbackNo** ```function```  
 Callback function. Triggered after "No" being clicked.
      
-<div><br></div>
