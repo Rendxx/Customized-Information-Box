@@ -9,7 +9,7 @@ Enable user to show their customized HTML elements in the center of screen.
 *Sample: [http://www.rendxx.com/Lib/Sample/6](http://www.rendxx.com/Lib/Sample/6 "Sample")*  
 *Download: [InfoBox v0.5.5](https://github.com/Rendxx/InfoBox/releases/tag/0.5.5 "Download")*
 
-# Install
+## Install
 Download the package from bower
 ```
 bower install InfoBox --save
@@ -22,16 +22,16 @@ Including the file in your webpage
 
 See **Code Sample** below for more details.
 
-# API
+## API
 [API Document](https://github.com/Rendxx/InfoBox/blob/master/API%20Document.md)
 
-# Preset API
+## Preset API
 Please see the note in **[InfoBox.js](https://github.com/Rendxx/InfoBox/blob/master/InfoBox/src/js/InfoBox.js)** for more details.
 
-# Dependency
+## Dependency
 - [jQuery][]
 
-# Code Sample
+## Code Sample
 JavaScript:
 
 ```javascript
@@ -39,10 +39,10 @@ $$.info.alert2("Alert Sample. <br />Click <b>OK</b> to close.", "ALERT", false, 
 // Create an alert window.
 ```
 
-# Compatibility
+## Compatibility
 ```Chrome``` ```Fire Fox``` ```Safari``` ```Edge``` ```IE 9-11``` ```IE 7,8```
 
-# License 
+## License 
 Copyright &copy; 2015, Rendxx. (MIT License)  
 See [LICENSE][] for more info.
 
