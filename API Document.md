@@ -1,8 +1,8 @@
 
 # API Document
 
-#### $$.info (content, hideOnClick, bgColor [, opts [, onHide]])  
-#### $$.info.show (content, hideOnClick, bgColor [, opts [, onHide]])
+#### $$.info (content, hideOnClick, bgColor [, onHide])  
+#### $$.info.show (content, hideOnClick, bgColor [, onHide])
 Create and show a customized infomation box in the center of screen. 
 
 - **content** ```jQuery Object```  
