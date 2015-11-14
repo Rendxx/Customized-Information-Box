@@ -3,8 +3,8 @@ Customized Information Box
 Copyright (c) 2014-2015 Dongxu Ren  http://www.rendxx.com/
 
 License: MIT (http://www.opensource.org/licenses/mit-license.php)
-Version: 0.4.0
-Update: 2015-10-11
+Version: 0.5.6
+Update: 2015-11-13
 
 Description:
     Enable user to show their customized HTML elements in the center of screen.
@@ -148,18 +148,18 @@ $(function () {
             _html["container"].css('height', 'auto');
             _html["container"].height(_html["container"].height());
             _html["container"].css("margin-top", "-" + (_html["container"].height() / 2) + "px");
-            _html["container"].click(function (e) {
-                e.preventDefault();
-                e.stopPropagation();
-            });
+            //_html["container"].click(function (e) {
+            //    e.preventDefault();
+            //    e.stopPropagation();
+            //});
 
             _html["wrap"].css("display", "none").css("visibility", "visible");
             _isShown = true;
 
             _html["wrap"].stop(true, false).fadeIn("fast");
             // Bind/Unbind mouse event on background
-            if (hideOnClick) _html["wrap"].click(hide);
-            else _html["wrap"].unbind("click", hide);
+            if (hideOnClick) _html["bg"].click(hide);
+            else _html["bg"].unbind("click", hide);
             _html["wrap"].focus();
         };
 
