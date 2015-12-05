@@ -3,16 +3,20 @@ Customized Information Box
 Copyright (c) 2014-2015 Dongxu Ren  http://www.rendxx.com/
 
 License: MIT (http://www.opensource.org/licenses/mit-license.php)
-Version: 0.5.7
-Update: 2015-11-19
+Version: 0.6.0
+Update: 2015-12-04
 
 Description:
     Enable user to show their customized HTML elements in the center of screen.
         - A screen cover will be created to block mouse event to the original page.
         - Clicking outside the body of the info-box will close the info-box. This feature can be disabled manually.
+
+    CSS3 is used. 
     
 Compatibility:
-    Chrome; Fire Fox; Safari; Edge; IE 9-11; IE 7,8;
+    Fully support Chrome; Fire Fox; Safari; Edge; IE 10-11; 
+    Half support: IE9
+    Limit support: IE 7,8;
  
 Dependency:
     jQuery
@@ -83,51 +87,15 @@ $(function () {
         var _html = {};             // html elements 
         var _isShown = false;       // whether the info box is shown or not
 
-
-        // handle background - for ie --------------------------------------------------------------------------------
-        var isOldIe = function () {
-            var myNav = navigator.userAgent.toLowerCase();
-            return (myNav.indexOf('msie') != -1) ? parseInt(myNav.split('msie')[1]) < 9 : false;
-        }();
-
-        var hexMap = ["0", "1", "2", "3", "4", "5", "6", "7", "8", "9", "a", "b", "c", "d", "e", "f"]; // Used to translate Dec to Hex
-
-        // Turn rgba(rr,gg,bb,aa) into AARRGGBB format for filter in ie 7/8
-        var ieRgba = function (rgba) {
-            if (rgba.indexOf("(") == -1) return null;
-            var para = rgba.split("(")[1].split(")")[0].split(",");
-            // Get Hex from Dec
-            var getHex = function (num) {
-                var t1 = num % 16;
-                var t2 = (num - t1) / 16;
-                return hexMap[t2] + hexMap[t1];
-            };
-            return getHex(para[3] ? Math.round(para[3] * 255) : 0) + getHex(para[0]) + getHex(para[1]) + getHex(para[2]);
-        };
-
         // set background color
         var setBg = function (bgColor) {
             if (bgColor == null) {
-                if (isOldIe) {
-                    _html["bg"].css("filter", "");
-                    _html["bg"].css("background", "url(about:blank)");
-                } else {
-                    _html["bg"].css("background-color", "rgba(0,0,0,0)");
-                }
+                _html["bg"].css("background-color", "rgba(0,0,0,0)");
             } else {
-                if (isOldIe) {
-                    var ieColor = ieRgba(bgColor);
-                    if (ieColor != null) {
-                        _html["bg"].css("filter", "progid:DXImageTransform.Microsoft.gradient(startColorstr=#" + ieColor + ",endColorstr=#" + ieColor + ")");
-                        _html["bg"].css("background", "url(about:blank)");
-                    } else {
-                        _html["bg"].css("background-color", bgColor);
-                    }
-                } else {
-                    _html["bg"].css("background-color", bgColor);
-                }
+                _html["bg"].css("background-color", bgColor);
             }
         };
+
         // -------------------------------------------------------------------------------------------------------------
 
         // Show information-box
