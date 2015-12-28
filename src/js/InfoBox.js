@@ -79,43 +79,52 @@ Preset API:
 
 ************************************************/
 
-$(function () {
-    var InfoBox = function () {
-        var that = this;
-        var _onHide = null;
-        var _focusEle = null;       // the element focus before showing info box. This is used to recover focus.
-        var _html = {};             // html elements 
-        var _isShown = false;       // whether the info box is shown or not
+(function () {
+    var InfoBox = function ($$) {
+        var that = this,
+            _onHide = null,         // callback fired after hide this info box
+            _focusEle = null,       // the element focus before showing info box. This is used to recover focus.
+            _html = {},             // html elements 
 
-        // set background color
-        var setBg = function (bgColor) {
-            if (bgColor == null) {
-                _html["bg"].css("background-color", "rgba(0,0,0,0)");
-            } else {
-                _html["bg"].css("background-color", bgColor);
-            }
-        };
+            // flag
+            _isSetuped = false,      // whether the info box html has setuped
+            _isShown = false,        // whether the info box is shown or not
+            _transitionEnd = true;   // css3 transition end callback name, null means not available
 
         // -------------------------------------------------------------------------------------------------------------
 
         // Show information-box
         var show = function (content, hideOnClick, bgColor, onHide) {
-            _focusEle = $(document.activeElement);   // Store the focus contentment
-            _onHide = onHide;
-            // Reset basic contentments
-            _html["container"].html("");
-            _html["wrap"].css("visibility", "hidden").css("display", "block");
-            // Set background
-            setBg(bgColor);
+            htmlSetup();
 
+            // callback hide
+            _onHide = onHide;
+
+            // handle the focus element
+            _focusEle = $(document.activeElement);
+
+            // reset basic element
+            _html["container"].html("");
+            animateSetup();
+
+            // Set background
+            if (bgColor == null) {
+                _html["bg"].css("background-color", "rgba(0,0,0,0)");
+            } else {
+                _html["bg"].css("background-color", bgColor);
+            }
+
+            // handle main content and make it vertical center
             _html["content"] = content;
-            // Append HTML contentment needed to be shown
             _html["container"].css('height', '100%');
             content.appendTo(_html["container"]);
             content.css('margin', '0 auto');
             _html["container"].css('height', 'auto');
-            _html["container"].height(_html["container"].height());
-            _html["container"].css("margin-top", "-" + (_html["container"].height() / 2) + "px");
+            var h = _html["container"].height();
+            _html["container"].height(h);
+            _html["container"].css("margin-top", "-" + (h / 2) + "px");
+
+            // stop propagation when click on the box
             content.click(function (e) {
                 if (e.stopPropagation)
                     e.stopPropagation();
@@ -123,455 +132,130 @@ $(function () {
                     e.cancelBubble = true;
             });
 
-            _html["wrap"].css("display", "none").css("visibility", "visible");
-            _isShown = true;
-
-            _html["wrap"].stop(true, false).fadeIn("fast");
             // Bind/Unbind mouse event on background
+            _html["wrap"].unbind("click");
             if (hideOnClick) _html["wrap"].click(hide);
-            else _html["wrap"].unbind("click", hide);
+
+            // show the box
+            _isShown = true;
+            animateShow()
+
             _html["wrap"].focus();
         };
 
         // Hide information-box
         var hide = function () {
             if (!_isShown) return;
-            _isShown = false;
-            _html["wrap"].stop(true, false).fadeOut("fast", function () {
-                _html["container"].html("");
-            });
-            if (_focusEle) _focusEle.focus();   // Re-focus the element
-            if (_onHide != null) _onHide();
+            _isShown = false;            
+            _html["wrap"].unbind("click"); // unbind function            
+            animateHide(); // hide the box
+            if (_focusEle) _focusEle.focus(); // handle the focus element
+            _focusEle = null;
+
+            if (_onHide != null) setTimeout(_onHide, 1); // callback hide
         };
 
-        // Setup global function
-        var functionSetup = function () {
-            // Basic function
-
-            window.$$ = window.$$ || {};
-            window.$$.info = function (content, hideOnClick, bgColor, onHide) {
-                show(content, hideOnClick, bgColor, onHide);
-            };
-            window.$$.info.hide = hide;
-            window.$$.info.show = show;
-        };
-
-        // setup preset infor box
-        var setupPreset = function () {
-            var _presetData = {}; //PresetData;
-
-            var buildEle = function (htmlStr) {
-                return $(htmlStr).addClass(this.cssClass);
-            };
-
-            var createPresetObj = function (key) {
-                _presetData[key] = {
-                };
-                _presetData[key].loaded = false;
-                _presetData[key].cssClass = "r-info-" + key;
-                _presetData[key].css = PresetData[key].css;
-                _presetData[key].html = PresetData[key].html;
-                _presetData[key].create = PresetData[key].create;
-                _presetData[key].buildEle = buildEle;
-                _presetData[key].show = show;
-                _presetData[key].hide = function (e) {
-                    if (e) {
-                        e.preventDefault();
-                        e.stopPropagation();
-                    }
-                    hide();
-                };
-
-                $$.info[key] = function () {
-                    if (!_presetData[key].loaded) {
-                        cssSetup(_presetData[key].cssClass, _presetData[key].css);
-                        _presetData[key].loaded = true;
-                    }
-                    _presetData[key].create.apply(_presetData[key], arguments);
-                };
-            };
-
-            // Insert Css
-            var cssSetup = function (addonClass, cssObj) {
-                var style = document.createElement('style');
-                var text = "";
-                style.type = 'text/css';
-
-                // Add css in setup data
-                for (var j in cssObj) {
-                    text += ".r-info ." + addonClass + " ." + j + ", .r-info ." + addonClass + "." + j + "{";
-                    for (var k in cssObj[j])
-                        text += k + ":" + cssObj[j][k] + ";";
-                    text += "}";
-                }
-
-                if (style.styleSheet) style.styleSheet.cssText = text;  // ie 7-8
-                else style.innerHTML = text;                            // Others
-                document.getElementsByTagName('head')[0].appendChild(style);
-            };
-            // User defined function
-            if ("show" in PresetData || "hide" in PresetData)
-                throw new Error('Illegal setup name: Don\'t name your function "show" or "hide"');
-            for (var i in PresetData) {
-                createPresetObj(i);
+        // html animate handle --------------------------------------------------
+        // setup css for showing
+        var animateSetup = function () {
+            if (_transitionEnd!=null) {
+                _html["wrap"][0].removeEventListener(_transitionEnd, hideWrap, false);
+                _html["wrap"].css({
+                    'display': 'block',
+                    'opacity': 0,
+                    '-moz-transition': '0',
+                    '-o-transition': '0',
+                    '-webkit-transition': '0',
+                    'transition': '0'
+                });
+            } else {
+                _html["wrap"].css({
+                    'display': 'block',
+                    'visibility': 'hidden'
+                });
             }
         };
 
-        // Add HTML element into dom-tree
+        // show the info-box
+        var animateShow = function () {
+            if (_transitionEnd!=null) {
+                _html["wrap"].css({
+                    'opacity': 1,
+                    '-moz-transition': '0.2s',
+                    '-o-transition': '0.2s',
+                    '-webkit-transition': '0.2s',
+                    'transition': '0.2s'
+                });
+            } else {
+                _html["wrap"].css({
+                    'visibility': 'visible',
+                    'display': 'none'
+                }).fadeIn(200);
+            }
+        };
+
+        // hide the info-box
+        var animateHide = function () {
+            if (_transitionEnd!=null) {
+                _html["wrap"].css({
+                    "opacity": 0,
+                    '-moz-transition': '0.2s',
+                    '-o-transition': '0.2s',
+                    '-webkit-transition': '0.2s',
+                    'transition': '0.2s'
+                });
+                _html["wrap"][0].addEventListener(_transitionEnd, hideWrap, false);
+            } else {
+                _html["wrap"].fadeOut(200);
+            }
+        };
+
+        var hideWrap = function () {
+            if (!_isShown) _html["wrap"].css({
+                "display": "none"
+            });
+        };
+
+        // Add Basic elements into Dom-tree
+        // this should only run once
         var htmlSetup = function () {
+            if (_isSetuped) return;
+            _isSetuped = true;
+
             // Setup elements of information box
             _html["wrap"] = $('<div tabindex="-1" class="r-info" style="width:100%; height:100%; display:none; position:fixed; left:0px; top:0px; z-index:99990; margin:0px; padding:0px; border:0px; outline: none!important; outline-width: 0!important;"></div>').appendTo($("body"));
             _html["container"] = $('<div style="position:fixed; left:0px; top:50%; z-index:2; width:100%; height:100%;"></div>').appendTo(_html["wrap"]);
             _html["bg"] = $('<div style="position:fixed; left:0px; top:0px; z-index:1; width:100%; height:100%;"></div>').appendTo(_html["wrap"]);
+
+            // check transition end callback, null means transition not available
+            _transitionEnd = (function () {
+                var el = document.createElement('div');
+                var transEndEventNames = {
+                    'WebkitTransition': 'webkitTransitionEnd',
+                    'MozTransition': 'transitionend',
+                    'OTransition': 'oTransitionEnd otransitionend',
+                    'transition': 'transitionend'
+                };
+
+                for (var name in transEndEventNames) {
+                    if (el.style[name] !== undefined) {
+                        return transEndEventNames[name];
+                    }
+                }
+
+                return null;
+            })();
         };
 
-        // Initialize the whole function
+        // Initialize 
         var init = function () {
-            htmlSetup();
-            functionSetup();
-            setupPreset();
+            $$.info = function (content, hideOnClick, bgColor, onHide) {
+                show(content, hideOnClick, bgColor, onHide);
+            };
+            $$.info.hide = hide;
+            $$.info.show = show;
         };
         init();
     };
-
-    // Add your template 
-    PresetData = {
-        alert: {
-            html: "<div class='r-info-wrap'><div class='r-info-innerWrap'><div class='r-info-title'>#title#</div><div class='r-info-content'>#content#</div><div class='r-info-ok'>OK</div></div></div>",
-            css: {
-                'r-info-wrap': {
-                    'width': '400px',
-                    'height': 'auto',
-                    'background-color': '#eee',
-                    'color': '#333',
-                    'text-align': 'center',
-                    'font-size': '13px',
-                    'font-weight': 500,
-                    'border': '1px solid #fff',
-                    'font-family': 'Arial, Helvetica, sans-serif',
-                    'position': 'relative',
-                    'top': '0',
-                    'left': '0'
-                },
-                'r-info-innerWrap': {
-                    'width': '380px',
-                    'height': 'auto',
-                    'border': '0px',
-                    'margin': '10px'
-                },
-                'r-info-title': {
-                    'width': '100%',
-                    'height': '40px',
-                    'line-height': '40px',
-                    'font-size': '18px',
-                    'font-weight': '700',
-                    'margin': '0px'
-                },
-                'r-info-content': {
-                    'margin': '0px',
-                    'margin-top': '10px',
-                    'width': '100%',
-                    'height': 'auto',
-                    'line-height': '20px'
-                },
-                'r-info-ok': {
-                    'margin': '0px auto',
-                    'margin-top': '20px',
-                    'margin-bottom': '5px',
-                    'width': '120px',
-                    'height': '32px',
-                    'line-height': '32px',
-                    'font-size': '14px',
-                    'font-weight': '700',
-                    'color': '#eee',
-                    'background-color': '#333',
-                    'cursor': 'pointer'
-                },
-                'r-info-ok:hover': {
-                    'background-color': '#515151'
-                }
-            },
-            // (string)content, (string)title, (bool)hideOnClick, (string in "rgba(#,#,#,#)")bgColor, (function)callback
-            create: function (content, title, hideOnClick, bgColor, callback) {
-                var that = this;
-                var ele = that.buildEle(that.html.replace(/#title#/g, title).replace(/#content#/g, content));
-                ele.find(".r-info-ok").click(function (e) {
-                    that.hide(e);
-                });
-
-                that.show(ele, hideOnClick, bgColor, callback);
-            }
-        },
-        alert2: {
-            html: "<div class='r-info-wrap'><div class='r-info-innerWrap'><div class='r-info-title'>#title#</div><div class='r-info-content'>#content#</div><div class='r-info-line'></div><div class='r-info-ok'>OK</div></div></div>",
-            css: {
-                'r-info-wrap': {
-                    'width': '460px',
-                    'height': 'auto',
-                    'background-color': '#f2f2f2',
-                    'color': '#333',
-                    'text-align': 'center',
-                    'font-size': '13px',
-                    'font-weight': '500',
-                    'border': '1px solid #fff',
-                    'font-family': ' Calibri, Helvetica, sans-serif',
-                    'position': 'relative',
-                    'top': '0',
-                    'left': '0'
-                },
-                'r-info-innerWrap': {
-                    'width': '440px',
-                    'height': 'auto',
-                    'border': '0px',
-                    'margin': '10px'
-                },
-                'r-info-title': {
-                    'width': '100%',
-                    'height': '40px',
-                    'line-height': '40px',
-                    'font-size': '21px',
-                    'font-weight': '400',
-                    'margin': '0px',
-                    'color': '#333',
-                    'letter-spacing': '2px',
-                    'padding': '12px 0',
-                    'margin': '0',
-                    'margin-left': '-1px'
-                },
-                'r-info-content': {
-                    'margin': '0px auto',
-                    'margin-bottom': '25px',
-                    'width': '90%',
-                    'height': 'auto',
-                    'line-height': '20px'
-                },
-                'r-info-line': {
-                    'margin': '0px auto',
-                    'margin-bottom': '8px',
-                    'width': '75%',
-                    'height': '1px',
-                    'line-height': '1px',
-                    'background-color': '#ccc'
-                },
-                'r-info-ok': {
-                    'margin': '0px auto',
-                    'margin-bottom': '13px',
-                    'width': '120px',
-                    'height': '32px',
-                    'line-height': '32px',
-                    'font-size': '20px',
-                    'font-weight': '300',
-                    'letter-spacing': '4px',
-                    'color': '#666',
-                    'cursor': 'pointer'
-                },
-                'r-info-ok:hover': {
-                    'color': '#111'
-                }
-            },
-            // (string)content, (string)title, (bool)hideOnClick, (string in "rgba(#,#,#,#)")bgColor, (function)callback
-            create: function (content, title, hideOnClick, bgColor, callback) {
-                var that = this;
-                var ele = that.buildEle(that.html.replace(/#title#/g, title).replace(/#content#/g, content));
-                ele.find(".r-info-ok").click(function (e) {
-                    that.hide(e);
-                });
-
-                that.show(ele, hideOnClick, bgColor, callback);
-            }
-        },
-        check: {
-            html: "<div class='r-info-wrap'><div class='r-info-innerWrap'><div class='r-info-title'>#title#</div><div class='r-info-content'>#content#</div><div class='r-info-yes'>YES</div><div class='r-info-no'>NO</div></div></div>",
-            css: {
-                'r-info-wrap': {
-                    'width': '400px',
-                    'height': 'auto',
-                    'background-color': '#eee',
-                    'color': '#333',
-                    'text-align': 'center',
-                    'font-size': '13px',
-                    'font-weight': '500',
-                    'border': '1px solid #fff',
-                    'font-family': ' Arial, Helvetica, sans-serif',
-                    'position': 'relative',
-                    'top': '0',
-                    'left': '0'
-                },
-                'r-info-innerWrap': {
-                    'width': '380px',
-                    'height': 'auto',
-                    'border': '0px',
-                    'margin': '10px'
-                },
-                'r-info-title': {
-                    'width': '100%',
-                    'height': '40px',
-                    'line-height': '40px',
-                    'font-size': '18px',
-                    'font-weight': '700',
-                    'margin': '0px'
-                },
-                'r-info-content': {
-                    'margin': '0px',
-                    'margin-top': '10px',
-                    'margin-bottom': '70px',
-                    'width': '100%',
-                    'height': 'auto',
-                    'line-height': '20px'
-                },
-                'r-info-yes': {
-                    'position': 'absolute',
-                    'bottom': '12px',
-                    'left': '60px',
-                    'margin': '0px',
-                    'width': '120px',
-                    'height': '32px',
-                    'line-height': '32px',
-                    'font-size': '14px',
-                    'font-weight': '700',
-                    'color': '#eee',
-                    'background-color': '#333',
-                    'cursor': 'pointer'
-                },
-                'r-info-yes:hover': {
-                    'background-color': '#34502E'
-                },
-                'r-info-no': {
-                    'position': 'absolute',
-                    'bottom': '12px',
-                    'right': '60px',
-                    'margin': '0px',
-                    'width': '120px',
-                    'height': '32px',
-                    'line-height': '32px',
-                    'font-size': '14px',
-                    'font-weight': '700',
-                    'color': '#eee',
-                    'background-color': '#333',
-                    'cursor': 'pointer'
-                },
-                'r-info-no:hover': {
-                    'background-color': '#3D1111'
-                }
-            },
-            // (string)content, (string)title, (bool)hideOnClick, (string in "rgba(#,#,#,#)")bgColor, (function)callback
-            create: function (content, title, hideOnClick, bgColor, callbackYes, callbackNo) {
-                var that = this;
-                var preventCallback = false;
-                var ele = that.buildEle(that.html.replace(/#title#/g, title).replace(/#content#/g, content));
-                ele.find(".r-info-yes").click(function (e) {
-                    preventCallback = true;
-                    that.hide(e);
-                    if (callbackYes != null) callbackYes();
-                });
-                ele.find(".r-info-no").click(function (e) {
-                    preventCallback = true;
-                    that.hide(e);
-                    if (callbackNo != null) callbackNo();
-                });
-
-                that.show(ele, hideOnClick, bgColor, function () {
-                    if (preventCallback) return;
-                    if (callbackNo != null) callbackNo();
-                });
-            }
-        },
-        check2: {
-            html: "<div class='r-info-wrap'><div class='r-info-innerWrap'><div class='r-info-title'>#title#</div><div class='r-info-content'>#content#</div><div class='r-info-line'></div><div class='r-info-btn r-info-btn-yes'>YES</div><div class='r-info-btn r-info-btn-no'>NO</div></div></div>",
-            css: {
-                'r-info-wrap': {
-                    'width': '460px',
-                    'height': 'auto',
-                    'background-color': '#f2f2f2',
-                    'color': '#333',
-                    'text-align': 'center',
-                    'font-size': '13px',
-                    'font-weight': '500',
-                    'border': '1px solid #fff',
-                    'font-family': ' Calibri, Helvetica, sans-serif',
-                    'position': 'relative',
-                    'top': '0',
-                    'left': '0'
-                },
-                'r-info-innerWrap': {
-                    'width': '440px',
-                    'height': 'auto',
-                    'border': '0px',
-                    'margin': '10px'
-                },
-                'r-info-title': {
-                    'width': '100%',
-                    'height': '40px',
-                    'line-height': '40px',
-                    'font-size': '21px',
-                    'font-weight': '400',
-                    'margin': '0px',
-                    'color': '#333',
-                    'letter-spacing': '2px',
-                    'padding': '12px 0',
-                    'margin': '0',
-                    'margin-left': '-1px'
-                },
-                'r-info-content': {
-                    'margin': '0px auto',
-                    'margin-bottom': '25px',
-                    'width': '90%',
-                    'height': 'auto',
-                    'line-height': '20px'
-                },
-                'r-info-line': {
-                    'margin': '0px auto',
-                    'margin-bottom': '53px',
-                    'width': '75%',
-                    'height': '1px',
-                    'line-height': '1px',
-                    'background-color': '#ccc'
-                },
-                'r-info-btn': {
-                    'position': 'absolute',
-                    'bottom': '13px',
-                    'margin': '0px',
-                    'width': '100px',
-                    'height': '32px',
-                    'line-height': '32px',
-                    'font-size': '20px',
-                    'font-weight': '300',
-                    'letter-spacing': '4px',
-                    'color': '#666',
-                    'cursor': 'pointer'
-                },
-                'r-info-btn:hover': {
-                    'color': '#111'
-                },
-                'r-info-btn-yes': {
-                    'left': '80px'
-                },
-                'r-info-btn-no': {
-                    'right': '80px'
-                }
-            },
-            // (string)content, (string)title, (bool)hideOnClick, (string in "rgba(#,#,#,#)")bgColor, (function)callback
-            create: function (content, title, hideOnClick, bgColor, callbackYes, callbackNo) {
-                var that = this;
-                var preventCallback = false;
-                var ele = that.buildEle(that.html.replace(/#title#/g, title).replace(/#content#/g, content));
-                ele.find(".r-info-btn-yes").click(function (e) {
-                    preventCallback = true;
-                    that.hide(e);
-                    if (callbackYes != null) callbackYes();
-                });
-                ele.find(".r-info-btn-no").click(function (e) {
-                    preventCallback = true;
-                    that.hide(e);
-                    if (callbackNo != null) callbackNo();
-                });
-
-                that.show(ele, hideOnClick, bgColor, function () {
-                    if (preventCallback) return;
-                    if (callbackNo != null) callbackNo();
-                });
-            }
-        }
-    };
-    InfoBox();
-});
+    var infobox = new InfoBox(window.$$ = window.$$ || {});
+})();
