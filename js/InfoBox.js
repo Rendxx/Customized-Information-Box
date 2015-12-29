@@ -601,8 +601,11 @@ API:
             };
 
             // bind callback function
-
-
+            input.keyup(function (e) {
+                if (e.keyCode == 13) {
+                    confirm();
+                }
+            });
             ele.find(".r-info-btn-yes").click(function (e) {
                 confirm();
             });
