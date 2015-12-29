@@ -3,7 +3,7 @@ Customized Information Box - Preset Alert
 Copyright (c) 2014-2015 Dongxu Ren  http://www.rendxx.com/
 
 License: MIT (http://www.opensource.org/licenses/mit-license.php)
-Update: 2015-12-28
+Update: 2015-12-29
 
 Show an alert box.
 
