@@ -4,7 +4,7 @@ Copyright (c) 2014-2015 Dongxu Ren  http://www.rendxx.com/
 
 License: MIT (http://www.opensource.org/licenses/mit-license.php)
 Version: 0.6.0
-Update: 2015-12-04
+Update: 2015-12-29
 
 Description:
     Enable user to show their customized HTML elements in the center of screen.
@@ -14,8 +14,7 @@ Description:
     CSS3 is used. 
     
 Compatibility:
-    Fully support Chrome; Fire Fox; Safari; Edge; IE 10-11; 
-    Half support: IE9
+    Fully support Chrome; Fire Fox; Safari; Edge; IE 10-11; IE9;
     Limit support: IE 7,8;
  
 Dependency:
