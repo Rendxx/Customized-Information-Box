@@ -18,6 +18,7 @@
     <Content Include="images\rendxx-icon-tmp.png" />
     <Content Include="js\InfoBox.js" />
     <Content Include="js\InfoBox.min.js" />
+    <Content Include="src\js\InfoBox.Check.js" />
     <Content Include="src\js\InfoBox.Preset.js" />
     <Content Include="src\js\InfoBox.Alert - 复制.js" />
     <Content Include="src\js\InfoBox.Alert.js" />

@@ -1,82 +1,16 @@
 /************************************************ 
-Customized Information Box
+Customized Information Box - Preset Alert
 Copyright (c) 2014-2015 Dongxu Ren  http://www.rendxx.com/
 
 License: MIT (http://www.opensource.org/licenses/mit-license.php)
-Version: 0.6.0
-Update: 2015-12-04
+Update: 2015-12-28
 
-Description:
-    Enable user to show their customized HTML elements in the center of screen.
-        - A screen cover will be created to block mouse event to the original page.
-        - Clicking outside the body of the info-box will close the info-box. This feature can be disabled manually.
-
-    CSS3 is used. 
-    
-Compatibility:
-    Fully support Chrome; Fire Fox; Safari; Edge; IE 10-11; 
-    Half support: IE9
-    Limit support: IE 7,8;
- 
-Dependency:
-    jQuery
 
 API:
-    $$.info(ele, hideOnClick, bgColor, onHide)
-    $$.info.show(ele, hideOnClick, bgColor, onHide)
-        - ele: info-window jQuery element
-        - hideOnClick: close when click on the background if true
-        - bgColor: background color in (rr,gg,bb,aa)
-        - onHide: callback function when info-window hide
-            
-    $$.info.hide()
-        close the info box if it is shown
-
     $$.info.alert(content, title, hideOnClick, bgColor, callback)
         - content: alert content
         - title: alert title
         - callback: function be called after click OK
-
-    $$.info.check(content, title, hideOnClick, bgColor, callbackYes, callbackNo) 
-        - callbackYes: function be called after click YES
-        - callbackNo: function be called after click NO
-        
-    $$.info.alert2(content, title, hideOnClick, bgColor, callback)
-        - Breif Line style
-
-    $$.info.check2(content, title, hideOnClick, bgColor, callbackYes, callbackNo) 
-        - Breif Line style
-
-Preset API:
-    These API are only used in preset infobox.
-
-    this.loaded
-        - boolean indicate whether the preset has been loaded or not
-
-    this.cssClass
-        - css class name of the preset
-        - this name is automatically created by the name of the preset
-
-    this.css
-        - css object of the preset
-        - the structure follow the rules almost as same as the css object in $, expect you can set a hover style with "[class name]:hover"
-
-    this.html
-        - html string
-
-    this.buildEle (htmlStr) 
-        - create the $ element used to build the infobox
-        - the parameter [htmlStr] should contain all content needed
-        - It is highly suggested to create the $ element with it. Otherwise you have to deal with all the pre-work by yourself.
-
-    this.show (ele, hideOnClick, bgColor, onHide)
-        - as same as the $$.info.show function
-    this.hide (e)
-        - hide the info box 
-        - e is the event argument passed into a click function, pass it into the hide function as well
-
-
-
 ************************************************/
 
 (function () {
@@ -103,18 +37,9 @@ Preset API:
             info.show(ele, hideOnClick, bgColor, callback);
         };
 
-        var hide = function () {
-            info.hide();
-        };
-
         // Initialize the whole function
         var init = function () {
-            var alert = function (content, title, hideOnClick, bgColor, callback) {
-                show(content, title, hideOnClick, bgColor, callback);
-            };
-            alert.show = show;
-            alert.hide = hide;
-            info.alert = alert;
+            info.alert = show;
         };
         init();
 
