@@ -30,7 +30,7 @@
       "#test#/sample": [ "#test#/sample.less" ]
     },
     "js": {
-      "#dest#/InfoBox": [ "#src#/InfoBox.js","#src#/InfoBox.Preset.js","#src#/InfoBox.Alert.js" ,"#src#/InfoBox.Check.js" ]
+      "#dest#/InfoBox": [ "#src#/InfoBox.js","#src#/InfoBox.Preset.js","#src#/InfoBox.Alert.js" ,"#src#/InfoBox.Check.js","#src#/InfoBox.Input.js" ]
     }
   }
 }

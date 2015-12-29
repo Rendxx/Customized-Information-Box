@@ -1,0 +1,70 @@
+﻿<!DOCTYPE html>
+
+<html lang="en" xmlns="http://www.w3.org/1999/xhtml">
+<head>
+    <meta charset="utf-8" />
+    <script type="text/javascript" src="../lib/jquery.js"></script>
+    <script type="text/javascript" src="../js/InfoBox.js"></script>
+    <title>Input [Info Box]</title>
+    <style type="text/css">
+        body{
+            background-image: url("data:image/png;base64,iVBORw0KGgoAAAANSUhEUgAAADAAAAAwCAYAAABXAvmHAAABEklEQVRoge2ZwQ6DIAyGgSz6AkuM953YxbfY42N26Gl3s2QvgEGzK4cJxs46un43mkr5Q/glVKkMANDmclL0fX/DfJ+rbzCT/wK8BQBA671vqBazpT7vHSiBpABr7VDX9ZNqMVvqn+JBbFnW2uEb8XEcUfN77xsAWMzX8SA+MLFyTFxr3VRVdd9r/iQA0DrnulXJC2B+ZGvq8z7EJVC8C/HegRKQu9DR8BYgLkQAbwHiQgQUL0Bj321yGGMu8zw/9qyRRB62dkZc6Gh4C5C7EAG8BYgLEcBbgLgQAcULSPYH4vf5OL6U/ymO6Q8457oQwnlzf+CThVH2B0IIV6WUmqbp9Z/9AXEhAngLkLsQAcULeANxPile0TMhiAAAAABJRU5ErkJggg==");
+        }
+        .btn {
+            margin: 10px;
+            background-color: #eee;
+            color: #333;
+            padding: 10px;
+            line-height: 20px;
+            font-size:14px;
+            width:400px;
+            cursor:pointer;
+        }
+    </style>
+    <script>
+        $(function () {
+            var showRst = function (data){
+                alert(data);
+            };
+
+            $('.btn-1').click(function () {
+                var $this = $(this);
+                $$.info.input(null, 'Input Test 1', false, "rgba(0,0,0,0.6)", showRst);
+            });
+            $('.btn-2').click(function () {
+                var $this = $(this);
+                $$.info.input({
+                    instruction: 'No more than 5 letters.',
+                    maxlength: 5
+                }, 'Input Test 2', false, "rgba(0,0,0,0.6)", showRst);
+            });
+            $('.btn-3').click(function () {
+                var $this = $(this);
+                $$.info.input({
+                    instruction: 'Please input number bigger than 100',
+                    maxlength: 5,
+                    errorMsg: function (data) {
+                        if (!/^[0-9]*$/g.test(data)) return 'Error: Only number is available';
+                        else if (Number(data) < 100) return 'Error: Lower than 100!';
+                        return null;
+                    }
+                }, 'Input Test 3', false, "rgba(0,0,0,0.6)", showRst);
+            });
+            $('.btn-4').click(function () {
+                var $this = $(this);
+                $$.info.input({
+                    type:'password',
+                    instruction: 'Please input password',
+                    maxlength: 5
+                }, null, false, "rgba(0,0,0,0.6)", showRst);
+            });
+        });
+    </script>
+</head>
+<body>
+    <div class="btn btn-1">No Para</div>
+    <div class="btn btn-2">With instruction and Maxlength</div>
+    <div class="btn btn-3">With errorMsg (Number bigger than 100)</div>
+    <div class="btn btn-4">Password without Title</div>
+</body>
+</html>
