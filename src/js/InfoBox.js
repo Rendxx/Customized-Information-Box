@@ -80,6 +80,7 @@ Preset API:
 ************************************************/
 
 (function () {
+    "use strict";
     var InfoBox = function ($$) {
         var that = this,
             _onHide = null,         // callback fired after hide this info box
