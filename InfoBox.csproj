@@ -21,7 +21,6 @@
     <Content Include="src\js\InfoBox.Input.js" />
     <Content Include="src\js\InfoBox.Check.js" />
     <Content Include="src\js\InfoBox.Preset.js" />
-    <Content Include="src\js\InfoBox.Alert - 复制.js" />
     <Content Include="src\js\InfoBox.Alert.js" />
     <Content Include="src\js\InfoBox.js" />
     <Content Include="test\Test-Input.html" />

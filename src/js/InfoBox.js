@@ -31,52 +31,6 @@ API:
             
     $$.info.hide()
         close the info box if it is shown
-
-    $$.info.alert(content, title, hideOnClick, bgColor, callback)
-        - content: alert content
-        - title: alert title
-        - callback: function be called after click OK
-
-    $$.info.check(content, title, hideOnClick, bgColor, callbackYes, callbackNo) 
-        - callbackYes: function be called after click YES
-        - callbackNo: function be called after click NO
-        
-    $$.info.alert2(content, title, hideOnClick, bgColor, callback)
-        - Breif Line style
-
-    $$.info.check2(content, title, hideOnClick, bgColor, callbackYes, callbackNo) 
-        - Breif Line style
-
-Preset API:
-    These API are only used in preset infobox.
-
-    this.loaded
-        - boolean indicate whether the preset has been loaded or not
-
-    this.cssClass
-        - css class name of the preset
-        - this name is automatically created by the name of the preset
-
-    this.css
-        - css object of the preset
-        - the structure follow the rules almost as same as the css object in $, expect you can set a hover style with "[class name]:hover"
-
-    this.html
-        - html string
-
-    this.buildEle (htmlStr) 
-        - create the $ element used to build the infobox
-        - the parameter [htmlStr] should contain all content needed
-        - It is highly suggested to create the $ element with it. Otherwise you have to deal with all the pre-work by yourself.
-
-    this.show (ele, hideOnClick, bgColor, onHide)
-        - as same as the $$.info.show function
-    this.hide (e)
-        - hide the info box 
-        - e is the event argument passed into a click function, pass it into the hide function as well
-
-
-
 ************************************************/
 
 (function () {

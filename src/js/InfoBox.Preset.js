@@ -1,3 +1,22 @@
+/************************************************ 
+Customized Information Box - Preset Function
+Copyright (c) 2014-2015 Dongxu Ren  http://www.rendxx.com/
+
+License: MIT (http://www.opensource.org/licenses/mit-license.php)
+Update: 2015-12-28
+
+Define functions used in preset.
+
+API:
+    $$.info.preset.css (name, cssObj)
+        - name: preset name
+        - cssObj: css object
+
+    $$.info.preset.html (name, htmlStr)
+        - name: preset name
+        - htmlStr: html format string
+************************************************/
+
 (function () {
     "use strict";
     if (window.$$ == null || window.$$.info == null) throw new Error('Relied component missing.');
