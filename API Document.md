@@ -3,7 +3,7 @@
 
 #### $$.info (content, hideOnClick, bgColor [, onHide])  
 #### $$.info.show (content, hideOnClick, bgColor [, onHide])
-Create and show a customized infomation box in the center of screen. 
+Create and show a customized information box in the center of screen. 
 
 - **content** ```jQuery Object```  
 Custom content, HTML format.
@@ -20,10 +20,11 @@ String format is as same as CSS color format:
 - **onHide** ```function```  
 Callback function. Triggered when info-window hides.
 
+#### $$.info.hide ()
+close the information box.
 <h1></h1>
 
 #### $$.info.alert (content, title, hideOnClick, bgColor [, callback])
-#### $$.info.alert2 (content, title, hideOnClick, bgColor [, callback])
 
 Show alert with customized HTML in the center of screen.
 
@@ -45,7 +46,6 @@ Callback function. Triggered when info-window hides.
 <h1></h1>
 
 #### $$.info.check (content, title, hideOnClick, bgColor [, callbackYes, callbackNo]) 
-#### $$.info.check2 (content, title, hideOnClick, bgColor [, callbackYes, callbackNo]) 
 
 Show check-box with customized HTML in the center of screen.
 
@@ -67,3 +67,34 @@ Callback function. Triggered after "Yes" being clicked.
 - **callbackNo** ```function```  
 Callback function. Triggered after "No" being clicked.
      
+
+<h1></h1>
+
+#### $$.info.input (inputPara, title, hideOnClick, bgColor [, callback])
+
+Show input-box in the center of screen.
+
+- **inputPara** ```object```  
+  Parameters to define input.
+  + **type** ```string```   
+    text / password / ... (avilable type for input dom element)
+  + **maxlength** ```number```   
+    max length of the input
+  + **instruction** ```string```   
+    instruction shows below the input box
+  + **errorMsg** ```function(data)```   
+    A function be called right after confirming input. Be used to produce error message when the input is illegal.  
+Return null indicates no error occur. Otherwise a string of error message will be returned, this message will be shown below the input box.  
+The input will not complele if an error is occur.
+
+- **title** ```string```  
+ *[same as above]* 
+
+- **hideOnClick** ```string```  
+*[same as above]*
+
+- **bgColor** ```string```  
+*[same as above]* 
+
+- **callback** ```function(data)```  
+Callback function. Triggered after input completes.
