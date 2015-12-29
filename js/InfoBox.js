@@ -321,7 +321,7 @@ API:
 
         // data ----------------------------------------------------------------
         var _name = 'r-info-alert';
-        var _html = '<div class="r-info-wrap"><div class="r-info-innerWrap"><div class="r-info-title">#title#</div><div class="r-info-content">#content#</div><div class="r-info-ok">OK</div></div></div>';
+        var _html = '<div class="r-info-wrap"><div class="r-info-innerWrap"><div class="r-info-title">#title#</div><div class="r-info-content">#content#</div><div class="r-info-line"></div><div class="r-info-ok">OK</div></div></div>';
         var _css = {
             'r-info-wrap': {
                 'width': '460px',
