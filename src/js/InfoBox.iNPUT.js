@@ -127,7 +127,7 @@ API:
                 'font-weight': '400',
                 'margin': '0px',
                 'color': '#333',
-                'letter-spacing': '2px',
+                'letter-spacing': '1px',
                 'padding': '12px 0',
                 'margin': '0',
                 'margin-left': '-1px'
@@ -170,7 +170,7 @@ API:
                 'width': '90%',
                 'height': 'auto',
                 'line-height': '20px',
-                'color': '#999'
+                'color': '#777'
             },
             'r-info-error': {
                 'margin': '0px auto',

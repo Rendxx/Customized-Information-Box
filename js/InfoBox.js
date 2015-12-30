@@ -3,8 +3,8 @@ Customized Information Box
 Copyright (c) 2014-2015 Dongxu Ren  http://www.rendxx.com/
 
 License: MIT (http://www.opensource.org/licenses/mit-license.php)
-Version: 0.6.2
-Update: 2015-12-29
+Version: 0.6.3
+Update: 2015-12-30
 
 Description:
     Enable user to show their customized HTML elements in the center of screen.
@@ -351,7 +351,7 @@ API:
                 'font-weight': '400',
                 'margin': '0px',
                 'color': '#333',
-                'letter-spacing': '2px',
+                'letter-spacing': '1px',
                 'padding': '12px 0',
                 'margin': '0',
                 'margin-left': '-1px'
@@ -478,7 +478,7 @@ API:
                 'font-weight': '400',
                 'margin': '0px',
                 'color': '#333',
-                'letter-spacing': '2px',
+                'letter-spacing': '1px',
                 'padding': '12px 0',
                 'margin': '0',
                 'margin-left': '-1px'
@@ -653,7 +653,7 @@ API:
                 'font-weight': '400',
                 'margin': '0px',
                 'color': '#333',
-                'letter-spacing': '2px',
+                'letter-spacing': '1px',
                 'padding': '12px 0',
                 'margin': '0',
                 'margin-left': '-1px'
@@ -696,7 +696,7 @@ API:
                 'width': '90%',
                 'height': 'auto',
                 'line-height': '20px',
-                'color': '#999'
+                'color': '#777'
             },
             'r-info-error': {
                 'margin': '0px auto',
