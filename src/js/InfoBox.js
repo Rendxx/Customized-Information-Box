@@ -3,8 +3,8 @@ Customized Information Box
 Copyright (c) 2014-2015 Dongxu Ren  http://www.rendxx.com/
 
 License: MIT (http://www.opensource.org/licenses/mit-license.php)
-Version: 0.6.3
-Update: 2015-12-30
+Version: 0.6.4
+Update: 2016-01-08
 
 Description:
     Enable user to show their customized HTML elements in the center of screen.

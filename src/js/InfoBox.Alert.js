@@ -3,7 +3,7 @@ Customized Information Box - Preset Alert
 Copyright (c) 2014-2015 Dongxu Ren  http://www.rendxx.com/
 
 License: MIT (http://www.opensource.org/licenses/mit-license.php)
-Update: 2015-12-29
+Update: 2016-01-08
 
 Show an alert box.
 
@@ -74,11 +74,10 @@ API:
                 'line-height': '40px',
                 'font-size': '22px',
                 'font-weight': '400',
-                'margin': '0px',
                 'color': '#333',
                 'letter-spacing': '1px',
                 'padding': '12px 0',
-                'margin': '0',
+                'margin': '0px',
                 'margin-left': '-1px'
             },
             'r-info-content': {
