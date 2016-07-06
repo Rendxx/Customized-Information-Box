@@ -1,9 +1,9 @@
 /************************************************ 
 Customized Information Box - Preset Input
-Copyright (c) 2014-2015 Dongxu Ren  http://www.rendxx.com/
+Copyright (c) 2014-2016 Dongxu Ren  http://www.rendxx.com/
 
 License: MIT (http://www.opensource.org/licenses/mit-license.php)
-Update: 2016-01-08
+Update: 2016-07-06
 
 Show a window with an input field.
 
@@ -52,6 +52,11 @@ API:
                 input = ele.find("input"),
                 err = ele.find(".r-info-error");
 
+            // handle max width
+            var w = window.innerWidth;
+            ele.css('max-width', w - 40 + 'px');
+            ele.find('.r-info-innerWrap').css('max-width', w - 60 + 'px');
+
             if (title == null) ele.find(".r-info-title").html("").height(0);
             if (instruction == null) ele.find(".r-info-instruction").html("").css('margin-top', 0);
 
@@ -97,7 +102,7 @@ API:
 
         // data ----------------------------------------------------------------
         var _name = 'r-info-input';
-        var _html = '<div class="r-info-wrap"><div class="r-info-innerWrap"><div class="r-info-title">#title#</div><div class="r-info-content"><input  /><div class="r-info-instruction">#instruction#</div><div class="r-info-error"></div></div><div class="r-info-line"></div><div class="r-info-btn r-info-btn-yes">YES</div><div class="r-info-btn r-info-btn-no">NO</div></div></div>';
+        var _html = '<div class="r-info-wrap"><div class="r-info-innerWrap"><div class="r-info-title">#title#</div><div class="r-info-content"><input  /><div class="r-info-instruction">#instruction#</div><div class="r-info-error"></div></div><div class="r-info-line"></div><div class="r-info-btn-wrap"><div class="r-info-btn r-info-btn-yes">YES</div><div class="r-info-btn r-info-btn-no">NO</div></div></div></div>';
         var _css= {
             'r-info-wrap': {
                 'width': '460px',
@@ -190,10 +195,22 @@ API:
                 'line-height': '1px',
                 'background-color': '#ccc'
             },
+            'r-info-btn-wrap': {
+                'position': 'absolute',
+                'top': 'auto',
+                'bottom': '13px',
+                'left': '0',
+                'right': '0',
+                'margin': 'auto',
+                'width': '50%',
+                'min-width': '120px',
+                'overflow': 'visible',
+                'height': '32px',
+            },
             'r-info-btn': {
                 'position': 'absolute',
-                'bottom': '13px',
-                'margin': '0px',
+                'bottom': '0',
+                'margin': '0',
                 'width': '100px',
                 'height': '32px',
                 'line-height': '32px',
@@ -207,10 +224,10 @@ API:
                 'color': '#111'
             },
             'r-info-btn-yes': {
-                'left': '80px'
+                'left': '-40px'
             },
             'r-info-btn-no': {
-                'right': '80px'
+                'right': '-40px'
             }
         };
     };

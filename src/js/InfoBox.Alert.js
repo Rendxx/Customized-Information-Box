@@ -1,9 +1,9 @@
 /************************************************ 
 Customized Information Box - Preset Alert
-Copyright (c) 2014-2015 Dongxu Ren  http://www.rendxx.com/
+Copyright (c) 2014-2016 Dongxu Ren  http://www.rendxx.com/
 
 License: MIT (http://www.opensource.org/licenses/mit-license.php)
-Update: 2016-01-08
+Update: 2016-07-06
 
 Show an alert box.
 
@@ -34,6 +34,11 @@ API:
             ele.find(".r-info-ok").click(function (e) {
                 info.hide(e);
             });
+
+            // handle max width
+            var w = window.innerWidth;
+            ele.css('max-width', w - 40 + 'px');
+            ele.find('.r-info-innerWrap').css('max-width', w - 60 + 'px');
 
             info.show(ele, hideOnClick, bgColor, callback);
         };
