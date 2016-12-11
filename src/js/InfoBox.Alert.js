@@ -10,10 +10,11 @@ var Basic = require('./InfoBox.Basic.js');
 var Style = require('../less/InfoBox.Alert.less');
 
 "use strict";
-var Alert = function(container, style, cb, title, content, onOK) {
+var Alert = function(container, style, title, content, onOK, onHide) {
     var domNode = this._buildContent(title, content);
     container.appendChild(domNode);
-    Basic.call(this, container, style, cb);
+    this.onOK = onOK;
+    Basic.call(this, container, style, onHide);
 };
 Alert.prototype = Object.create(Basic.prototype);
 Alert.prototype.constructor = Alert;
@@ -25,7 +26,7 @@ Alert.prototype._buildContent = function (title, content){
 
     var btnOK = wrap.querySelector('._ok');
     btnOK.addEventListener("click", function(e){
-        onOK && onOK(e);
+        this.onOK && this.onOK(e);
         this.hide();
     }.bind(this), false);
     return wrap;

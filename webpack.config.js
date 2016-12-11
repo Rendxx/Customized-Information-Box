@@ -24,12 +24,12 @@ module.exports = {
             {
               test: /\.css$/,
               exclude: /node_modules/,
-              loader: ExtractTextPlugin.extract("style-loader", "css-loader")
+              loaders: ["style-loader", "css-loader"]
             },
             {
               test: /\.less$/,
               exclude: /node_modules/,
-              loader: ExtractTextPlugin.extract("style-loader", "css-loader!less-loader")
+              loaders: ["style-loader", "css-loader", "less-loader"]
             },
             {
               test: /\.(png|jpg)$/,

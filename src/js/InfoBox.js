@@ -33,9 +33,10 @@ API:
 ************************************************/
 
 var Alert = require('./InfoBox.Alert.js');
+var TransitionEnd = require('./TransitionEnd.js');
 var Style = require('./Style.js');
 
-require('../less/InfoBox.less');
+var s = require('../less/InfoBox.less');
 
 var InfoBox = function (PACKAGE){
     var outside = null;
@@ -44,19 +45,50 @@ var InfoBox = function (PACKAGE){
     var setuped = false;
 
     var currentBox = null;
+    var bgClickListener = null;
+    var containerListener = null;
 
     // callback --------------------------------------------------------------------------------
-    var beforeShow = function (hideOnClick){
+    var show = function (){
+        var eventName = TransitionEnd.name();
+        if (eventName!=null){
+        if (containerListener) container.removeEventListener(eventName, containerListener);
+            containerListener = function (){};
+            container.addEventListener(eventName, containerListener, false);
+        }else{
+            containerListener();
+        }
+
         outside.style.display = 'block';
+        bg.style.opacity = 1;
     };
-    var afterHide = function (){
-        outside.style.display = 'hidden';
+
+    var hide = function (){
+        var eventName = TransitionEnd.name();
+        if (eventName!=null){
+        if (containerListener) container.removeEventListener(eventName, containerListener);
+            containerListener = function (){outside.style.display = 'none';};
+            container.addEventListener(eventName, containerListener, false);
+        }else{
+            containerListener();
+        }
+
+        bg.style.opacity = 0;
     };
 
     // private -------------------------------------------------------------------------------
-    var addHideOnClick = function (hideOnClick){
-        bg.removeEventListener('click');
-        if (hideOnClick) bg.addEventListener('click', function (e) {currentBox.hide();}, false);
+    var setBgColor = function (bgColor){
+        bg.style.backgroundColor = bgColor;
+    };
+
+    var setHideOnClick = function (hideOnClick){
+        if (bgClickListener!=null) bg.removeEventListener('click', bgClickListener);
+        if (hideOnClick){
+            bgClickListener = function (e) {currentBox.hide();};
+            bg.addEventListener('click', bgClickListener, false);
+        } else {
+          bgClickListener = null;
+        }
     };
 
     var createAnimationStyle = function (css){
@@ -113,14 +145,14 @@ var InfoBox = function (PACKAGE){
             currentBox = new Alert(
               container,
               createAnimationStyle(styleOpt),
-              {
-                beforeShow: beforeShow,
-                afterHide: afterHide
-              },
               title,
               content,
-              onOK);
-            addHideOnClick(hideOnClick);
+              onOK,
+              hide);
+            setHideOnClick(hideOnClick);
+            setBgColor(bgColor);
+            currentBox.show();
+            show();
         };
     };
 
