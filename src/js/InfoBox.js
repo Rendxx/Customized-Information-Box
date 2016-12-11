@@ -1,4 +1,4 @@
-/************************************************ 
+/************************************************
 Customized Information Box
 Copyright (c) 2014-2015 Dongxu Ren  http://www.rendxx.com/
 
@@ -11,12 +11,12 @@ Description:
         - A screen cover will be created to block mouse event to the original page.
         - Clicking outside the body of the info-box will close the info-box. This feature can be disabled manually.
 
-    CSS3 is used. 
-    
+    CSS3 is used.
+
 Compatibility:
     Fully support Chrome; Fire Fox; Safari; Edge; IE 10-11; IE9;
     Limit support: IE 7,8;
- 
+
 Dependency:
     jQuery
 
@@ -27,189 +27,136 @@ API:
         - hideOnClick: close when click on the background if true
         - bgColor: background color in (rr,gg,bb,aa)
         - onHide: callback function when info-window hide
-            
+
     $$.info.hide()
         close the info box if it is shown
 ************************************************/
 
-(function () {
-    "use strict";
-    var InfoBox = function ($$) {
-        var that = this,
-            _onHide = null,         // callback fired after hide this info box
-            _focusEle = null,       // the element focus before showing info box. This is used to recover focus.
-            _html = {},             // html elements 
+var Alert = require('./InfoBox.Alert.js');
+var Style = require('./Style.js');
 
-            // flag
-            _isSetuped = false,      // whether the info box html has setuped
-            _isShown = false,        // whether the info box is shown or not
-            _transitionEnd = true;   // css3 transition end callback name, null means not available
+require('../less/InfoBox.less');
 
-        // -------------------------------------------------------------------------------------------------------------
+var InfoBox = function (PACKAGE){
+    var outside = null;
+    var container = null;
+    var bg = null;
+    var setuped = false;
 
-        // Show information-box
-        var show = function (content, hideOnClick, bgColor, onHide) {
-            htmlSetup();
+    var currentBox = null;
 
-            // callback hide
-            _onHide = onHide;
-
-            // handle the focus element
-            _focusEle = $(document.activeElement);
-
-            // reset basic element
-            _html["container"].html("");
-            animateSetup();
-
-            // Set background
-            if (bgColor == null) {
-                _html["bg"].css("background-color", "rgba(0,0,0,0)");
-            } else {
-                _html["bg"].css("background-color", bgColor);
-            }
-
-            // handle main content and make it vertical center
-            _html["content"] = content;
-            _html["container"].css('height', '100%');
-            content.appendTo(_html["container"]);
-            content.css('margin', '0 auto');
-            _html["container"].css('height', 'auto');
-            var h = _html["container"].height();
-            _html["container"].height(h);
-            _html["container"].css("margin-top", "-" + (h / 2) + "px");
-
-            // stop propagation when click on the box
-            content.click(function (e) {
-                if (e.stopPropagation)
-                    e.stopPropagation();
-                else
-                    e.cancelBubble = true;
-            });
-
-            // Bind/Unbind mouse event on background
-            _html["wrap"].unbind("click");
-            if (hideOnClick) _html["wrap"].click(hide);
-
-            // show the box
-            _isShown = true;
-            animateShow()
-
-            _html["wrap"].focus();
-        };
-
-        // Hide information-box
-        var hide = function () {
-            if (!_isShown) return;
-            _isShown = false;            
-            _html["wrap"].unbind("click"); // unbind function            
-            animateHide(); // hide the box
-            if (_focusEle) _focusEle.focus(); // handle the focus element
-            _focusEle = null;
-
-            if (_onHide != null) setTimeout(_onHide, 1); // callback hide
-        };
-
-        // html animate handle --------------------------------------------------
-        // setup css for showing
-        var animateSetup = function () {
-            if (_transitionEnd!=null) {
-                _html["wrap"][0].removeEventListener(_transitionEnd, hideWrap, false);
-                _html["wrap"].css({
-                    'display': 'block',
-                    'opacity': 0,
-                    '-moz-transition': '0',
-                    '-o-transition': '0',
-                    '-webkit-transition': '0',
-                    'transition': '0'
-                });
-            } else {
-                _html["wrap"].css({
-                    'display': 'block',
-                    'visibility': 'hidden'
-                });
-            }
-        };
-
-        // show the info-box
-        var animateShow = function () {
-            if (_transitionEnd!=null) {
-                _html["wrap"].css({
-                    'opacity': 1,
-                    '-moz-transition': '0.2s',
-                    '-o-transition': '0.2s',
-                    '-webkit-transition': '0.2s',
-                    'transition': '0.2s'
-                });
-            } else {
-                _html["wrap"].css({
-                    'visibility': 'visible',
-                    'display': 'none'
-                }).fadeIn(200);
-            }
-        };
-
-        // hide the info-box
-        var animateHide = function () {
-            if (_transitionEnd!=null) {
-                _html["wrap"].css({
-                    "opacity": 0,
-                    '-moz-transition': '0.2s',
-                    '-o-transition': '0.2s',
-                    '-webkit-transition': '0.2s',
-                    'transition': '0.2s'
-                });
-                _html["wrap"][0].addEventListener(_transitionEnd, hideWrap, false);
-            } else {
-                _html["wrap"].fadeOut(200);
-            }
-        };
-
-        var hideWrap = function () {
-            if (!_isShown) _html["wrap"].css({
-                "display": "none"
-            });
-        };
-
-        // Add Basic elements into Dom-tree
-        // this should only run once
-        var htmlSetup = function () {
-            if (_isSetuped) return;
-            _isSetuped = true;
-
-            // Setup elements of information box
-            _html["wrap"] = $('<div tabindex="-1" class="r-info" style="width:100%; height:100%; display:none; position:fixed; left:0px; top:0px; z-index:99990; margin:0px; padding:0px; border:0px; outline: none!important; outline-width: 0!important;"></div>').appendTo($("body"));
-            _html["container"] = $('<div style="position:fixed; left:0px; top:50%; z-index:2; width:100%; height:100%;"></div>').appendTo(_html["wrap"]);
-            _html["bg"] = $('<div style="position:fixed; left:0px; top:0px; z-index:1; width:100%; height:100%;"></div>').appendTo(_html["wrap"]);
-
-            // check transition end callback, null means transition not available
-            _transitionEnd = (function () {
-                var el = document.createElement('div');
-                var transEndEventNames = {
-                    'WebkitTransition': 'webkitTransitionEnd',
-                    'MozTransition': 'transitionend',
-                    'OTransition': 'oTransitionEnd otransitionend',
-                    'transition': 'transitionend'
-                };
-
-                for (var name in transEndEventNames) {
-                    if (el.style[name] !== undefined) {
-                        return transEndEventNames[name];
-                    }
-                }
-
-                return null;
-            })();
-        };
-
-        // Initialize 
-        var init = function () {
-            $$.info = function (content, hideOnClick, bgColor, onHide) {
-                show(content, hideOnClick, bgColor, onHide);
-            };
-            $$.info.hide = hide;
-            $$.info.show = show;
-        };
-        init();
+    // callback --------------------------------------------------------------------------------
+    var beforeShow = function (hideOnClick){
+        outside.style.display = 'block';
     };
-    var infobox = new InfoBox(window.$$ = window.$$ || {});
-})();
+    var afterHide = function (){
+        outside.style.display = 'hidden';
+    };
+
+    // private -------------------------------------------------------------------------------
+    var addHideOnClick = function (hideOnClick){
+        bg.removeEventListener('click');
+        if (hideOnClick) bg.addEventListener('click', function (e) {currentBox.hide();}, false);
+    };
+
+    var createAnimationStyle = function (css){
+        var css = css || {
+          before: 'fade',
+          show: 'none',
+          hide: 'fade'
+        };
+        var style = {
+          before:{},
+          show:{},
+          hide:{}
+        };
+
+        // before
+        var cssPkg = {};
+        if (typeof (css.before) === "string") {
+            if (Style.hasOwnProperty(css.before))
+                cssPkg = Style[css.before];
+        } else {
+            cssPkg = css.before;
+        }
+        for (var i in css.before)style.before[i] = css.before[i];
+
+        // show
+        cssPkg = {};
+        if (typeof (css.show) === "string") {
+            if (Style.hasOwnProperty(css.show))
+                cssPkg = Style[css.show];
+        } else {
+            cssPkg = css.show;
+        }
+        for (var i in css.show)style.show[i] = css.show[i];
+
+        // hide
+        cssPkg = {};
+        if (typeof (css.hide) === "string") {
+            if (Style.hasOwnProperty(css.hide))
+                cssPkg = Style[css.hide];
+        } else {
+            cssPkg = css.hide;
+        }
+        for (var i in css.hide)style.hide[i] = css.hide[i];
+
+        return style;
+    };
+
+    // setup --------------------------------------------------------------------------------
+    var setupFunc = function (){
+        PACKAGE.alert = function (content, title, hideOnClick, bgColor, onOK, styleOpt){
+            setupHtml();
+            if (currentBox!=null) currentBox.remove();
+            container.focus();
+            currentBox = new Alert(
+              container,
+              createAnimationStyle(styleOpt),
+              {
+                beforeShow: beforeShow,
+                afterHide: afterHide
+              },
+              title,
+              content,
+              onOK);
+            addHideOnClick(hideOnClick);
+        };
+    };
+
+    var setupHtml = function (){
+        if (setuped) return;
+        setuped = true;
+        outside = document.createElement("DIV");
+        outside.className = '__r-info';
+        outside.setAttribute('tabindex', -1);
+        document.body.appendChild(outside);
+
+        container = document.createElement("DIV");
+        container.className = '_container';
+        outside.appendChild(container);
+
+        bg = document.createElement("DIV");
+        bg.className = '_bg';
+        outside.appendChild(bg);
+
+        outside.addEventListener('click', function (e) {
+            if (e.stopPropagation)
+                e.stopPropagation();
+            else
+                e.cancelBubble = true;
+            e.preventDefault();
+            return false;
+        }, false);
+    };
+
+    // Initialize
+    var init = function () {
+        setupFunc();
+    };
+    init();
+};
+
+window.$$ = window.$$||{};
+window.$$.info = {};
+var infoBox = new InfoBox(window.$$.info );

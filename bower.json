@@ -1,11 +1,11 @@
 {
   "name": "InfoBox",
+  "version": "0.6.6",
   "description": "Show customized HTML elements in the center of screen.",
   "main": [
-    "js/InfoBox.js"
+    "dist/InfoBox.js"
   ],
   "dependencies": {
-    "jquery": "1.11.2"
   },
   "moduleType": [
     "globals"

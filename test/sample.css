@@ -26,21 +26,21 @@
     padding: 10px;
     text-align: center;
     border-radius: 3px;
+}
 
-    b {
-        font-size: 14px;
-        letter-spacing: 1px;
-        color: #fff;
-    }
+.btn b {
+    font-size: 14px;
+    letter-spacing: 1px;
+    color: #fff;
+}
 
-    &:hover {
-        background-color: #1d99d0;
-        color: #fff;
-    }
+.btn:hover {
+    background-color: #1d99d0;
+    color: #fff;
+}
 
-    &.btn-1 {
-        line-height: 40px;
-    }
+.btn .btn-1 {
+    line-height: 40px;
 }
 
 .cusInfo {

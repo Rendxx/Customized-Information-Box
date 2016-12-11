@@ -4,8 +4,7 @@
 <head>
     <meta charset="utf-8" />
     <meta name="viewport" content="initial-scale=1.0, maximum-scale=1.0, user-scalable=no, width=device-width">
-    <script type="text/javascript" src="../lib/jquery.js"></script>
-    <script type="text/javascript" src="../js/InfoBox.js"></script>
+    <script type="text/javascript" src="../dist/InfoBox.js"></script>
     <title>Alert [Info Box]</title>
     <style type="text/css">
         body{
@@ -22,26 +21,21 @@
             cursor: pointer;
         }
     </style>
-    <script>
-        $(function () {
-            $('.btn-1').click(function () {
-                var $this = $(this);
-                $$.info.alert("Alert Sample without callback. <br />" + $this.text(), "ALERT", false, "rgba(0,0,0,0.6)", null);
-            });
-            $('.btn-2').click(function () {
-                var $this = $(this);
-                $$.info.alert("Alert Sample with callback. <br />" + $this.text(), "ALERT", false, "rgba(0,0,0,0.6)", function () { $this.css('background-color', '#68A1CA') });
-            });
-            $('.btn-3').click(function () {
-                var $this = $(this);
-                $$.info.alert("Alert Sample without title. <br />" + $this.text(), null, false, "rgba(0,0,0,0.6)");
-            });
-        });
-    </script>
 </head>
 <body>
     <div class="btn btn-1">$$.info.alert(content, title, hideOnClick, bgColor)</div>
     <div class="btn btn-2">$$.info.alert(content, title, hideOnClick, bgColor, callback)</div>
     <div class="btn btn-3">$$.info.alert(content, null, hideOnClick, bgColor)</div>
+    <script>
+        document.querySelector(".btn-1").addEventListener('click', function(e){
+            $$.info.alert("Alert Sample without callback. <br />" + this.textContent, "ALERT", false, "rgba(0,0,0,0.6)", null);
+        }, false);
+        document.querySelector(".btn-2").addEventListener('click', function(e){
+            $$.info.alert("Alert Sample with callback. <br />" + this.textContent, "ALERT", false, "rgba(0,0,0,0.6)", function () { $this.css('background-color', '#68A1CA') });
+        }, false);
+        document.querySelector(".btn-3").addEventListener('click', function(e){
+            $$.info.alert("Alert Sample without title. <br />" + this.textContent, null, false, "rgba(0,0,0,0.6)");
+        }, false);
+    </script>
 </body>
 </html>
