@@ -23,8 +23,8 @@ Basic.prototype.show = function (){
 
 Basic.prototype.hide = function (){
     /* TODO: hide the content */
-    this._addStyle(this.style.hide);
     this.onHide();
+    this._addStyle(this.style.hide);
 };
 
 Basic.prototype.remove = function (){

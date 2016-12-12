@@ -1,10 +1,12 @@
 var Style={
-    none:{},
+    none:{
+
+    },
     fade:{
       'opacity': 0
     },
     slideTop:{
-      'top': '-100%'
+      'top': '-50%'
     }
 };
 

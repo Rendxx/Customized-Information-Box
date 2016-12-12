@@ -32,125 +32,105 @@ API:
         close the info box if it is shown
 ************************************************/
 
+require('../less/InfoBox.less');
 var Alert = require('./InfoBox.Alert.js');
-var TransitionEnd = require('./TransitionEnd.js');
 var Style = require('./Style.js');
 
-var s = require('../less/InfoBox.less');
-
-var InfoBox = function (PACKAGE){
+var InfoBox = function(PACKAGE) {
     var outside = null;
     var container = null;
     var bg = null;
-    var setuped = false;
 
     var currentBox = null;
     var bgClickListener = null;
     var containerListener = null;
 
     // callback --------------------------------------------------------------------------------
-    var show = function (){
-        var eventName = TransitionEnd.name();
-        if (eventName!=null){
-            if (containerListener) container.removeEventListener(eventName, containerListener);
-            containerListener = function (){};
-            container.addEventListener(eventName, containerListener, false);
-        }else{
-            containerListener();
-        }
-
-        outside.style.display = 'block';
+    var show = function() {
+        outside.style.visibility = 'visible';
         bg.style.opacity = 1;
     };
 
-    var hide = function (){
-        var eventName = TransitionEnd.name();
-        if (eventName!=null){
-            if (containerListener) container.removeEventListener(eventName, containerListener);
-            containerListener = function (){
-              outside.style.display = 'none';
-            };
-            container.addEventListener(eventName, containerListener, false);
-        }else{
-            containerListener();
-        }
-
+    var hide = function() {
         bg.style.opacity = 0;
+        outside.style.visibility = 'hidden';
     };
 
     // private -------------------------------------------------------------------------------
-    var setBgColor = function (bgColor){
+    var setBgColor = function(bgColor) {
         bg.style.backgroundColor = bgColor;
     };
 
-    var setHideOnClick = function (hideOnClick){
-        if (bgClickListener!=null) bg.removeEventListener('click', bgClickListener);
-        if (hideOnClick){
-            bgClickListener = function (e) {currentBox.hide();};
+    var setHideOnClick = function(hideOnClick) {
+        if (bgClickListener != null) bg.removeEventListener('click', bgClickListener);
+        if (hideOnClick) {
+            bgClickListener = function(e) {
+                currentBox.hide();
+            };
             bg.addEventListener('click', bgClickListener, false);
         } else {
-          bgClickListener = null;
+            bgClickListener = null;
         }
     };
 
-    var createAnimationStyle = function (css){
+    var createAnimationStyle = function(css) {
         var css = css || {
-          before: 'fade',
-          show: 'none',
-          hide: 'fade'
+            before: 'fade',
+            show: 'none',
+            hide: 'fade'
         };
         var style = {
-          before:{},
-          show:{},
-          hide:{}
+            before: {},
+            show: {},
+            hide: {}
         };
 
         // before
         var cssPkg = {};
-        if (typeof (css.before) === "string") {
+        if (typeof(css.before) === "string") {
             if (Style.hasOwnProperty(css.before))
                 cssPkg = Style[css.before];
         } else {
             cssPkg = css.before;
         }
-        for (var i in cssPkg)style.before[i] = cssPkg[i];
+        for (var i in cssPkg) style.before[i] = cssPkg[i];
 
         // show
         cssPkg = {};
-        if (typeof (css.show) === "string") {
+        if (typeof(css.show) === "string") {
             if (Style.hasOwnProperty(css.show))
                 cssPkg = Style[css.show];
         } else {
             cssPkg = css.show;
         }
-        for (var i in cssPkg)style.show[i] = cssPkg[i];
+        for (var i in cssPkg) style.show[i] = cssPkg[i];
 
         // hide
         cssPkg = {};
-        if (typeof (css.hide) === "string") {
+        if (typeof(css.hide) === "string") {
             if (Style.hasOwnProperty(css.hide))
                 cssPkg = Style[css.hide];
         } else {
             cssPkg = css.hide;
         }
-        for (var i in cssPkg)style.hide[i] = cssPkg[i];
+        for (var i in cssPkg) style.hide[i] = cssPkg[i];
 
         return style;
     };
 
     // setup --------------------------------------------------------------------------------
-    var setupFunc = function (){
-        PACKAGE.alert = function (content, title, hideOnClick, bgColor, onOK, styleOpt){
+    var setupFunc = function() {
+        PACKAGE.alert = function(content, title, hideOnClick, bgColor, onOK, styleOpt) {
             setupHtml();
-            if (currentBox!=null) currentBox.remove();
+            if (currentBox != null) currentBox.remove();
             container.focus();
             currentBox = new Alert(
-              container,
-              createAnimationStyle(styleOpt),
-              title,
-              content,
-              onOK,
-              hide);
+                container,
+                createAnimationStyle(styleOpt),
+                title,
+                content,
+                onOK,
+                hide);
             setHideOnClick(hideOnClick);
             setBgColor(bgColor);
             show();
@@ -158,9 +138,8 @@ var InfoBox = function (PACKAGE){
         };
     };
 
-    var setupHtml = function (){
-        if (setuped) return;
-        setuped = true;
+    var setupHtml = function() {
+        if (outside!=null) return;
         outside = document.createElement("DIV");
         outside.className = '__r-info';
         outside.setAttribute('tabindex', -1);
@@ -174,7 +153,7 @@ var InfoBox = function (PACKAGE){
         bg.className = '_bg';
         outside.appendChild(bg);
 
-        outside.addEventListener('click', function (e) {
+        outside.addEventListener('click', function(e) {
             if (e.stopPropagation)
                 e.stopPropagation();
             else
@@ -185,12 +164,12 @@ var InfoBox = function (PACKAGE){
     };
 
     // Initialize
-    var init = function () {
+    var init = function() {
         setupFunc();
     };
     init();
 };
 
-window.$$ = window.$$||{};
+window.$$ = window.$$ || {};
 window.$$.info = {};
-var infoBox = new InfoBox(window.$$.info );
+var infoBox = new InfoBox(window.$$.info);

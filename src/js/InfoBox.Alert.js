@@ -22,7 +22,11 @@ Alert.prototype.constructor = Alert;
 Alert.prototype._buildContent = function (title, content){
     var wrap = document.createElement("DIV");
     wrap.className = '_alert _innerWrap';
-    wrap.innerHTML = '<div class="_title">#title#</div><div class="_content">#content#</div><div class="_line"></div><div class="_ok">OK</div>'.replace('#title#', title).replace('#content#', content);
+    wrap.innerHTML = '<div class="_title">#title#</div><div class="_content">#content#</div><div class="_line"></div><div class="_ok">OK</div>'.replace('#title#', title||'').replace('#content#', content);
+
+    // if (title==null||title.length==0){
+    //     wrap.removeChild(wrap.querySelector('._title'));
+    // }
 
     var btnOK = wrap.querySelector('._ok');
     btnOK.addEventListener("click", function(e){
