@@ -52,7 +52,7 @@ var InfoBox = function (PACKAGE){
     var show = function (){
         var eventName = TransitionEnd.name();
         if (eventName!=null){
-        if (containerListener) container.removeEventListener(eventName, containerListener);
+            if (containerListener) container.removeEventListener(eventName, containerListener);
             containerListener = function (){};
             container.addEventListener(eventName, containerListener, false);
         }else{
@@ -66,8 +66,10 @@ var InfoBox = function (PACKAGE){
     var hide = function (){
         var eventName = TransitionEnd.name();
         if (eventName!=null){
-        if (containerListener) container.removeEventListener(eventName, containerListener);
-            containerListener = function (){outside.style.display = 'none';};
+            if (containerListener) container.removeEventListener(eventName, containerListener);
+            containerListener = function (){
+              outside.style.display = 'none';
+            };
             container.addEventListener(eventName, containerListener, false);
         }else{
             containerListener();
@@ -111,7 +113,7 @@ var InfoBox = function (PACKAGE){
         } else {
             cssPkg = css.before;
         }
-        for (var i in css.before)style.before[i] = css.before[i];
+        for (var i in cssPkg)style.before[i] = cssPkg[i];
 
         // show
         cssPkg = {};
@@ -121,7 +123,7 @@ var InfoBox = function (PACKAGE){
         } else {
             cssPkg = css.show;
         }
-        for (var i in css.show)style.show[i] = css.show[i];
+        for (var i in cssPkg)style.show[i] = cssPkg[i];
 
         // hide
         cssPkg = {};
@@ -131,7 +133,7 @@ var InfoBox = function (PACKAGE){
         } else {
             cssPkg = css.hide;
         }
-        for (var i in css.hide)style.hide[i] = css.hide[i];
+        for (var i in cssPkg)style.hide[i] = cssPkg[i];
 
         return style;
     };
@@ -151,8 +153,8 @@ var InfoBox = function (PACKAGE){
               hide);
             setHideOnClick(hideOnClick);
             setBgColor(bgColor);
-            currentBox.show();
             show();
+            currentBox.show();
         };
     };
 
