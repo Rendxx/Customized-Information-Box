@@ -25,7 +25,7 @@
 <body>
     <div class="btn btn-1">$$.info.alert(content, title, false, bgColor)</div>
     <div class="btn btn-2">$$.info.alert(content, title, true, bgColor, callback)</div>
-    <div class="btn btn-3">$$.info.alert(content, null, hideOnClick, bgColor)</div>
+    <div class="btn btn-3">$$.info.alert(content, null, true, bgColor)</div>
     <script>
         document.querySelector(".btn-1").addEventListener('click', function(e){
             $$.info.alert("Alert Sample without callback. <br />" + this.textContent, "ALERT", false, "rgba(0,0,0,0.6)", null);
@@ -34,7 +34,7 @@
             $$.info.alert("Alert Sample with callback. <br />" + this.textContent, "ALERT", true, "rgba(0,0,0,0.6)", function () { this.style['background-color']= '#68A1CA';});
         }, false);
         document.querySelector(".btn-3").addEventListener('click', function(e){
-            $$.info.alert("Alert Sample without title. <br />" + this.textContent, null, false, "rgba(0,0,0,0.6)");
+            $$.info.alert("Alert Sample without title. <br />" + this.textContent, null, true, "rgba(0,0,0,0.6)");
         }, false);
     </script>
 </body>
