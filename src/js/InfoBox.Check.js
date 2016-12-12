@@ -16,7 +16,7 @@ var Check = function(container, style, title, content, callbackYes, callbackNo, 
     container.appendChild(domNode);
     this.callbackYes = callbackYes;
     this.callbackNo = callbackNo;
-    Basic.call(this, container, style, onHide);
+    Basic.call(this, container, domNode, style, onHide);
 };
 Check.prototype = Object.create(Basic.prototype);
 Check.prototype.constructor = Check;

@@ -14,7 +14,7 @@ var Alert = function(container, style, title, content, onOK, onHide) {
     var domNode = this._buildContent(title, content);
     container.appendChild(domNode);
     this.onOK = onOK;
-    Basic.call(this, container, style, onHide);
+    Basic.call(this, container, domNode, style, onHide);
 };
 Alert.prototype = Object.create(Basic.prototype);
 Alert.prototype.constructor = Alert;

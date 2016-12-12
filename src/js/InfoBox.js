@@ -75,15 +75,17 @@ var InfoBox = function(PACKAGE) {
     };
 
     var createAnimationStyle = function(css) {
-        var css = css || {
-            before: 'fade',
-            show: 'none',
-            hide: 'fade'
-        };
+        var css = css || {};
+        css.before = css.before || 'fade';
+        css.show = css.show || 'none';
+        css.hide = css.hide || 'fade';
+        css.inner = css.inner || 'none';
+
         var style = {
             before: {},
             show: {},
-            hide: {}
+            hide: {},
+            inner: {}
         };
 
         // before
@@ -115,6 +117,16 @@ var InfoBox = function(PACKAGE) {
             cssPkg = css.hide;
         }
         for (var i in cssPkg) style.hide[i] = cssPkg[i];
+
+        // inner
+        cssPkg = {};
+        if (typeof(css.hide) === "string") {
+            if (Style.hasOwnProperty(css.inner))
+                cssPkg = Style[css.inner];
+        } else {
+            cssPkg = css.inner;
+        }
+        for (var i in cssPkg) style.inner[i] = cssPkg[i];
 
         return style;
     };
