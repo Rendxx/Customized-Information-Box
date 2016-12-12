@@ -28,11 +28,12 @@ Alert.prototype._buildContent = function (title, content){
     //     wrap.removeChild(wrap.querySelector('._title'));
     // }
 
+    var that =this;
     var btnOK = wrap.querySelector('._ok');
     btnOK.addEventListener("click", function(e){
-        this.onOK && this.onOK(e);
-        this.hide();
-    }.bind(this), false);
+        that.onOK && that.onOK(e);
+        that.hide();
+    }, false);
     return wrap;
 };
 

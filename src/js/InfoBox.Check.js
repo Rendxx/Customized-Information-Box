@@ -1,10 +1,4 @@
-/************************************************ 
-Customized Information Box - Preset Check
-Copyright (c) 2014-2016 Dongxu Ren  http://www.rendxx.com/
-
-License: MIT (http://www.opensource.org/licenses/mit-license.php)
-Update: 2016-07-06
-
+/************************************************
 Show a check box
 
 API:
@@ -13,139 +7,39 @@ API:
         - callbackNo: function be called after click NO
 ************************************************/
 
-(function () {
-    "use strict";
-    if (window.$$ == null || window.$$.info == null || window.$$.info.preset == null) throw new Error('Relied component missing.');
-    var Check = function (info) {
-        var _setuped = false;       // whether this infobox has been setuped
+var Basic = require('./InfoBox.Basic.js');
+var Style = require('../less/InfoBox.Check.less');
 
-        // setup css, this should only run only
-        var setupCss = function () {
-            if (_setuped) return;
-            _setuped = true;
-            info.preset.css(_name, _css);
-        };
+"use strict";
+var Check = function(container, style, title, content, callbackYes, callbackNo, onHide) {
+    var domNode = this._buildContent(title, content);
+    container.appendChild(domNode);
+    this.callbackYes = callbackYes;
+    this.callbackNo = callbackNo;
+    Basic.call(this, container, style, onHide);
+};
+Check.prototype = Object.create(Basic.prototype);
+Check.prototype.constructor = Check;
 
-        var show = function (content, title, hideOnClick, bgColor, callbackYes, callbackNo) {
-            setupCss();
-            var preventCallback = false;
-            var ele = info.preset.html(_name, _html.replace(/#title#/g, title).replace(/#content#/g, content));
+Check.prototype._buildContent = function (title, content){
+    var wrap = document.createElement("DIV");
+    wrap.className = '_check _innerWrap';
+    wrap.innerHTML = '<div class="_title">#title#</div><div class="_content">#content#</div><div class="_line"></div><div class="_btn _yes _left">YES</div><div class="_btn _no _right">NO</div>'.replace('#title#', title||'').replace('#content#', content);
 
-            // handle max width
-            var w = window.innerWidth;
-            ele.css('max-width',w - 40+'px');
-            ele.find('.r-info-innerWrap').css('max-width', w - 60 + 'px');
+    var btnYES = wrap.querySelector('._yes');
+    var btnNO = wrap.querySelector('._no');
 
-            if (title == null) ele.find(".r-info-title").html("").height(0);
-            ele.find(".r-info-btn-yes").click(function (e) {
-                preventCallback = true;
-                info.hide(e);
-                if (callbackYes != null) callbackYes();
-            });
-            ele.find(".r-info-btn-no").click(function (e) {
-                preventCallback = true;
-                info.hide(e);
-                if (callbackNo != null) callbackNo();
-            });
+    var that =this;
+    btnYES.addEventListener("click", function(e){
+        that.callbackYes && that.callbackYes(e);
+        that.hide();
+    }, false);
 
-            info.show(ele, hideOnClick, bgColor, function () {
-                if (preventCallback) return;
-                if (callbackNo != null) callbackNo();
-            });
-        };
+    btnNO.addEventListener("click", function(e){
+        that.callbackNo && that.callbackNo(e);
+        that.hide();
+    }, false);
+    return wrap;
+};
 
-        // Initialize the whole function
-        var init = function () {
-            info.check = show;
-        };
-        init();
-
-        // data ----------------------------------------------------------------
-        var _name = 'r-info-check';
-        var _html = '<div class="r-info-wrap"><div class="r-info-innerWrap"><div class="r-info-title">#title#</div><div class="r-info-content">#content#</div><div class="r-info-line"></div><div class="r-info-btn-wrap"><div class="r-info-btn r-info-btn-yes">YES</div><div class="r-info-btn r-info-btn-no">NO</div></div></div></div>';
-        var _css= {
-            'r-info-wrap': {
-                'width': '460px',
-                'height': 'auto',
-                'background-color': '#f2f2f2',
-                'color': '#333',
-                'text-align': 'center',
-                'font-size': '14px',
-                'font-weight': '500',
-                'border': '1px solid #fff',
-                'font-family': ' Calibri, Helvetica, sans-serif',
-                'position': 'relative',
-                'top': '0',
-                'left': '0'
-            },
-            'r-info-innerWrap': {
-                'width': '440px',
-                'height': 'auto',
-                'border': '0px',
-                'margin': '10px'
-            },
-            'r-info-title': {
-                'width': '100%',
-                'height': '40px',
-                'line-height': '40px',
-                'font-size': '22px',
-                'font-weight': '400',
-                'color': '#333',
-                'letter-spacing': '1px',
-                'padding': '12px 0',
-                'margin': '0px',
-                'margin-left': '-1px'
-            },
-            'r-info-content': {
-                'margin': '0px auto',
-                'margin-bottom': '25px',
-                'width': '90%',
-                'height': 'auto',
-                'line-height': '20px'
-            },
-            'r-info-line': {
-                'margin': '0px auto',
-                'margin-bottom': '53px',
-                'width': '75%',
-                'height': '1px',
-                'line-height': '1px',
-                'background-color': '#ccc'
-            },
-            'r-info-btn-wrap': {
-                'position': 'absolute',
-                'top': 'auto',
-                'bottom': '13px',
-                'left': '0',
-                'right': '0',
-                'margin': 'auto',
-                'width': '50%',
-                'min-width': '120px',
-                'overflow': 'visible',
-                'height': '32px',
-            },
-            'r-info-btn': {
-                'position': 'absolute',
-                'bottom': '0',
-                'margin': '0',
-                'width': '100px',
-                'height': '32px',
-                'line-height': '32px',
-                'font-size': '20px',
-                'font-weight': '300',
-                'letter-spacing': '4px',
-                'color': '#666',
-                'cursor': 'pointer'
-            },
-            'r-info-btn:hover': {
-                'color': '#111'
-            },
-            'r-info-btn-yes': {
-                'left': '-40px'
-            },
-            'r-info-btn-no': {
-                'right': '-40px'
-            }
-        };
-    };
-    var check = new Check(window.$$.info);
-})();
+module.exports = Check;

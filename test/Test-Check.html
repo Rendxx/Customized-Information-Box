@@ -4,8 +4,7 @@
 <head>
     <meta charset="utf-8" />
     <meta name="viewport" content="initial-scale=1.0, maximum-scale=1.0, user-scalable=no, width=device-width">
-    <script type="text/javascript" src="../lib/jquery.js"></script>
-    <script type="text/javascript" src="../js/InfoBox.js"></script>
+    <script type="text/javascript" src="../dist/InfoBox.js"></script>
     <title>Check [Info Box]</title>
     <style type="text/css">
         body{
@@ -22,26 +21,24 @@
             cursor:pointer;
         }
     </style>
-    <script>
-        $(function () {
-            $('.btn-1').click(function () {
-                var $this = $(this);
-                $$.info.check("Check Sample.<br/>" + $this.text(), "CHECK", true, "rgba(0,0,0,0.6)");
-            });
-            $('.btn-2').click(function () {
-                var $this = $(this);
-                $$.info.check("Check Sample with callback.<br/>" + $this.text(), "CHECK", true, "rgba(0,0,0,0.6)",
-                    function () {
-                        $this.css('background-color', '#CFFBA7');
-                    }, function () {
-                        $this.css('background-color', '#FBA7A7');
-                    });
-            });
-        });
-    </script>
 </head>
 <body>
-    <div class="btn btn-1">$$.info.check(content, title, hideOnClick, bgColor)</div>
-    <div class="btn btn-2">$$.info.check(content, title, hideOnClick, bgColor, callbackYes, callbackNo)</div>
+    <div class="btn btn-1">$$.info.check(content, title, true, bgColor)</div>
+    <div class="btn btn-2">$$.info.check(content, title, true, bgColor, callbackYes, callbackNo)</div>
+    <script>
+        document.querySelector(".btn-1").addEventListener('click', function(e){
+            var that = this;
+            $$.info.check("Check Sample.<br/>" + this.textContent, "CHECK", true, "rgba(0,0,0,0.6)");
+        }, false);
+        document.querySelector(".btn-2").addEventListener('click', function(e){
+            var that = this;
+            $$.info.check("Check Sample with callback.<br/>" + this.textContent, "CHECK", true, "rgba(0,0,0,0.6)",
+              function () {
+                  that.style['background-color']= '#CFFBA7';
+              }, function () {
+                  that.style['background-color']= '#FBA7A7';
+              });
+        }, false);
+    </script>
 </body>
 </html>

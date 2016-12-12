@@ -31,7 +31,8 @@
             $$.info.alert("Alert Sample without callback. <br />" + this.textContent, "ALERT", false, "rgba(0,0,0,0.6)", null);
         }, false);
         document.querySelector(".btn-2").addEventListener('click', function(e){
-            $$.info.alert("Alert Sample with callback. <br />" + this.textContent, "ALERT", true, "rgba(0,0,0,0.6)", function () { this.style['background-color']= '#68A1CA';});
+            var that = this;
+            $$.info.alert("Alert Sample with callback. <br />" + this.textContent, "ALERT", true, "rgba(0,0,0,0.6)", function () { that.style['background-color']= '#68A1CA';});
         }, false);
         document.querySelector(".btn-3").addEventListener('click', function(e){
             $$.info.alert("Alert Sample without title. <br />" + this.textContent, null, true, "rgba(0,0,0,0.6)");

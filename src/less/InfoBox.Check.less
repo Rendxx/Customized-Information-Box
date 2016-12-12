@@ -1,4 +1,4 @@
-._alert {
+._check {
     width: 460px;
     height: auto;
     background-color: #f2f2f2;
@@ -9,7 +9,7 @@
     border: 1px solid #fff;
     font-family: Calibri, Helvetica, sans-serif;
     box-sizing: border-box;
-    padding:14px 10px;
+    padding:14px 10px 48px;
 
     ._title {
         width: 100%;
@@ -37,8 +37,9 @@
         background-color: #ccc;
     }
 
-    ._ok {
-        margin: 0 auto;
+    ._btn {
+        position:absolute;
+        bottom: 14px;
         width: 120px;
         height: 32px;
         line-height: 32px;
@@ -47,6 +48,16 @@
         letter-spacing: 4px;
         color: #666;
         cursor: pointer;
+
+        &._left{
+            margin-left:-40px;
+            left: 25%;
+        }
+
+        &._right{
+            margin-right:-40px;
+            right: 25%;
+        }
 
         &:hover{
             color: #111;
