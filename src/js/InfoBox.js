@@ -33,6 +33,7 @@ API:
 ************************************************/
 
 require('../less/InfoBox.less');
+var Basic = require('./InfoBox.Basic.js');
 var Alert = require('./InfoBox.Alert.js');
 var Check = require('./InfoBox.Check.js');
 var Input = require('./InfoBox.Input.js');
@@ -134,49 +135,71 @@ var InfoBox = function(PACKAGE) {
 
     // setup --------------------------------------------------------------------------------
     var setupFunc = function() {
-        PACKAGE.alert = function(content, title, hideOnClick, bgColor, callback, styleOpt) {
+        PACKAGE.info = function(content, hideOnClick, bgColor, callback, styleOpt) {
+            setupHtml();
+            if (currentBox != null) currentBox.remove();
+            container.focus();
+            currentBox = new Basic(
+                container,
+                createAnimationStyle(styleOpt),
+                {
+                  content: content
+                },
+                hide);
+            setHideOnClick(hideOnClick);
+            setBgColor(bgColor);
+            show();
+            currentBox.show();
+        };
+        PACKAGE.info.alert = function(content, title, hideOnClick, bgColor, callback, styleOpt) {
             setupHtml();
             if (currentBox != null) currentBox.remove();
             container.focus();
             currentBox = new Alert(
                 container,
                 createAnimationStyle(styleOpt),
-                title,
-                content,
-                callback,
+                {
+                  title: title,
+                  content: content,
+                  callback: callback
+                },
                 hide);
             setHideOnClick(hideOnClick);
             setBgColor(bgColor);
             show();
             currentBox.show();
         };
-        PACKAGE.check = function(content, title, hideOnClick, bgColor, callbackYes, callbackNo, styleOpt) {
+        PACKAGE.info.check = function(content, title, hideOnClick, bgColor, callbackYes, callbackNo, styleOpt) {
             setupHtml();
             if (currentBox != null) currentBox.remove();
             container.focus();
             currentBox = new Check(
                 container,
                 createAnimationStyle(styleOpt),
-                title,
-                content,
-                callbackYes,
-                callbackNo,
+                {
+                  title: title,
+                  content: content,
+                  callbackYes: callbackYes,
+                  callbackNo: callbackNo
+                },
                 hide);
             setHideOnClick(hideOnClick);
             setBgColor(bgColor);
             show();
             currentBox.show();
         };
-        PACKAGE.input = function(inputPara, title, hideOnClick, bgColor, callback, styleOpt) {
+        PACKAGE.info.input = function(inputPara, title, hideOnClick, bgColor, callback, styleOpt) {
             setupHtml();
             if (currentBox != null) currentBox.remove();
             container.focus();
             currentBox = new Input(
                 container,
                 createAnimationStyle(styleOpt),
-                inputPara,
-                title,
-                callback,
+                {
+                  inputPara: inputPara,
+                  content: content,
+                  callback: callback
+                },
                 hide);
             setHideOnClick(hideOnClick);
             setBgColor(bgColor);
@@ -218,5 +241,4 @@ var InfoBox = function(PACKAGE) {
 };
 
 window.$$ = window.$$ || {};
-window.$$.info = {};
-var infoBox = new InfoBox(window.$$.info);
+var infoBox = new InfoBox(window.$$);

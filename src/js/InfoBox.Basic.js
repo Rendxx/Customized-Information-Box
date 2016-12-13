@@ -1,7 +1,10 @@
 var Func = require('./Func.js');
 
 "use strict";
-var Basic = function(container, inner, style, onHide) {
+var Basic = function(container, style, opts, onHide) {
+    var inner = this._buildContent(opts);
+    container.appendChild(inner);
+
     style = style || {};
     this.style = {};
     this.style.before = style.before || {};
@@ -49,7 +52,14 @@ Basic.prototype._addInnerStyle = function (style){
     }
 };
 
-Basic.prototype._buildContent = function (){
+Basic.prototype._buildContent = function (opts){
+    var content = opts.content;
+
+    var wrap = document.createElement("DIV");
+    wrap.innerHTML = content;
+    var dom = wrap.children[0];
+    dom.className += ' _innerWrap';
+    return dom;
 };
 
 Basic.prototype._setupStyle = function (){

@@ -4,8 +4,7 @@
 <head>
     <meta charset="utf-8" />
     <meta name="viewport" content="initial-scale=1.0, maximum-scale=1.0, user-scalable=no, width=device-width">
-    <script type="text/javascript" src="../lib/jquery.js"></script>
-    <script type="text/javascript" src="../js/InfoBox.js"></script>
+    <script type="text/javascript" src="../dist/InfoBox.js"></script>
     <title>Info [Info Box]</title>
     <style type="text/css">
         body{
@@ -34,23 +33,17 @@
             padding:50px;
         }
     </style>
-    <script>
-        $(function () {
-            $('.btn-1').click(function () {
-                var $this = $(this);
-                var content = $('<div class="infoBox">' + $this.text() + '</div>');
-                $$.info(content, true, "#eee");
-            });
-            $('.btn-2').click(function () {
-                var $this = $(this);
-                var content = $('<div class="infoBox" style="width:100%">' + $this.text() + '</div>');
-                $$.info(content, true, "rgba(255, 255, 255, 0.3)", function () { $this.css('background-color', '#68A1CA') });
-            });
-        });
-    </script>
 </head>
 <body>
-    <div class="btn btn-1"> $$.info.show(ele, hideOnClick, bgColor)</div>
-    <div class="btn btn-2"> $$.info.show(ele, hideOnClick, bgColor, onHide)</div>
+    <div class="btn btn-1"> $$.info.show(ele, true, bgColor)</div>
+    <div class="btn btn-2"> $$.info.show(ele, true, bgColor, onHide)</div>
+    <script>
+        document.querySelector(".btn-1").addEventListener('click', function(e){
+            $$.info('<div class="infoBox">' + this.textContent + '</div>', true, "#eee");
+        }, false);
+        document.querySelector(".btn-2").addEventListener('click', function(e){
+            $$.info('<div class="infoBox" style="width:100%">' + this.textContent + '</div>', true, "rgba(255, 255, 255, 0.3)", function () { $this.css('background-color', '#68A1CA');} );
+        }, false);
+    </script>
 </body>
 </html>

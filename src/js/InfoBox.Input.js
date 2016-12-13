@@ -14,19 +14,20 @@ API:
 ************************************************/
 
 var Basic = require('./InfoBox.Basic.js');
-var Style = require('../less/InfoBox.Input.less');
+require('../less/InfoBox.Input.less');
 
 "use strict";
-var Input = function(container, style, inputPara, title, callback, onHide) {
-    var domNode = this._buildContent(title, inputPara, callback);
-    container.appendChild(domNode);
-    Basic.call(this, container, domNode, style, onHide);
+var Input = function(container, style, opts, onHide) {
+    Basic.call(this, container, style, opts, onHide);
 };
 Input.prototype = Object.create(Basic.prototype);
 Input.prototype.constructor = Input;
 
 Input.prototype._buildContent = function (title, inputPara, callback){
     var that = this;
+    var title = opts.title,
+        inputPara = opts.inputPara,
+        callback = opts.callback;
     // init paramenters
     var inputType = 'text',
         maxlength = null,

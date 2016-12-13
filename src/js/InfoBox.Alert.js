@@ -7,18 +7,20 @@ API:
 ************************************************/
 
 var Basic = require('./InfoBox.Basic.js');
-var Style = require('../less/InfoBox.Alert.less');
+require('../less/InfoBox.Alert.less');
 
 "use strict";
-var Alert = function(container, style, title, content, callback, onHide) {
-    var domNode = this._buildContent(title, content, callback);
-    container.appendChild(domNode);
-    Basic.call(this, container, domNode, style, onHide);
+var Alert = function(container, style, opts, onHide) {
+    Basic.call(this, container, style, opts, onHide);
 };
 Alert.prototype = Object.create(Basic.prototype);
 Alert.prototype.constructor = Alert;
 
-Alert.prototype._buildContent = function (title, content, callback){
+Alert.prototype._buildContent = function (opts){
+    var title = opts.title,
+        content = opts.content,
+        callback = opts.callback;
+
     var wrap = document.createElement("DIV");
     wrap.className = '_alert _innerWrap';
     wrap.innerHTML = '<div class="_title">#title#</div><div class="_content">#content#</div><div class="_line"></div><div class="_ok">OK</div>'.replace('#title#', title||'').replace('#content#', content);

@@ -8,19 +8,21 @@ API:
 ************************************************/
 
 var Basic = require('./InfoBox.Basic.js');
-var Style = require('../less/InfoBox.Check.less');
+require('../less/InfoBox.Check.less');
 
 "use strict";
-var Check = function(container, style, title, content, callbackYes, callbackNo, onHide) {
-    var domNode = this._buildContent(title, content, callbackYes, callbackNo);
-    container.appendChild(domNode);
-    Basic.call(this, container, domNode, style, onHide);
+var Check = function(container, style, opts, onHide) {
+    Basic.call(this, container, style, opts, onHide);
 };
 Check.prototype = Object.create(Basic.prototype);
 Check.prototype.constructor = Check;
 
-Check.prototype._buildContent = function (title, content, callbackYes, callbackNo){
+Check.prototype._buildContent = function (opts){
     var that =this;
+    var title = opts.title,
+        content = opts.content,
+        callbackYes = opts.callbackYes,
+        callbackNo = opts.callbackNo;
     var wrap = document.createElement("DIV");
     wrap.className = '_check _innerWrap';
     wrap.innerHTML = '<div class="_title">#title#</div><div class="_content">#content#</div><div class="_line"></div><div class="_btn _yes _left">YES</div><div class="_btn _no _right">NO</div>'.replace('#title#', title||'').replace('#content#', content);
