@@ -35,6 +35,7 @@ API:
 require('../less/InfoBox.less');
 var Alert = require('./InfoBox.Alert.js');
 var Check = require('./InfoBox.Check.js');
+var Input = require('./InfoBox.Input.js');
 var Style = require('./Style.js');
 
 var InfoBox = function(PACKAGE) {
@@ -160,6 +161,22 @@ var InfoBox = function(PACKAGE) {
                 content,
                 callbackYes,
                 callbackNo,
+                hide);
+            setHideOnClick(hideOnClick);
+            setBgColor(bgColor);
+            show();
+            currentBox.show();
+        };
+        PACKAGE.input = function(inputPara, title, hideOnClick, bgColor, callback, styleOpt) {
+            setupHtml();
+            if (currentBox != null) currentBox.remove();
+            container.focus();
+            currentBox = new Input(
+                container,
+                createAnimationStyle(styleOpt),
+                inputPara,
+                title,
+                callback,
                 hide);
             setHideOnClick(hideOnClick);
             setBgColor(bgColor);

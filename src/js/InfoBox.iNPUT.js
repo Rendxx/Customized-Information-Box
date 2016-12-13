@@ -1,10 +1,4 @@
-/************************************************ 
-Customized Information Box - Preset Input
-Copyright (c) 2014-2016 Dongxu Ren  http://www.rendxx.com/
-
-License: MIT (http://www.opensource.org/licenses/mit-license.php)
-Update: 2016-07-06
-
+/************************************************
 Show a window with an input field.
 
 API:
@@ -19,217 +13,74 @@ API:
         - callback: function be called after input completes
 ************************************************/
 
-(function () {
-    "use strict";
-    if (window.$$ == null || window.$$.info == null || window.$$.info.preset == null) throw new Error('Relied component missing.');
-    var Input = function (info) {
-        var _setuped = false;       // whether this infobox has been setuped
+var Basic = require('./InfoBox.Basic.js');
+var Style = require('../less/InfoBox.Input.less');
 
-        // setup css, this should only run only
-        var setupCss = function () {
-            if (_setuped) return;
-            _setuped = true;
-            info.preset.css(_name, _css);
-        };
+"use strict";
+var Input = function(container, style, inputPara, title, callback, onHide) {
+    var domNode = this._buildContent(title, inputPara, callback);
+    container.appendChild(domNode);
+    this.callback = callback;
+    Basic.call(this, container, domNode, style, onHide);
+};
+Input.prototype = Object.create(Basic.prototype);
+Input.prototype.constructor = Input;
 
-        var show = function (inputPara, title, hideOnClick, bgColor, callback) {
-            setupCss();
-            // init paramenters
-            var inputType = 'text',
-                maxlength = null,
-                instruction = null,
-                errorMsg = null;
+Input.prototype._buildContent = function (title, inputPara, callback){
+    var that = this;
+    // init paramenters
+    var inputType = 'text',
+        maxlength = null,
+        instruction = null,
+        errorMsg = null;
 
-            if (inputPara!=null){
-                if (inputPara.type) inputType = inputPara.type;
-                if (inputPara.maxlength) maxlength = inputPara.maxlength;
-                if (inputPara.instruction) instruction = inputPara.instruction;
-                if (inputPara.errorMsg) errorMsg = inputPara.errorMsg;
+    if (inputPara!=null){
+        if (inputPara.type) inputType = inputPara.type;
+        if (inputPara.maxlength) maxlength = inputPara.maxlength;
+        if (inputPara.instruction) instruction = inputPara.instruction;
+        if (inputPara.errorMsg) errorMsg = inputPara.errorMsg;
+    }
+
+    var wrap = document.createElement("DIV");
+    wrap.className = '_input _innerWrap';
+    wrap.innerHTML = '<div class="_title">#title#</div><div class="_content"><input  /><div class="_instruction">#instruction#</div><div class="_error"></div></div><div class="_line"></div><div class="_btn _yes _left">YES</div><div class="_btn _no _right">NO</div>'.replace(/#title#/g, title||'').replace(/#instruction#/g, instruction||'');
+
+    var input = wrap.querySelector('input');
+    var err = wrap.querySelector('._error');
+
+    input.setAttribute('type', inputType || 'text');
+    if (maxlength) input.setAttribute('maxlength', maxlength);
+
+    // confirm function
+    var confirm = function (e) {
+        var v = input.value;
+        if (errorMsg != null) {
+            var errMsg = errorMsg(v);
+            if (errMsg != null) {
+                err.innerHTML = errMsg;
+                err.style['margin-top'] = '5px';
+                return;
             }
+        }
 
-            // build html
-            var ele = info.preset.html(_name, _html.replace(/#title#/g, title).replace(/#instruction#/g, instruction)),
-                input = ele.find("input"),
-                err = ele.find(".r-info-error");
-
-            // handle max width
-            var w = window.innerWidth;
-            ele.css('max-width', w - 40 + 'px');
-            ele.find('.r-info-innerWrap').css('max-width', w - 60 + 'px');
-
-            if (title == null) ele.find(".r-info-title").html("").height(0);
-            if (instruction == null) ele.find(".r-info-instruction").html("").css('margin-top', 0);
-
-            input.attr('type', inputType || 'text');
-            if (maxlength) input.attr('maxlength', maxlength);
-
-            // confirm function
-            var confirm = function (e) {
-                var v = input.val();
-                if (errorMsg != null) {
-                    var errMsg = errorMsg(v);
-                    if (errMsg != null) {
-                        err.html(errMsg).css('margin-top', '5px');
-                        return;
-                    }
-                }
-
-                info.hide(e);
-                if (callback != null) setTimeout(function () { callback(v); },1);
-            };
-
-            // bind callback function
-            input.keyup(function (e) {
-                if (e.keyCode == 13) {
-                    confirm();
-                }
-            });
-            ele.find(".r-info-btn-yes").click(function (e) {
-                confirm();
-            });
-            ele.find(".r-info-btn-no").click(function (e) {
-                info.hide(e);
-            });
-
-            info.show(ele, hideOnClick, bgColor, null);
-        };
-
-        // Initialize the whole function
-        var init = function () {
-            info.input = show;
-        };
-        init();
-
-        // data ----------------------------------------------------------------
-        var _name = 'r-info-input';
-        var _html = '<div class="r-info-wrap"><div class="r-info-innerWrap"><div class="r-info-title">#title#</div><div class="r-info-content"><input  /><div class="r-info-instruction">#instruction#</div><div class="r-info-error"></div></div><div class="r-info-line"></div><div class="r-info-btn-wrap"><div class="r-info-btn r-info-btn-yes">YES</div><div class="r-info-btn r-info-btn-no">NO</div></div></div></div>';
-        var _css= {
-            'r-info-wrap': {
-                'width': '460px',
-                'height': 'auto',
-                'background-color': '#f2f2f2',
-                'color': '#333',
-                'text-align': 'center',
-                'font-size': '14px',
-                'font-weight': '500',
-                'border': '1px solid #fff',
-                'font-family': ' Calibri, Helvetica, sans-serif',
-                'position': 'relative',
-                'top': '0',
-                'left': '0'
-            },
-            'r-info-innerWrap': {
-                'width': '440px',
-                'height': 'auto',
-                'border': '0px',
-                'margin': '10px'
-            },
-            'r-info-title': {
-                'width': '100%',
-                'height': '40px',
-                'line-height': '40px',
-                'font-size': '22px',
-                'font-weight': '400',
-                'color': '#333',
-                'letter-spacing': '1px',
-                'padding': '12px 0',
-                'margin': '0',
-                'margin-left': '-1px'
-            },
-            'r-info-content': {
-                'margin': '0px auto',
-                'margin-bottom': '25px',
-                'width': '90%',
-                'height': 'auto',
-                'line-height': '20px'
-            },
-
-            'r-info-content input': {
-                'display': 'block',
-                'outline': 'none',
-                'resize': 'none',
-                'text-align': 'center!important',
-                'padding': '8px 10px',
-                'background-color': '#fff',
-                'border': '1px solid #ccc',
-                'margin': '0 auto',
-                'width':  '90%'
-            },
-            '::-webkit-input-placeholder': {
-                'text-align': 'center'
-            },
-            ':-moz-placeholder': {
-                'text-align': 'center'
-            },
-            '::-moz-placeholder': {
-                'text-align': 'center'
-            },
-            ':-ms-input-placeholder': {
-                'text-align': 'center'
-            },
-
-            'r-info-instruction': {
-                'margin': '0px auto',
-                'margin-top': '10px',
-                'width': '90%',
-                'height': 'auto',
-                'line-height': '20px',
-                'color': '#777'
-            },
-            'r-info-error': {
-                'margin': '0px auto',
-                'width': '340px',
-                'height': 'auto',
-                'line-height': '20px',
-                'color': '#600',
-                '-moz-transition': '0.2s',
-                '-o-transition': '0.2s',
-                '-webkit-transition': '0.2s',
-                'transition': '0.2s'
-            },
-            'r-info-line': {
-                'margin': '0px auto',
-                'margin-bottom': '53px',
-                'width': '75%',
-                'height': '1px',
-                'line-height': '1px',
-                'background-color': '#ccc'
-            },
-            'r-info-btn-wrap': {
-                'position': 'absolute',
-                'top': 'auto',
-                'bottom': '13px',
-                'left': '0',
-                'right': '0',
-                'margin': 'auto',
-                'width': '50%',
-                'min-width': '120px',
-                'overflow': 'visible',
-                'height': '32px',
-            },
-            'r-info-btn': {
-                'position': 'absolute',
-                'bottom': '0',
-                'margin': '0',
-                'width': '100px',
-                'height': '32px',
-                'line-height': '32px',
-                'font-size': '20px',
-                'font-weight': '300',
-                'letter-spacing': '4px',
-                'color': '#666',
-                'cursor': 'pointer'
-            },
-            'r-info-btn:hover': {
-                'color': '#111'
-            },
-            'r-info-btn-yes': {
-                'left': '-40px'
-            },
-            'r-info-btn-no': {
-                'right': '-40px'
-            }
-        };
+        that.hide(e);
+        if (callback != null) setTimeout(function () { callback(v); },1);
     };
-    var input = new Input(window.$$.info);
-})();
+
+    var btnYES = wrap.querySelector('._yes');
+    var btnNO = wrap.querySelector('._no');
+
+    var that =this;
+    btnYES.addEventListener("click", function(e){
+        that.callbackYes && that.callbackYes(e);
+        that.hide();
+    }, false);
+
+    btnNO.addEventListener("click", function(e){
+        that.callbackNo && that.callbackNo(e);
+        that.hide();
+    }, false);
+    return wrap;
+};
+
+module.exports = Input;
