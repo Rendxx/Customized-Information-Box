@@ -7,8 +7,8 @@ API:
         - callbackNo: function be called after click NO
 ************************************************/
 
-var Basic = require('./InfoBox.Basic.js');
-require('../less/InfoBox.Check.less');
+var Basic = require('JS/InfoBox.Basic.js');
+require('LESS/InfoBox.Check.less');
 
 "use strict";
 var Check = function(container, style, opts, onHide) {

@@ -13,8 +13,8 @@ API:
         - callback: function be called after input completes
 ************************************************/
 
-var Basic = require('./InfoBox.Basic.js');
-require('../less/InfoBox.Input.less');
+var Basic = require('JS/InfoBox.Basic.js');
+require('LESS/InfoBox.Input.less');
 
 "use strict";
 var Input = function(container, style, opts, onHide) {

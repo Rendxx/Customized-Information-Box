@@ -1,4 +1,4 @@
-var Func = require('./Func.js');
+var Func = require('JS/Func.js');
 
 "use strict";
 var Basic = function(container, style, opts, onHide) {

@@ -6,8 +6,8 @@ API:
         - callback: function be called after click OK
 ************************************************/
 
-var Basic = require('./InfoBox.Basic.js');
-require('../less/InfoBox.Alert.less');
+var Basic = require('JS/InfoBox.Basic.js');
+require('LESS/InfoBox.Alert.less');
 
 "use strict";
 var Alert = function(container, style, opts, onHide) {

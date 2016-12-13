@@ -32,12 +32,12 @@ API:
         close the info box if it is shown
 ************************************************/
 
-require('../less/InfoBox.less');
-var Basic = require('./InfoBox.Basic.js');
-var Alert = require('./InfoBox.Alert.js');
-var Check = require('./InfoBox.Check.js');
-var Input = require('./InfoBox.Input.js');
-var Style = require('./Style.js');
+require('LESS/InfoBox.less');
+var Basic = require('JS/InfoBox.Basic.js');
+var Alert = require('JS/InfoBox.Alert.js');
+var Check = require('JS/InfoBox.Check.js');
+var Input = require('JS/InfoBox.Input.js');
+var Style = require('JS/Style.js');
 
 var InfoBox = function(PACKAGE) {
     var outside = null;

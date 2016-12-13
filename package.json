@@ -5,7 +5,6 @@
 	"devDependencies": {
 			"babel-core": "*",
 			"babel-loader": "*",
-			"babel-preset-react": "*",
 			"css-loader": "*",
 			"extract-text-webpack-plugin": "*",
 			"jsx-loader": "*",

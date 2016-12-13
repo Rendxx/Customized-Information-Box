@@ -1,7 +1,7 @@
-var webpack = require('webpack');
 var path = require('path');
 var ExtractTextPlugin = require("extract-text-webpack-plugin");
 var extractTextPlugin = new ExtractTextPlugin("./[name].css");
+var root = path.resolve(__dirname);
 
 module.exports = {
     plugins: [
@@ -44,6 +44,10 @@ module.exports = {
         ]
     },
     resolve: {
-        extensions: ['', '.js', '.json', '.scss']
+        alias: {
+            JS: root+'/src/js',
+            LESS: root+'/src/less',
+        },
+        extensions: ['', '.js', '.json', '.less']
     }
 };
