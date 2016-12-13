@@ -72,12 +72,10 @@ Input.prototype._buildContent = function (title, inputPara, callback){
 
     var that =this;
     btnYES.addEventListener("click", function(e){
-        that.callbackYes && that.callbackYes(e);
-        that.hide();
+        confirm(e);
     }, false);
 
     btnNO.addEventListener("click", function(e){
-        that.callbackNo && that.callbackNo(e);
         that.hide();
     }, false);
     return wrap;
