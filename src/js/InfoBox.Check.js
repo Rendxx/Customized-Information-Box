@@ -2,11 +2,15 @@
 Show a check box
 
 API:
-    $$.info.check(content, title, hideOnClick, bgColor, callbackYes, callbackNo)
+    $$.info.check(opts)
+        - content: content
+        - title: title
         - callbackYes: function be called after click YES
         - callbackNo: function be called after click NO
+        - other: ...
 ************************************************/
 
+var Style = require('JS/Style.js');
 var Basic = require('JS/InfoBox.Basic.js');
 require('LESS/InfoBox.Check.less');
 
@@ -41,6 +45,33 @@ Check.prototype._buildContent = function (opts){
         that.hide();
     }, false);
     return wrap;
+};
+
+Check.__create = function (container, opts, afterCreate, hideContainer){
+    var content = opts.content,
+        title = opts.title,
+        callbackYes = opts.callbackYes,
+        callbackNo = opts.callbackNo,
+        hideOnClick = opts.hideOnClick,
+        bgVal = opts.bg,
+        style = opts.style,
+        onHide = opts.onHide;
+
+    var currentBox = new Check(
+        container,
+        Style.createAnimationStyle(style),
+        {
+          title: title,
+          content: content,
+          callbackYes: callbackYes,
+          callbackNo: callbackNo
+        },
+        function (){
+            hideContainer();
+            if(onHide) setTimeout(onHide,1);
+        }
+    );
+    afterCreate && afterCreate(currentBox);
 };
 
 module.exports = Check;

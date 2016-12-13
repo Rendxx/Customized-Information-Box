@@ -2,7 +2,7 @@
 Show a window with an input field.
 
 API:
-    $$.info.input(para, title, hideOnClick, bgColor, callback)
+    $$.info.input(opts)
         - para: parameters to define input
             + type: text / password / ... (avilable type for input dom element)
             + maxlength : max length of the input
@@ -10,9 +10,12 @@ API:
             + errorMsg: A function be called right after confirming input. Be used to produce error message when the input is illegal.
                         Return null indicates no error occur. Otherwise a string of error message will be returned, this message will be shown below the input box.
                         The input will not complele if an error is occur.
+        - title: title
         - callback: function be called after input completes
+        - other: ...
 ************************************************/
 
+var Style = require('JS/Style.js');
 var Basic = require('JS/InfoBox.Basic.js');
 require('LESS/InfoBox.Input.less');
 
@@ -72,6 +75,30 @@ Input.prototype._buildContent = function (opts){
         that.hide();
     }, false);
     return wrap;
+};
+
+Input.__create = function (container, opts, afterCreate, hideContainer){
+    var para = opts.para,
+        title = opts.title,
+        callback = opts.callback,
+        hideOnClick = opts.hideOnClick,
+        bgVal = opts.bg,
+        style = opts.style,
+        onHide = opts.onHide;
+
+    var currentBox = new Input(
+        container,
+        Style.createAnimationStyle(style),
+        {
+          para: para,
+          callback: callback
+        },
+        function (){
+            hideContainer();
+            if(onHide) setTimeout(onHide,1);
+        }
+    );
+    afterCreate && afterCreate(currentBox);
 };
 
 module.exports = Input;

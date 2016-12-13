@@ -35,23 +35,28 @@
     </style>
 </head>
 <body>
-    <div class="btn btn-1">(ele, true, bgColor)</div>
-    <div class="btn btn-2">(ele, true, bgColor, onHide)</div>
+    <div class="btn btn-1">(string, hideOnClick, bgColor, onHide)</div>
+    <div class="btn btn-2">(dom, bgColor)</div>
     <script>
         document.querySelector(".btn-1").addEventListener('click', function(e){
+            var that =this;
             $$.info({
               content: '<div class="infoBox">' + this.textContent + '</div>',
               hideOnClick: true,
-              bg: "#eee"
+              bg: "#eee",
+              onHide: function () { that.style['background-color']= '#68A1CA';}
             });
         }, false);
         document.querySelector(".btn-2").addEventListener('click', function(e){
-            var that =this;
+            var dom = document.createElement('DIV');
+            dom.className = "infoBox";
+            dom.style.width = "100%";
+            dom.innerHTML = 'click me to hide.'
+            dom.addEventListener('click',function(e){$$.info.hide();},false);
             $$.info({
-              content: '<div class="infoBox" style="width:100%">' + this.textContent + '</div>',
-              hideOnClick: true,
-              bg: "rgba(255, 255, 255, 0.3)",
-              onHide: function () { that.style['background-color']= '#68A1CA';}
+              content: dom,
+              hideOnClick: false,
+              bg: "rgba(255, 255, 255, 0.3)"
             });
         }, false);
     </script>

@@ -3,30 +3,31 @@ Customized Information Box
 Copyright (c) 2014-2015 Dongxu Ren  http://www.rendxx.com/
 
 License: MIT (http://www.opensource.org/licenses/mit-license.php)
-Version: 0.6.5
-Update: 2016-07-06
+Version: 0.7.0
+Update: 2016-12-13
 
 Description:
     Enable user to show their customized HTML elements in the center of screen.
         - A screen cover will be created to block mouse event to the original page.
         - Clicking outside the body of the info-box will close the info-box. This feature can be disabled manually.
 
-    CSS3 is used.
-
 Compatibility:
-    Fully support Chrome; Fire Fox; Safari; Edge; IE 10-11; IE9;
-    Limit support: IE 7,8;
-
-Dependency:
-    jQuery
+    Fully support Chrome; Fire Fox; Safari; Edge;
 
 API:
-    $$.info(ele, hideOnClick, bgColor, onHide)
-    $$.info.show(ele, hideOnClick, bgColor, onHide)
-        - ele: info-window jQuery element
-        - hideOnClick: close when click on the background if true
-        - bgColor: background color in (rr,gg,bb,aa)
+    $$.info(opts)
+    $$.info.show(opts)
+        - hideOnClick: [true | false] close when click on the background if true
+        - bg: [string] background style
+        - style: {
+            before: [string | object] style before box show up
+            show: [string | object] style of the box
+            hide: [string | object] style after box hide
+          }
+          It will defined the show/hide animation of the infobox.
+          It receive either a predefined style name or an object of css properties.
         - onHide: callback function when info-window hide
+        - other: detail in different Infobox module
 
     $$.info.hide()
         close the info box if it is shown
@@ -37,7 +38,6 @@ var Basic = require('JS/InfoBox.Basic.js');
 var Alert = require('JS/InfoBox.Alert.js');
 var Check = require('JS/InfoBox.Check.js');
 var Input = require('JS/InfoBox.Input.js');
-var Style = require('JS/Style.js');
 
 var InfoBox = function(PACKAGE) {
     var outside = null;
@@ -77,160 +77,40 @@ var InfoBox = function(PACKAGE) {
         }
     };
 
-    var createAnimationStyle = function(css) {
-        var css = css || {};
-        css.before = css.before || 'fade';
-        css.show = css.show || 'none';
-        css.hide = css.hide || 'fade';
-        css.inner = css.inner || 'none';
-
-        var style = {
-            before: {},
-            show: {},
-            hide: {},
-            inner: {}
-        };
-
-        // before
-        var cssPkg = {};
-        if (typeof(css.before) === "string") {
-            if (Style.hasOwnProperty(css.before))
-                cssPkg = Style[css.before];
-        } else {
-            cssPkg = css.before;
-        }
-        for (var i in cssPkg) style.before[i] = cssPkg[i];
-
-        // show
-        cssPkg = {};
-        if (typeof(css.show) === "string") {
-            if (Style.hasOwnProperty(css.show))
-                cssPkg = Style[css.show];
-        } else {
-            cssPkg = css.show;
-        }
-        for (var i in cssPkg) style.show[i] = cssPkg[i];
-
-        // hide
-        cssPkg = {};
-        if (typeof(css.hide) === "string") {
-            if (Style.hasOwnProperty(css.hide))
-                cssPkg = Style[css.hide];
-        } else {
-            cssPkg = css.hide;
-        }
-        for (var i in cssPkg) style.hide[i] = cssPkg[i];
-
-        // inner
-        cssPkg = {};
-        if (typeof(css.hide) === "string") {
-            if (Style.hasOwnProperty(css.inner))
-                cssPkg = Style[css.inner];
-        } else {
-            cssPkg = css.inner;
-        }
-        for (var i in cssPkg) style.inner[i] = cssPkg[i];
-
-        return style;
-    };
-
-    var setupInfoBox = function (hideOnClick, bg){
+    var beforeCreate = function (opts){
+        var hideOnClick = opts.hideOnClick,
+            bgVal = opts.bg;
         setupHtml();
         if (currentBox != null) currentBox.remove();
         container.focus();
         setHideOnClick(hideOnClick);
-        setBg(bg);
+        setBg(bgVal);
+    };
+
+    var afterCreate = function (instance){
+        currentBox = instance;
+        show();
     };
 
     // setup --------------------------------------------------------------------------------
     var setupFunc = function() {
         PACKAGE.info = function (opts){
-            var content = opts.content,
-                hideOnClick = opts.hideOnClick,
-                bgVal = opts.bg,
-                style = opts.style,
-                onHide = opts.onHide;
-            setupInfoBox(hideOnClick, bgVal);
-            currentBox = new Basic(
-                container,
-                createAnimationStyle(style),
-                {
-                  content: content
-                },
-                function (){
-                    hide();
-                    onHide && onHide();
-                });
-            show();
+          beforeCreate(opts);
+            Basic.__create(container, opts, afterCreate, hide);
         };
         PACKAGE.info.show = PACKAGE.info;
         PACKAGE.info.hide = function(){if (currentBox != null) currentBox.hide();};
         PACKAGE.info.alert = function (opts) {
-            var content = opts.content,
-                title = opts.title,
-                callback = opts.callback,
-                hideOnClick = opts.hideOnClick,
-                bgVal = opts.bg,
-                style = opts.style,
-                onHide = opts.onHide;
-            setupInfoBox(hideOnClick, bgVal);
-            currentBox = new Alert(
-                container,
-                createAnimationStyle(style),
-                {
-                  title: title,
-                  content: content,
-                  callback: callback
-                },
-                function (){
-                    hide();
-                    onHide && onHide();
-                });
-            show();
+            beforeCreate(opts);
+            Alert.__create(container, opts, afterCreate, hide);
         };
         PACKAGE.info.check = function(opts) {
-            var content = opts.content,
-                title = opts.title,
-                callbackYes = opts.callbackYes,
-                callbackNo = opts.callbackNo,
-                hideOnClick = opts.hideOnClick,
-                bgVal = opts.bg,
-                style = opts.style,
-                onHide = opts.onHide;
-            setupInfoBox(hideOnClick, bgVal);
-            currentBox = new Check(
-                container,
-                createAnimationStyle(style),
-                {
-                  title: title,
-                  content: content,
-                  callbackYes: callbackYes,
-                  callbackNo: callbackNo
-                },
-                function (){
-                    hide();
-                    onHide && onHide();
-                });
-            show();
+            beforeCreate(opts);
+            Check.__create(container, opts, afterCreate, hide);
         };
         PACKAGE.info.input = function(opts) {
-            var para = opts.para,
-                title = opts.title,
-                callback = opts.callback,
-                hideOnClick = opts.hideOnClick,
-                bgVal = opts.bg,
-                style = opts.style,
-                onHide = opts.onHide;
-            setupInfoBox(hideOnClick, bgVal);
-            currentBox = new Input(
-                container,
-                createAnimationStyle(style),
-                {
-                  para: para,
-                  callback: callback
-                },
-                hide);
-            show();
+            beforeCreate(opts);
+            Input.__create(container, opts, afterCreate, hide);
         };
     };
 

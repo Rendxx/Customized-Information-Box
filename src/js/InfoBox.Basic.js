@@ -1,4 +1,12 @@
+/************************************************
+API:
+    $$.info(opts)
+        - content: [string | dom node] receive either a string represented content or a dom
+        - other: ...
+************************************************/
+
 var Func = require('JS/Func.js');
+var Style = require('JS/Style.js');
 
 "use strict";
 var Basic = function(container, style, opts, onHide) {
@@ -55,9 +63,14 @@ Basic.prototype._addInnerStyle = function (style){
 Basic.prototype._buildContent = function (opts){
     var content = opts.content||'';
 
-    var wrap = document.createElement("DIV");
-    wrap.innerHTML = content;
-    var dom = wrap.children[0];
+    var dom = null;
+    if (typeof content ==='string'){
+        var wrap = document.createElement("DIV");
+        wrap.innerHTML = content;
+        dom = wrap.children[0];
+    } else {
+        dom = content;
+    }
     dom.className += ' _innerWrap';
     return dom;
 };
@@ -68,6 +81,27 @@ Basic.prototype._setupStyle = function (){
     this._addInnerStyle(this.style.inner);
     this.container.offsetHeight;
     Func.removeClass(this.container, '_noTransition');
+};
+
+Basic.__create = function (container, opts, afterCreate, hideContainer){
+    var content = opts.content,
+        hideOnClick = opts.hideOnClick,
+        bgVal = opts.bg,
+        style = opts.style,
+        onHide = opts.onHide;
+
+    var currentBox = new Basic(
+        container,
+        Style.createAnimationStyle(style),
+        {
+          content: content
+        },
+        function (){
+            hideContainer();
+            if(onHide) setTimeout(onHide,1);
+        }
+    );
+    afterCreate && afterCreate(currentBox);
 };
 
 module.exports = Basic;
