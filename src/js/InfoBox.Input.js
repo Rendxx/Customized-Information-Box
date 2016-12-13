@@ -20,7 +20,6 @@ var Style = require('../less/InfoBox.Input.less');
 var Input = function(container, style, inputPara, title, callback, onHide) {
     var domNode = this._buildContent(title, inputPara, callback);
     container.appendChild(domNode);
-    this.callback = callback;
     Basic.call(this, container, domNode, style, onHide);
 };
 Input.prototype = Object.create(Basic.prototype);

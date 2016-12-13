@@ -134,7 +134,7 @@ var InfoBox = function(PACKAGE) {
 
     // setup --------------------------------------------------------------------------------
     var setupFunc = function() {
-        PACKAGE.alert = function(content, title, hideOnClick, bgColor, onOK, styleOpt) {
+        PACKAGE.alert = function(content, title, hideOnClick, bgColor, callback, styleOpt) {
             setupHtml();
             if (currentBox != null) currentBox.remove();
             container.focus();
@@ -143,7 +143,7 @@ var InfoBox = function(PACKAGE) {
                 createAnimationStyle(styleOpt),
                 title,
                 content,
-                onOK,
+                callback,
                 hide);
             setHideOnClick(hideOnClick);
             setBgColor(bgColor);
