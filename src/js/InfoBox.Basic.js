@@ -53,7 +53,7 @@ Basic.prototype._addInnerStyle = function (style){
 };
 
 Basic.prototype._buildContent = function (opts){
-    var content = opts.content;
+    var content = opts.content||'';
 
     var wrap = document.createElement("DIV");
     wrap.innerHTML = content;

@@ -32,31 +32,49 @@
             alert(data);
         };
         document.querySelector(".btn-1").addEventListener('click', function(e){
-            $$.info.input(null, 'Input Test 1', false, "rgba(0,0,0,0.6)", showRst);
+            $$.info.input({
+              title: "Input Test 1",
+              bg: "rgba(0,0,0,0.6)",
+              callback: showRst
+            });
         }, false);
         document.querySelector(".btn-2").addEventListener('click', function(e){
             $$.info.input({
-                instruction: '<span style="color:green;">No more than 5 letters.</span>',
-                maxlength: 5
-            }, 'Input Test 2', false, "rgba(0,0,0,0.6)", showRst);
+              para:{
+                  instruction: '<span style="color:green;">No more than 5 letters.</span>',
+                  maxlength: 5
+              },
+              title: "Input Test 2",
+              bg: "rgba(0,0,0,0.6)",
+              callback: showRst
+            });
         }, false);
         document.querySelector(".btn-3").addEventListener('click', function(e){
             $$.info.input({
-                instruction: 'Please input number bigger than 100',
-                maxlength: 5,
-                errorMsg: function (data) {
-                    if (!/^[0-9]*$/g.test(data)) return 'Error: Only number is available';
-                    else if (Number(data) < 100) return 'Error: Lower than 100!';
-                    return null;
-                }
-            }, 'Input Test 3', false, "rgba(0,0,0,0.6)", showRst);
+              para:{
+                  instruction: 'Please input number bigger than 100',
+                  maxlength: 5,
+                  errorMsg: function (data) {
+                      if (!/^[0-9]*$/g.test(data)) return 'Error: Only number is available';
+                      else if (Number(data) < 100) return 'Error: Lower than 100!';
+                      return null;
+                  }
+              },
+              title: "Input Test 3",
+              bg: "rgba(0,0,0,0.6)",
+              callback: showRst
+            });
         }, false);
         document.querySelector(".btn-4").addEventListener('click', function(e){
             $$.info.input({
-                type:'password',
-                instruction: 'Please input password',
-                maxlength: 5
-            }, null, false, "rgba(0,0,0,0.6)", showRst);
+              para:{
+                  type:'password',
+                  instruction: 'Please input password',
+                  maxlength: 5
+              },
+              bg: "rgba(0,0,0,0.6)",
+              callback: showRst
+            });
         }, false);
     </script>
 </body>

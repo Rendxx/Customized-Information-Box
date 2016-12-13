@@ -19,13 +19,14 @@ Check.prototype.constructor = Check;
 
 Check.prototype._buildContent = function (opts){
     var that =this;
-    var title = opts.title,
-        content = opts.content,
-        callbackYes = opts.callbackYes,
-        callbackNo = opts.callbackNo;
+    var title = opts.title||'',
+        content = opts.content||'',
+        callbackYes = opts.callbackYes||null,
+        callbackNo = opts.callbackNo||null;
+
     var wrap = document.createElement("DIV");
     wrap.className = '_check _innerWrap';
-    wrap.innerHTML = '<div class="_title">#title#</div><div class="_content">#content#</div><div class="_line"></div><div class="_btn _yes _left">YES</div><div class="_btn _no _right">NO</div>'.replace('#title#', title||'').replace('#content#', content);
+    wrap.innerHTML = '<div class="_title">#title#</div><div class="_content">#content#</div><div class="_line"></div><div class="_btn _yes _left">YES</div><div class="_btn _no _right">NO</div>'.replace(/#title#/g, title).replace(/#content#/g, content);
 
     var btnYES = wrap.querySelector('._yes');
     var btnNO = wrap.querySelector('._no');

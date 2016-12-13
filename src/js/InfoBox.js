@@ -52,6 +52,7 @@ var InfoBox = function(PACKAGE) {
     var show = function() {
         outside.style.visibility = 'visible';
         bg.style.opacity = 1;
+        currentBox && currentBox.show();
     };
 
     var hide = function() {
@@ -60,13 +61,13 @@ var InfoBox = function(PACKAGE) {
     };
 
     // private -------------------------------------------------------------------------------
-    var setBgColor = function(bgColor) {
-        bg.style.backgroundColor = bgColor;
+    var setBg = function(bgVal) {
+        bg.style.background = bgVal;
     };
 
     var setHideOnClick = function(hideOnClick) {
         if (bgClickListener != null) bg.removeEventListener('click', bgClickListener);
-        if (hideOnClick) {
+        if (hideOnClick===true) {
             bgClickListener = function(e) {
                 currentBox.hide();
             };
@@ -133,78 +134,103 @@ var InfoBox = function(PACKAGE) {
         return style;
     };
 
+    var setupInfoBox = function (hideOnClick, bg){
+        setupHtml();
+        if (currentBox != null) currentBox.remove();
+        container.focus();
+        setHideOnClick(hideOnClick);
+        setBg(bg);
+    };
+
     // setup --------------------------------------------------------------------------------
     var setupFunc = function() {
-        PACKAGE.info = function(content, hideOnClick, bgColor, callback, styleOpt) {
-            setupHtml();
-            if (currentBox != null) currentBox.remove();
-            container.focus();
+        PACKAGE.info = function (opts){
+            var content = opts.content,
+                hideOnClick = opts.hideOnClick,
+                bgVal = opts.bg,
+                style = opts.style,
+                onHide = opts.onHide;
+            setupInfoBox(hideOnClick, bgVal);
             currentBox = new Basic(
                 container,
-                createAnimationStyle(styleOpt),
+                createAnimationStyle(style),
                 {
                   content: content
                 },
-                hide);
-            setHideOnClick(hideOnClick);
-            setBgColor(bgColor);
+                function (){
+                    hide();
+                    onHide && onHide();
+                });
             show();
-            currentBox.show();
         };
-        PACKAGE.info.alert = function(content, title, hideOnClick, bgColor, callback, styleOpt) {
-            setupHtml();
-            if (currentBox != null) currentBox.remove();
-            container.focus();
+        PACKAGE.info.show = PACKAGE.info;
+        PACKAGE.info.hide = function(){if (currentBox != null) currentBox.hide();};
+        PACKAGE.info.alert = function (opts) {
+            var content = opts.content,
+                title = opts.title,
+                callback = opts.callback,
+                hideOnClick = opts.hideOnClick,
+                bgVal = opts.bg,
+                style = opts.style,
+                onHide = opts.onHide;
+            setupInfoBox(hideOnClick, bgVal);
             currentBox = new Alert(
                 container,
-                createAnimationStyle(styleOpt),
+                createAnimationStyle(style),
                 {
                   title: title,
                   content: content,
                   callback: callback
                 },
-                hide);
-            setHideOnClick(hideOnClick);
-            setBgColor(bgColor);
+                function (){
+                    hide();
+                    onHide && onHide();
+                });
             show();
-            currentBox.show();
         };
-        PACKAGE.info.check = function(content, title, hideOnClick, bgColor, callbackYes, callbackNo, styleOpt) {
-            setupHtml();
-            if (currentBox != null) currentBox.remove();
-            container.focus();
+        PACKAGE.info.check = function(opts) {
+            var content = opts.content,
+                title = opts.title,
+                callbackYes = opts.callbackYes,
+                callbackNo = opts.callbackNo,
+                hideOnClick = opts.hideOnClick,
+                bgVal = opts.bg,
+                style = opts.style,
+                onHide = opts.onHide;
+            setupInfoBox(hideOnClick, bgVal);
             currentBox = new Check(
                 container,
-                createAnimationStyle(styleOpt),
+                createAnimationStyle(style),
                 {
                   title: title,
                   content: content,
                   callbackYes: callbackYes,
                   callbackNo: callbackNo
                 },
-                hide);
-            setHideOnClick(hideOnClick);
-            setBgColor(bgColor);
+                function (){
+                    hide();
+                    onHide && onHide();
+                });
             show();
-            currentBox.show();
         };
-        PACKAGE.info.input = function(inputPara, title, hideOnClick, bgColor, callback, styleOpt) {
-            setupHtml();
-            if (currentBox != null) currentBox.remove();
-            container.focus();
+        PACKAGE.info.input = function(opts) {
+            var para = opts.para,
+                title = opts.title,
+                callback = opts.callback,
+                hideOnClick = opts.hideOnClick,
+                bgVal = opts.bg,
+                style = opts.style,
+                onHide = opts.onHide;
+            setupInfoBox(hideOnClick, bgVal);
             currentBox = new Input(
                 container,
-                createAnimationStyle(styleOpt),
+                createAnimationStyle(style),
                 {
-                  inputPara: inputPara,
-                  content: content,
+                  para: para,
                   callback: callback
                 },
                 hide);
-            setHideOnClick(hideOnClick);
-            setBgColor(bgColor);
             show();
-            currentBox.show();
         };
     };
 

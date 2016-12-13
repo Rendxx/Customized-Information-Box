@@ -17,13 +17,13 @@ Alert.prototype = Object.create(Basic.prototype);
 Alert.prototype.constructor = Alert;
 
 Alert.prototype._buildContent = function (opts){
-    var title = opts.title,
-        content = opts.content,
-        callback = opts.callback;
+    var title = opts.title||'',
+        content = opts.content||'',
+        callback = opts.callback||null;
 
     var wrap = document.createElement("DIV");
     wrap.className = '_alert _innerWrap';
-    wrap.innerHTML = '<div class="_title">#title#</div><div class="_content">#content#</div><div class="_line"></div><div class="_ok">OK</div>'.replace('#title#', title||'').replace('#content#', content);
+    wrap.innerHTML = '<div class="_title">#title#</div><div class="_content">#content#</div><div class="_line"></div><div class="_ok">OK</div>'.replace(/#title#/g, title).replace(/#content#/g, content);
 
     var that =this;
     var btnOK = wrap.querySelector('._ok');

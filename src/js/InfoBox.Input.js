@@ -2,8 +2,8 @@
 Show a window with an input field.
 
 API:
-    $$.info.input(inputPara, title, hideOnClick, bgColor, callback)
-        - inputPara: parameters to define input
+    $$.info.input(para, title, hideOnClick, bgColor, callback)
+        - para: parameters to define input
             + type: text / password / ... (avilable type for input dom element)
             + maxlength : max length of the input
             + instruction: instruction shows below the input box
@@ -23,27 +23,20 @@ var Input = function(container, style, opts, onHide) {
 Input.prototype = Object.create(Basic.prototype);
 Input.prototype.constructor = Input;
 
-Input.prototype._buildContent = function (title, inputPara, callback){
+Input.prototype._buildContent = function (opts){
     var that = this;
-    var title = opts.title,
-        inputPara = opts.inputPara,
+    var title = opts.title||'',
+        para = opts.para||{},
         callback = opts.callback;
     // init paramenters
-    var inputType = 'text',
-        maxlength = null,
-        instruction = null,
-        errorMsg = null;
-
-    if (inputPara!=null){
-        if (inputPara.type) inputType = inputPara.type;
-        if (inputPara.maxlength) maxlength = inputPara.maxlength;
-        if (inputPara.instruction) instruction = inputPara.instruction;
-        if (inputPara.errorMsg) errorMsg = inputPara.errorMsg;
-    }
+    var inputType = para.type||'text',
+        maxlength = para.maxlength||null,
+        instruction = para.instruction||'',
+        errorMsg = para.errorMsg||null;
 
     var wrap = document.createElement("DIV");
     wrap.className = '_input _innerWrap';
-    wrap.innerHTML = '<div class="_title">#title#</div><div class="_content"><input  /><div class="_instruction">#instruction#</div><div class="_error"></div></div><div class="_line"></div><div class="_btn _yes _left">YES</div><div class="_btn _no _right">NO</div>'.replace(/#title#/g, title||'').replace(/#instruction#/g, instruction||'');
+    wrap.innerHTML = '<div class="_title">#title#</div><div class="_content"><input  /><div class="_instruction">#instruction#</div><div class="_error"></div></div><div class="_line"></div><div class="_btn _yes _left">YES</div><div class="_btn _no _right">NO</div>'.replace(/#title#/g, title).replace(/#instruction#/g, instruction);
 
     var input = wrap.querySelector('input');
     var err = wrap.querySelector('._error');

@@ -23,37 +23,62 @@
     </style>
 </head>
 <body>
-    <div class="btn btn-1">$$.info.alert(content, title, false, bgColor)</div>
-    <div class="btn btn-2">$$.info.alert(content, title, true, bgColor, callback)</div>
-    <div class="btn btn-3">$$.info.alert(content, null, true, bgColor)</div>
-    <div class="btn btn-4">$$.info.alert(content, null, true, bgColor, style)</div>
+    <div class="btn btn-1">(content, title, bgColor)</div>
+    <div class="btn btn-2">(content, title, hideOnClick, bgColor, callback, onHide)</div>
+    <div class="btn btn-3">(content, hideOnClick, bgColor)</div>
+    <div class="btn btn-4">(content, hideOnClick, bgColor, style)</div>
     <script>
         document.querySelector(".btn-1").addEventListener('click', function(e){
-            $$.info.alert("Alert Sample without callback. <br />" + this.textContent, "ALERT", false, "rgba(0,0,0,0.6)", null);
+            $$.info.alert({
+              content: "Alert Sample without callback. <br />" + this.textContent,
+              title: "ALERT",
+              bg: "rgba(0,0,0,0.6)"
+            });
         }, false);
         document.querySelector(".btn-2").addEventListener('click', function(e){
             var that = this;
-            $$.info.alert("Alert Sample with callback. <br />" + this.textContent, "ALERT", true, "rgba(0,0,0,0.6)", function () { that.style['background-color']= '#68A1CA';});
+            $$.info.alert({
+              content: "Alert Sample with callback. <br />" + this.textContent,
+              title: "ALERT",
+              hideOnClick: true,
+              bg: "rgba(0,0,0,0.6)",
+              callback: function () {
+                that.style['background-color']= '#68A1CA';
+                alert('callback');
+              },
+              onHide: function () {
+                alert('onHide');
+              }
+            });
         }, false);
         document.querySelector(".btn-3").addEventListener('click', function(e){
-            $$.info.alert("Alert Sample without title. <br />" + this.textContent, null, true, "rgba(0,0,0,0.6)");
+            $$.info.alert({
+              content: "Alert Sample without title. <br />" + this.textContent,
+              hideOnClick: true,
+              bg: "rgba(0,0,0,0.6)"
+            });
         }, false);
         document.querySelector(".btn-4").addEventListener('click', function(e){
-            $$.info.alert("Alert Sample without title. <br />" + this.textContent, null, true, "rgba(0,0,0,0.6)", null, {
+            $$.info.alert({
+              content: "Alert Sample without title. <br />" + this.textContent,
+              hideOnClick: true,
+              bg: "rgba(0,0,0,0.6)",
+              style:{
                 before:{
-                    top:'-50%'
+                    'top':'-50%'
                 },
                 show:{
-                    top:0,
+                    'top':0,
                     'transition': '0.2s'
                 },
                 hide:{
-                    top:'-50%',
+                    'top':'-50%',
                     'transition': '0.2s'
                 },
                 inner:{
-                    transform: 'translate(-50%,0)'
+                    'transform': 'translate(-50%,0)'
                 }
+              }
             });
         }, false);
     </script>
