@@ -17,7 +17,7 @@ bower install InfoBox --save
 
 Including the file in your webpage
 ```HTML
-<script type="text/javascript" src="/bower_components/InfoBox/js/InfoBox.js"></script>
+<script type="text/javascript" src="/bower_components/InfoBox/dist/InfoBox.js"></script>
 ```
 
 See **Code Sample** below for more details.
