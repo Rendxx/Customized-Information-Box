@@ -1,6 +1,6 @@
 {
   "name": "InfoBox",
-  "version": "0.7.0",
+  "version": "0.7.1",
   "description": "Show customized HTML elements in the center of screen.",
   "main": [
     "dist/InfoBox.js"
@@ -18,8 +18,7 @@
     "info",
     "box",
     "message",
-    "HTML",
-    "jQuery"
+    "HTML"
   ],
   "authors": [
     "Dongxu Ren <rendxx@gmail.com> http://www.rendxx.com"
@@ -27,7 +26,7 @@
   "license": "MIT",
   "ignore": [
     "*",
-    "!js/*"
+    "!dist/*"
   ],
   "repository": {
     "type": "git",
