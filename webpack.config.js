@@ -2,13 +2,14 @@ var path = require('path');
 var ExtractTextPlugin = require("extract-text-webpack-plugin");
 var extractTextPlugin = new ExtractTextPlugin("./[name].css");
 var root = path.resolve(__dirname);
+var minimize = process.argv.indexOf('--optimize-minimize') !== -1;
 
-module.exports = {
+var setting = {
     plugins: [
       extractTextPlugin
     ],
     entry: {
-        InfoBox : './src/js/InfoBox',
+        'InfoBox' : './src/js/InfoBox'
     },
     output: {
         path: './dist',
@@ -51,3 +52,8 @@ module.exports = {
         extensions: ['', '.js', '.json', '.less']
     }
 };
+
+if (minimize) setting.entry = {
+    'InfoBox.min' : './src/js/InfoBox'
+}
+module.exports = setting;

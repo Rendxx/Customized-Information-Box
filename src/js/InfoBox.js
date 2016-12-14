@@ -3,7 +3,7 @@ Customized Information Box
 Copyright (c) 2014-2015 Dongxu Ren  http://www.rendxx.com/
 
 License: MIT (http://www.opensource.org/licenses/mit-license.php)
-Version: 0.7.0
+Version: 0.7.2
 Update: 2016-12-14
 
 Description:

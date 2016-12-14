@@ -69,4 +69,5 @@
     color:#999;
     font-size: 16px;
     text-shadow: 0 0 10px #fff;
+    pointer-events: none;
 }
