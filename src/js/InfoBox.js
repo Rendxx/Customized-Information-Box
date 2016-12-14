@@ -4,7 +4,7 @@ Copyright (c) 2014-2015 Dongxu Ren  http://www.rendxx.com/
 
 License: MIT (http://www.opensource.org/licenses/mit-license.php)
 Version: 0.7.0
-Update: 2016-12-13
+Update: 2016-12-14
 
 Description:
     Enable user to show their customized HTML elements in the center of screen.
@@ -24,7 +24,7 @@ API:
             show: [string | object] style of the box
             hide: [string | object] style after box hide
           }
-          It will defined the show/hide animation of the infobox.
+          It defines the show / hide animation of the info-box by setting the style before / after showing.
           It receive either a predefined style name or an object of css properties.
         - onHide: callback function when info-window hide
         - other: detail in different Infobox module

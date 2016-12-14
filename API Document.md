@@ -1,81 +1,86 @@
 
 # API Document
 
-#### $$.info (content, hideOnClick, bgColor [, onHide])  
-#### $$.info.show (content, hideOnClick, bgColor [, onHide])
-Create and show a customized information box in the center of screen. 
+#### $$.info (opts)  
+#### $$.info.show (opts)
+Create and show a customized information box in the center of screen.  
 
-- **content** ```jQuery Object```  
-Custom content, HTML format.
+- **content** ```DOM-node | string```  
+  Content you want to show in the info-box.   
+  Available value includes DOM-node or a string representing a DOM-node.
 
 - **hideOnClick** ```boolean```  
-Hide the information box when click outside the box if true.
+  Hide the information box when click outside the box.
 
-- **bgColor** ```string```  
-Background color cover the reset of the page.  
-String format is as same as CSS color format:
-  1. ```#rgb``` 
-  2. ```rgba(r,g,b,a)```
+- **bg** ```string```  
+  Change the style of the screen cover.  
+  Receive a string following the rule of the CSS ```background``` property.
+
+- **style** ```object```  
+  Customize style. Defining the show / hide animation and info-box style.  
+  See [Style](#Style) for more detail
 
 - **onHide** ```function```  
-Callback function. Triggered when info-window hides.
+  Callback function. Triggered when info-window hides.   
+
 
 #### $$.info.hide ()
 close the information box.
 <h1></h1>
 
-#### $$.info.alert (content, title, hideOnClick, bgColor [, callback])
+#### $$.info.alert (opts)
 
 Show alert with customized HTML in the center of screen.
 
 - **content** ```string```  
-Custom content, HTML format string.
+  Custom content, string in HTML format.
 
 - **title** ```string```  
-Title of the alert box.
-
-- **hideOnClick** ```string```  
-*[same as above]*
-
-- **bgColor** ```string```  
-*[same as above]*
+  Title of the info-box.
 
 - **callback** ```function```  
-Callback function. Triggered when info-window hides.
+  Callback function. Triggered after click **OK**.
+
+
+*[[Properties below are as same as __$$.info__]](# $$.info)*
+- **hideOnClick** ```boolean```  
+- **bg** ```string```  
+- **style** ```object```  
+- **onHide** ```function```
 
 <h1></h1>
 
-#### $$.info.check (content, title, hideOnClick, bgColor [, callbackYes, callbackNo]) 
+#### $$.info.check (opts)
 
 Show check-box with customized HTML in the center of screen.
 
 - **content** ```string```  
- *[same as above]*  
+  Custom content, string in HTML format
 
 - **title** ```string```  
- *[same as above]* 
-
-- **hideOnClick** ```string```  
-*[same as above]*
-
-- **bgColor** ```string```  
-*[same as above]* 
+  Title of the info-box.
 
 - **callbackYes** ```function```  
-Callback function. Triggered after "Yes" being clicked.
+  Callback function. Triggered after "Yes" being clicked.
 
 - **callbackNo** ```function```  
-Callback function. Triggered after "No" being clicked.
-     
+  Callback function. Triggered after "No" being clicked.
+
+
+*[[Properties below are as same as __$$.info__]](# $$.info)*
+- **hideOnClick** ```boolean```  
+- **bg** ```string```  
+- **style** ```object```  
+- **onHide** ```function```
+
 
 <h1></h1>
 
-#### $$.info.input (inputPara, title, hideOnClick, bgColor [, callback])
+#### $$.info.input (opts)
 
-Show input-box in the center of screen.
-
-- **inputPara** ```object```  
-  Parameters to define input.
+Show input-box in the center of screen for user to enter text.
+- **para** ```object```  
+  Parameters to define input box.
   + **type** ```string```   
     text / password / ... (avilable type for input dom element)
   + **maxlength** ```number```   
@@ -88,13 +93,32 @@ Return null indicates no error occur. Otherwise a string of error message will b
 The input will not complele if an error is occur.
 
 - **title** ```string```  
- *[same as above]* 
-
-- **hideOnClick** ```string```  
-*[same as above]*
-
-- **bgColor** ```string```  
-*[same as above]* 
+  Title of the info-box.
 
 - **callback** ```function(data)```  
-Callback function. Triggered after input completes.
+  Callback function. Triggered after input completes. The input value will be passed to the function as argument.
+
+
+*[[Properties below are as same as __$$.info__]](# $$.info)*
+- **hideOnClick** ```boolean```  
+- **bg** ```string```  
+- **style** ```object```  
+- **onHide** ```function```
+
+
+<h1></h1>
+
+#### Style
+
+It defines the show / hide animation of the info-box by setting the style before / after showing.  
+It receive either a predefined style name or an object of css properties.
+
+
+- **before** ```string | object```  
+  The css style before info-box show up.
+
+- **show** ```string | object```  
+  The css style of the info-box container.
+
+- **hide** ```string | object```  
+  The css style after the info-box hide.

@@ -46,7 +46,7 @@
 .cusInfo {
     width: 100%;
     height: 300px;
-    background-image: url(../images/rendxx-icon-tmp.png);
+    background-image: url('Rendxx-logo-mid-alpha.png');
     background-color: #333;
     background-position: center center;
     background-repeat: no-repeat;
@@ -57,4 +57,16 @@
     color: #fff;
     text-shadow: 0 0 10px #333;
     font-size: 26px;
+}
+.cusInfo::after{
+    content: '[ click outside to close ]';
+    height:20px;
+    line-height: 20px;
+    width:100%;
+    display: block;
+    position: absolute;
+    bottom:-40px;
+    color:#999;
+    font-size: 16px;
+    text-shadow: 0 0 10px #fff;
 }
