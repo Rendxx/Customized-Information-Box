@@ -1,8 +1,8 @@
 
 # API Document
 
-#### $$.info (opts)  
-#### $$.info.show (opts)
+### <a name="info">$$.info (opts)</a>
+### $$.info.show (opts)
 Create and show a customized information box in the center of screen.  
 
 - **content** ```DOM-node | string```  
@@ -18,17 +18,17 @@ Create and show a customized information box in the center of screen.
 
 - **style** ```object```  
   Customize style. Defining the show / hide animation and info-box style.  
-  See [Style](#Style) for more detail
+  See [Style](#style) for more detail
 
 - **onHide** ```function```  
   Callback function. Triggered when info-window hides.   
 
 
-#### $$.info.hide ()
+### $$.info.hide ()
 close the information box.
 <h1></h1>
 
-#### $$.info.alert (opts)
+### $$.info.alert (opts)
 
 Show alert with customized HTML in the center of screen.
 
@@ -42,7 +42,7 @@ Show alert with customized HTML in the center of screen.
   Callback function. Triggered after click **OK**.
 
 
-*[[Properties below are as same as __$$.info__]](# $$.info)*
+*[[Properties below are as same as __$$.info__]](#info)*
 - **hideOnClick** ```boolean```  
 - **bg** ```string```  
 - **style** ```object```  
@@ -67,7 +67,7 @@ Show check-box with customized HTML in the center of screen.
   Callback function. Triggered after "No" being clicked.
 
 
-*[[Properties below are as same as __$$.info__]](# $$.info)*
+*[[Properties below are as same as __$$.info__]](#info)*
 - **hideOnClick** ```boolean```  
 - **bg** ```string```  
 - **style** ```object```  
@@ -76,7 +76,7 @@ Show check-box with customized HTML in the center of screen.
 
 <h1></h1>
 
-#### $$.info.input (opts)
+### $$.info.input (opts)
 
 Show input-box in the center of screen for user to enter text.
 - **para** ```object```  
@@ -99,7 +99,7 @@ The input will not complele if an error is occur.
   Callback function. Triggered after input completes. The input value will be passed to the function as argument.
 
 
-*[[Properties below are as same as __$$.info__]](# $$.info)*
+*[[Properties below are as same as __$$.info__]](#info)*
 - **hideOnClick** ```boolean```  
 - **bg** ```string```  
 - **style** ```object```  
@@ -108,7 +108,7 @@ The input will not complele if an error is occur.
 
 <h1></h1>
 
-#### Style
+### <a name="style">Style</a>
 
 It defines the show / hide animation of the info-box by setting the style before / after showing.  
 It receive either a predefined style name or an object of css properties.
